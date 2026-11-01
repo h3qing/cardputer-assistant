@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/inbox.dismiss.schema.json",
+  "title": "inbox.dismiss",
+  "description": "Online request: dismiss a session from the inbox until its state changes. Reply: ack or error.",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["sid"],
+  "properties": {"t": {"const": "inbox.dismiss"}, "sid": {"$ref": "common.schema.json#/$defs/sid"}}
+}

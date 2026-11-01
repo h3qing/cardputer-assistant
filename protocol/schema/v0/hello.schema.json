@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/hello.schema.json",
+  "title": "hello",
+  "description": "Handshake (§6.4). Host sends it (never the device); the device answers with role=device and re.",
+  "x-dir": ["h2d", "d2h"],
+  "type": "object",
+  "required": ["role"],
+  "properties": {"t": {"const": "hello"}, "role": {"enum": ["host", "device"]}},
+  "allOf": [
+    {
+      "if": {"required": ["role"], "properties": {"role": {"const": "host"}}},
+      "then": {"$ref": "#/$defs/host"}
+    },
+    {
+      "if": {"required": ["role"], "properties": {"role": {"const": "device"}}},
+      "then": {"$ref": "#/$defs/device"}
+    }
+  ],
+  "$defs": {
+    "host": {
+      "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+      "required": ["app", "agent", "caps"],
+      "properties": {
+        "app": {"type": "string", "pattern": "^[!-~]{1,32}$"},
+        "agent": {"$ref": "common.schema.json#/$defs/agentStatus"},
+        "caps": {
+          "type": "object",
+          "required": ["spawn", "reply"],
+          "properties": {
+            "spawn": {"type": "boolean"},
+            "reply": {"type": "boolean"},
+            "recs": {
+              "description": "v0.4.1: cpad answers rec.list and rec.act. Absent, null or false: the device sends no rec.*.",
+              "type": ["boolean", "null"]
+            },
+            "todo": {
+              "description": "v0.4.1: cpad writes a note with dest todo as a checkbox. Otherwise the note is stored plain.",
+              "type": ["boolean", "null"]
+            }
+          }
+        },
+        "host_id": {
+          "description": "v0.4.1 (#19): reserved; the device does not act on it before v0.8.",
+          "anyOf": [{"$ref": "common.schema.json#/$defs/hostId"}, {"type": "null"}]
+        },
+        "host_label": {
+          "description": "v0.4.1: shown on the device's control page only.",
+          "anyOf": [{"$ref": "common.schema.json#/$defs/hostLabel"}, {"type": "null"}]
+        }
+      }
+    },
+    "device": {
+      "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+      "required": ["fw", "dev", "boot", "up_ms", "rst", "time", "pending", "bat_mv", "revs"],
+      "properties": {
+        "fw": {"type": "string", "pattern": "^cpa-fw/[!-~]{1,24}$"},
+        "dev": {"type": "string", "pattern": "^[0-9a-f]{12}$"},
+        "boot": {"$ref": "common.schema.json#/$defs/bootId"},
+        "up_ms": {"$ref": "common.schema.json#/$defs/uint32"},
+        "rst": {"type": "string", "pattern": "^[a-z0-9_]{1,16}$"},
+        "time": {"type": "boolean"},
+        "pending": {"$ref": "common.schema.json#/$defs/count"},
+        "bat_mv": {"$ref": "common.schema.json#/$defs/count"},
+        "revs": {"$ref": "common.schema.json#/$defs/revs"},
+        "store": {
+          "description": "v0.2: primary store chosen at boot (sd card, internal cpafs, or none). Optional.",
+          "anyOf": [{"enum": ["sd", "int", "none"]}, {"type": "null"}]
+        },
+        "launcher": {
+          "description": "v0.2: true when the firmware runs under the bmorcelli Launcher. Optional.",
+          "type": ["boolean", "null"]
+        },
+        "files": {"$ref": "common.schema.json#/$defs/files"}
+      }
+    }
+  }
+}

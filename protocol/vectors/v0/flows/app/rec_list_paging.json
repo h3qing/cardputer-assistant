@@ -1,0 +1,175 @@
+{
+  "name": "rec_list_paging",
+  "spec": "docs/13-assistant-v2-plan.md §8.1, §12.2",
+  "description": "The recordings app pages through cpad's history: rec.list{filter, max:6} -> rec.items{items, next}, then rec.list with the cursor sent back unchanged until a page has no next. Rows come newest first by wall time across two MonoId epochs. rec.list shares the device's single in-flight slot with queue.done and inbox.dismiss.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7f3a9c1e5b2d4a60",
+        "host_label": "Studio Mac"
+      }
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.4.1",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {
+      "t": 2000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.list", "id": "d2", "filter": "all", "max": 6},
+      "note": "the user opens the recordings app (Opt+V): caps.recs was in the hello"
+    },
+    {
+      "t": 2040,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h2",
+        "re": "d2",
+        "next": "t1792300000000-a6",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0004",
+            "mode": "memo",
+            "st": "done",
+            "wall_ms": 1792447320000,
+            "dur_ms": 12000,
+            "title": "买牛奶和鸡蛋",
+            "todo_n": 1
+          },
+          {
+            "rec": "2B7XW4R-00003-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792447120000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          },
+          {
+            "rec": "2B7XW4R-00002-0001",
+            "mode": "meeting",
+            "st": "processing",
+            "wall_ms": 1792437020000,
+            "dur_ms": 1080000,
+            "project": "cpa"
+          },
+          {"rec": "3QZK1M7-00009-0007", "mode": "memo", "st": "failed", "wall_ms": 1792401000000, "dur_ms": 64000},
+          {
+            "rec": "3QZK1M7-00009-0003",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792323120000,
+            "dur_ms": 3300000,
+            "title": "周会",
+            "todo_n": 0
+          },
+          {"rec": "3QZK1M7-00009-0001", "mode": "memo", "st": "on_device", "wall_ms": 1792300000000, "dur_ms": 4000}
+        ]
+      },
+      "note": "newest first by wall time: the 2B7XW4R epoch (after an NVS wipe) sorts before 3QZK1M7, which MonoId order would get wrong (docs/13 §8.1); 3QZK1M7-00009-0001 is still on the device"
+    },
+    {
+      "t": 4000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.list", "id": "d3", "filter": "all", "max": 6, "cursor": "t1792300000000-a6"},
+      "note": "the user reaches the last row: the cursor goes back unchanged"
+    },
+    {
+      "t": 4040,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h3",
+        "re": "d3",
+        "items": [
+          {
+            "rec": "3QZK1M7-00008-0002",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792270000000,
+            "dur_ms": 900000,
+            "project": "blog",
+            "title": "设计评审",
+            "todo_n": 2
+          },
+          {
+            "rec": "3QZK1M7-00008-0001",
+            "mode": "memo",
+            "st": "transcript",
+            "wall_ms": 1792260000000,
+            "dur_ms": 5000,
+            "title": "周末计划"
+          }
+        ]
+      },
+      "note": "last page: no next"
+    },
+    {
+      "t": 5000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.list", "id": "d4", "filter": "starred", "max": 6},
+      "note": "the ★ tab: a new filter starts without a cursor"
+    },
+    {
+      "t": 5030,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h4",
+        "re": "d4",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792447120000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          }
+        ]
+      }
+    },
+    {"t": 5030, "expect": {"host.credit_used": 0, "device.link": "Ready"}}
+  ]
+}

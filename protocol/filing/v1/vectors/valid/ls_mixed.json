@@ -1,0 +1,156 @@
+{
+  "doc": "ls",
+  "name": "one row per state, the other-Mac group, a page with a next cursor and cpad not running",
+  "data": {
+    "v": 1,
+    "counts": {
+      "new": 1,
+      "other_mac": 1,
+      "clips_waiting": 0,
+      "on_device": null
+    },
+    "next_cursor": "WyJmaWxpbmciLCIxNzkyNjIwMTIwMDAwLzNRWksxTTctMDAwNDAtMDAwMCJd",
+    "rows": [
+      {
+        "id": "3QZK1M7-00042-0A1C",
+        "kind": "meeting",
+        "filing": "filed",
+        "why": [],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792620120000,
+          "tz_min": -420,
+          "uncertain": false
+        },
+        "dur_ms": 660000,
+        "device": "5c0e9a7b3d21",
+        "env": null,
+        "prof": null,
+        "project": "cpa",
+        "starred": true,
+        "tx": "done",
+        "title": "客户同步：定价和交付",
+        "text": "我们先过一下 pricing 的方案。 OK. 交付时间定在周五，我负责给 Alice 发报价单。",
+        "intent": null,
+        "clips": null,
+        "queue": null
+      },
+      {
+        "id": "3QZK1M7-00042-0A1F",
+        "kind": "memo",
+        "filing": "handed",
+        "why": [],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": "5c0e9a7b3d21",
+        "env": {
+          "host": "公司",
+          "link": "unknown"
+        },
+        "prof": null,
+        "project": "cpa",
+        "starred": false,
+        "tx": "done",
+        "title": "报价",
+        "text": "周五前给 Alice 发报价单。",
+        "intent": "todo",
+        "clips": null,
+        "queue": {
+          "qid": "q12",
+          "intent": "spawn",
+          "open": true
+        }
+      },
+      {
+        "id": "3QZK1M7-00045-0001",
+        "kind": "memo",
+        "filing": "new",
+        "why": [
+          "orphan"
+        ],
+        "asked": "acme",
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": "5c0e9a7b3d21",
+        "env": {
+          "host": null,
+          "link": "here"
+        },
+        "prof": null,
+        "project": null,
+        "starred": false,
+        "tx": "waiting",
+        "title": null,
+        "text": null,
+        "intent": null,
+        "clips": null,
+        "queue": null
+      },
+      {
+        "id": "3QZK1M7-00041-0000",
+        "kind": "meeting",
+        "filing": "done",
+        "why": [
+          "no_text"
+        ],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": null,
+        "env": {
+          "host": "公司",
+          "link": "unknown"
+        },
+        "prof": null,
+        "project": null,
+        "starred": false,
+        "tx": "failed",
+        "title": null,
+        "text": null,
+        "intent": null,
+        "clips": null,
+        "queue": null
+      },
+      {
+        "id": "3QZK1M7-00040-0000",
+        "kind": "meeting",
+        "filing": "hidden",
+        "why": [],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": "5c0e9a7b3d21",
+        "env": {
+          "host": "公司",
+          "link": "unknown"
+        },
+        "prof": null,
+        "project": null,
+        "starred": false,
+        "tx": "transcript",
+        "title": null,
+        "text": "旧会议只有转写。",
+        "intent": null,
+        "clips": null,
+        "queue": null
+      }
+    ]
+  }
+}

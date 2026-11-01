@@ -1,0 +1,24 @@
+{
+  "doc": "pending",
+  "name": "a memo its project's usual destination preselects",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "rows": [
+      {
+        "ref": "3QZK1M7-00045-0000",
+        "why": "usual",
+        "dest": "url.grok",
+        "label": "Grok",
+        "kind": "url",
+        "fl": "lc",
+        "st": null,
+        "code": null,
+        "project": "acmeshop",
+        "src": "voice",
+        "at": "2026-10-22T09:00:00.000+00:00",
+        "text": "给 Grok：明天把首页改了"
+      }
+    ]
+  }
+}

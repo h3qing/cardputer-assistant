@@ -1,0 +1,42 @@
+# docs/20 B2 regression (U1, U6, U8, U15, U23; D3, D8). Before: nothing showed for the
+# first 500 ms of a G0 hold; the 5 minute memo cap came without warning; the meeting page
+# had lost the battery; the boxes' hint bar repeated their key line; the meeting hint
+# did not say Space stars. Now: "● 准备" in the status bar from the press; from 4:30
+# "还剩 0:30" in Warn and a Warn waveform; "电 N%" on the meeting page (yellow under 30 %);
+# under 30 % the start box says about how long the battery lasts; the boxes' hint names
+# Opt+L; the meeting hint is [G0] [空格] 加★.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+down g0
+wait 100
+shot ready  G0 down 100 ms: ● 准备 in the status bar, still home
+wait 500
+mic 269000 2500
+shot memo-4m28  4:28: 第 1 段, the waveform Accent
+mic 2000 2500
+shot memo-4m30  4:30: 还剩 0:30 in Warn, the waveform Warn
+mic 30000 2500
+shot memo-cap  5:01, still held: the cap card, 松开 [G0]
+up g0
+wait 3000
+usb off
+bat 3500
+wait 4000
+press opt+r
+wait 600
+shot start-box  the start box at 23%: 电量约够 25 分钟; the hint names Opt+L, not Enter again
+press enter
+mic 3000 speech
+wait 3000
+shot meeting  the meeting: 电 23% in yellow on the timer row; hint [G0] [空格] 加★
+press opt+r
+wait 600
+shot end-box  the end box: the hint names Opt+L (继续录并锁屏)
+press `
+wait 300
+press opt+r
+wait 600
+press enter
+wait 3000
+shot ended  ended: back home

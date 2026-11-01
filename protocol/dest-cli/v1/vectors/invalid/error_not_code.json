@@ -1,0 +1,13 @@
+{
+  "doc": "error",
+  "name": "an error that is not an E_ code",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "error"
+  },
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "oops"
+  }
+}

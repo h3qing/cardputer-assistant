@@ -1,0 +1,26 @@
+# docs/20 D2, D7 regression (U2, U11; from the review's daily/t07_pocket_unlocked and
+# s20_locked_needs_you). Before the fix the screen went dark on battery without locking: a
+# brushed G0 opened the editor, pocket keys saved junk notes and a squeezed G0 recorded. Now
+# dark on battery is locked; plugged in it never locks by itself; locked at the desk a
+# session starting to wait lights the card 3 s (counts only).
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+usb off
+wait 200
+wait 61000
+shot dark-locked  60 s idle on battery: dark and locked
+press g0
+shot g0-card  G0 tap: the lock card, not the editor
+wait 3500
+type asdf jkl
+press enter
+shot pocket  pocket keys: nothing saved, nothing lit
+down g0
+wait 2000
+up g0
+wait 500
+shot pocket-hold  a pocket hold: nothing recorded
+press opt+l
+press enter
+shot unlocked  Opt+L, Enter: the page again

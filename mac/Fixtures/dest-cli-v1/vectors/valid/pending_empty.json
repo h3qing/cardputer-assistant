@@ -1,0 +1,9 @@
+{
+  "doc": "pending",
+  "name": "nothing waits",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "rows": []
+  }
+}

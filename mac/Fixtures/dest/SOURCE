@@ -1,0 +1,3 @@
+Made-up answers of `cpa dest … --json` for CardputerShots (docs/25 §5.7): ls.json and ls-untested.json
+(cpa dest ls --json), presets.json (cpa dest presets --installed --json), pending.json and usual.json
+(protocol/dest-cli/v1 pending and usual). The labels are the presets' own data; no real text, ids or bundles.

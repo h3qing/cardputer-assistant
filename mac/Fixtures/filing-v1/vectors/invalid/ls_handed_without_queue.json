@@ -1,0 +1,47 @@
+{
+  "doc": "ls",
+  "name": "handed row without its queue item",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "rows[0].queue"
+  },
+  "data": {
+    "v": 1,
+    "counts": {
+      "new": 16,
+      "other_mac": 0,
+      "clips_waiting": 0,
+      "on_device": 0
+    },
+    "next_cursor": null,
+    "rows": [
+      {
+        "id": "3QZK1M7-00042-0A1F",
+        "kind": "memo",
+        "filing": "handed",
+        "why": [],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": "5c0e9a7b3d21",
+        "env": {
+          "host": "公司",
+          "link": "unknown"
+        },
+        "prof": null,
+        "project": "cpa",
+        "starred": false,
+        "tx": "waiting",
+        "title": null,
+        "text": null,
+        "intent": null,
+        "clips": null,
+        "queue": null
+      }
+    ]
+  }
+}

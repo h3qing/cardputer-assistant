@@ -1,0 +1,6 @@
+{"ok": true, "v": 1, "rows": [
+ {"ref": "3QZK1M7-00042-0050", "why": "held", "dest": "url.grok", "label": "Grok", "kind": "url", "fl": "lc", "st": "hold", "code": null, "project": "cardputer", "src": "voice", "at": "2026-10-22T13:52:00.000+08:00",
+  "text": "For Grok: how long can the Cardputer ADV still record at 3.55 V on battery? Put it in a table."},
+ {"ref": "3QZK1M7-00042-0051", "why": "usual", "dest": "url.grok", "label": "Grok", "kind": "url", "fl": "lc", "st": null, "code": null, "project": "acmeshop", "src": "voice", "at": "2026-10-22T14:12:00.000+08:00",
+  "text": "The sign-up button on the Acmeshop home page is too small. Write three fixes, each with one reason."}
+]}

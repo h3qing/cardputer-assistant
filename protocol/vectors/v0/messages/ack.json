@@ -1,0 +1,37 @@
+{
+  "$comment": "Vectors for ack; format in protocol/README.md.",
+  "type": "ack",
+  "valid": [
+    {
+      "name": "device ack of time.set (05 §6.6)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "ack", "id": "d2", "re": "h2"}
+    },
+    {
+      "name": "host ack of queue.done (05 §6.6)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "ack", "id": "h9", "re": "d9"}
+    },
+    {
+      "name": "host ack of rec.act (docs/13 §12.2)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "ack", "id": "h28", "re": "d27"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "ack without re",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "ack", "id": "d2"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "re with a space",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "ack", "id": "d2", "re": "h 2"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

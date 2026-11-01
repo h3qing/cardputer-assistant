@@ -1,0 +1,21 @@
+{
+  "doc": "projects",
+  "name": "two projects, one whose root is gone",
+  "data": {
+    "v": 1,
+    "projects": [
+      {
+        "key": "acmeshop",
+        "name": "Acmeshop",
+        "slot": 1,
+        "ok": true
+      },
+      {
+        "key": "cpa",
+        "name": "Cardputer",
+        "slot": 2,
+        "ok": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "provider": "command",
+  "argv": [
+    "<WHICH:whisper-cli>",
+    "-m", "<MODEL:ggml-large-v3-turbo.bin>",
+    "-l", "auto",
+    "-bs", "1", "-bo", "1",
+    "-np",
+    ["--vad", "-vm", "<MODEL:ggml-silero-*.bin>"],
+    ["--prompt", "<PROJECTS>"],
+    "-f", "{wav}"
+  ],
+  "timeout_s": 120
+}

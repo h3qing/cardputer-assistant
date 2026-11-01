@@ -1,0 +1,691 @@
+{
+  "$comment": "Vectors for file.items (v0.3, docs/11-m3-design.md §5); format in protocol/README.md.",
+  "type": "file.items",
+  "valid": [
+    {
+      "name": "one memo segment (docs/11 §5.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "name": "meeting page with consent, stars and more",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 735000, "wall_ms": 1792440345000},
+            "project": "cpa",
+            "stars": [12800, 254000],
+            "lead_ms": 200,
+            "consent": "ack"
+          },
+          {
+            "id": "3QZK1M7-00042-0A1D",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 1,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 1035000, "wall_ms": 1792440645000},
+            "project": "cpa",
+            "stars": [61000]
+          }
+        ],
+        "more": true
+      }
+    },
+    {
+      "name": "recovered segment: rcv, no sha256, at null",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1E",
+            "kind": "rec",
+            "size": 1953836,
+            "rec": "3QZK1M7-00042-0A1E",
+            "seg": 0,
+            "last": true,
+            "mode": "meeting",
+            "dur_ms": 61056,
+            "at": null,
+            "rcv": true
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "name": "project unknown on the device: slot only",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": null,
+            "lead_ms": 200,
+            "slot": 3
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "name": "nothing on the card",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "file.items", "id": "d41", "re": "h41", "items": [], "more": false}
+    },
+    {
+      "name": "memo sent to todo: dest on segment 0 (docs/13 §9.3)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": 1792440045000},
+            "project": "cpa",
+            "slot": 1,
+            "lead_ms": 200,
+            "dest": "todo"
+          }
+        ],
+        "more": false
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "5 items (file_list_max is 4)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          },
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 735000, "wall_ms": 1792440345000},
+            "project": "cpa",
+            "stars": [12800, 254000],
+            "lead_ms": 200,
+            "consent": "ack"
+          },
+          {
+            "id": "3QZK1M7-00042-0A1D",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 1,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 1035000, "wall_ms": 1792440645000},
+            "project": "cpa",
+            "stars": [61000]
+          },
+          {
+            "id": "3QZK1M7-00042-0A1E",
+            "kind": "rec",
+            "size": 1953836,
+            "rec": "3QZK1M7-00042-0A1E",
+            "seg": 0,
+            "last": true,
+            "mode": "meeting",
+            "dur_ms": 61056,
+            "at": null,
+            "rcv": true
+          },
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": null,
+            "lead_ms": 200,
+            "slot": 3
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items"
+    },
+    {
+      "name": "17 stars in one segment",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 735000, "wall_ms": 1792440345000},
+            "project": "cpa",
+            "stars": [
+              1000,
+              2000,
+              3000,
+              4000,
+              5000,
+              6000,
+              7000,
+              8000,
+              9000,
+              10000,
+              11000,
+              12000,
+              13000,
+              14000,
+              15000,
+              16000,
+              17000
+            ],
+            "lead_ms": 200,
+            "consent": "ack"
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].stars"
+    },
+    {
+      "name": "consent is not 'ack'",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 735000, "wall_ms": 1792440345000},
+            "project": "cpa",
+            "stars": [12800, 254000],
+            "lead_ms": 200,
+            "consent": "yes"
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].consent"
+    },
+    {
+      "name": "upper-case sha256",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15FCF5FE0175F8BC4181C75EF77E9CEFA15C87406A9EEE55FC98EB4A21FBBD5F",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].sha256"
+    },
+    {
+      "name": "star at the segment length",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 735000, "wall_ms": 1792440345000},
+            "project": "cpa",
+            "stars": [600000],
+            "lead_ms": 200,
+            "consent": "ack"
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].stars[0]"
+    },
+    {
+      "name": "kind other than rec",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "note",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].kind"
+    },
+    {
+      "name": "seg above file_seg_max",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1D",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 10000,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 1035000, "wall_ms": 1792440645000},
+            "project": "cpa",
+            "stars": [61000]
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].seg"
+    },
+    {
+      "name": "unknown mode",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "call",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].mode"
+    },
+    {
+      "name": "size below the WAV header",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 43,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].size"
+    },
+    {
+      "name": "dur_ms above seg_ms_max",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 600001,
+            "at": {"up_ms": 735000, "wall_ms": 1792440345000},
+            "project": "cpa",
+            "stars": [12800, 254000],
+            "lead_ms": 200,
+            "consent": "ack"
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].dur_ms"
+    },
+    {
+      "name": "lead_ms above lead_ms_max",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 2001
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].lead_ms"
+    },
+    {
+      "name": "at without up_ms",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].at.up_ms"
+    },
+    {
+      "name": "item id is not a MonoId",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "d41",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].id"
+    },
+    {
+      "name": "more missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "more"
+    },
+    {
+      "name": "file.items without re",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "file.items", "id": "d41", "items": [], "more": false},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "dest 'Todo' (upper case)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 384044,
+            "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 12000,
+            "at": {"up_ms": 435000, "wall_ms": 1792440045000},
+            "project": "cpa",
+            "slot": 1,
+            "lead_ms": 200,
+            "dest": "Todo"
+          }
+        ],
+        "more": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].dest"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/debug.rec.schema.json",
+  "title": "debug.rec",
+  "description": "TEST FIRMWARE ONLY (v0.3, docs/11 §5.3). Sets the segment length for the next recordings; start, stop and marks go through debug.key. Reply: ack or error.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["seg_ms"],
+  "properties": {
+    "t": {"const": "debug.rec"},
+    "seg_ms": {"type": "integer", "minimum": 10000, "maximum": 600000}
+  }
+}

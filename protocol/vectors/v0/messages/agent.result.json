@@ -1,0 +1,145 @@
+{
+  "$comment": "Vectors for agent.result; format in protocol/README.md.",
+  "type": "agent.result",
+  "valid": [
+    {
+      "name": "spawned (05 §6.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "re": "d7",
+        "ok": true,
+        "name": "cpa/write-native-tests",
+        "short": "a1b2c3"
+      }
+    },
+    {
+      "name": "reply refused (05 §6.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h8",
+        "re": "d8",
+        "ok": false,
+        "code": "E_NOT_REPLYABLE"
+      }
+    },
+    {
+      "name": "spawn failed",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "agent.result", "id": "h7", "re": "d7", "ok": false, "code": "E_SPAWN"}
+    },
+    {
+      "name": "reply forked",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h8",
+        "re": "d8",
+        "ok": false,
+        "code": "E_REPLY_FORKED"
+      }
+    },
+    {
+      "name": "ok with optional fields null",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "re": "d7",
+        "ok": true,
+        "name": null,
+        "short": null,
+        "code": null
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "ok missing",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "re": "d7",
+        "name": "cpa/write-native-tests",
+        "short": "a1b2c3"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "ok"
+    },
+    {
+      "name": "failure without code",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "agent.result", "id": "h7", "re": "d7", "ok": false},
+      "code": "E_BAD_FIELD",
+      "field": "code"
+    },
+    {
+      "name": "unknown code",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "re": "d7",
+        "ok": false,
+        "name": "cpa/write-native-tests",
+        "short": "a1b2c3",
+        "code": "E_NOPE"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "code"
+    },
+    {
+      "name": "name over 32 bytes",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "re": "d7",
+        "ok": true,
+        "name": "cardputer-as/write-native-tests-x",
+        "short": "a1b2c3"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "name"
+    },
+    {
+      "name": "short with a space",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "re": "d7",
+        "ok": true,
+        "name": "cpa/write-native-tests",
+        "short": "a1 b2"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "short"
+    },
+    {
+      "name": "re missing",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h7",
+        "ok": true,
+        "name": "cpa/write-native-tests",
+        "short": "a1b2c3"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

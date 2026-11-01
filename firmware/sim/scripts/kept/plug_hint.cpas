@@ -1,0 +1,33 @@
+# docs/28 §3.2 (D11, S1a): the plug-in hint. Two memos recorded away from any Mac; plugged
+# into the work Mac, the hint bar says so for 5 s while those two are held back. Tab asks,
+# Enter keeps them from this Mac (2 presses); doing nothing gives them to it (0 presses).
+# Run with --lang en for the English screens.
+boot store=sd usb=on bat=4100
+include home_mac.cpas
+press opt+h
+usb off
+wait 1500
+include memo.cpas
+include memo.cpas
+shot offline  two memos recorded offline: 录2 on the status bar
+usb on
+include work_mac.cpas
+wait 300
+shot hint  plugged into the work Mac: 离线 2 条 → 这台 · Tab 不给 (held 5 s)
+press tab
+shot ask  Tab: the hint asks (not the Tab menu); Enter keeps them from this Mac
+press enter
+wait 300
+shot held  Enter: 已不给这台 Mac：2 条; the work Mac never lists them
+wait 6000
+pull
+shot after  after 6 s and a pull: still 录2 (they wait for the home Mac)
+usb off
+wait 1500
+usb on
+include home_mac.cpas
+wait 6000
+pull
+press opt+m
+press ,
+shot home  the home Mac took them: 设置 → 存储 says 2 kept, the batch now its ·XXXX

@@ -1,0 +1,2 @@
+- [00:00] To-do: send Alice the quote by Friday. ^t000000
+- [00:03] Also ask about the delivery date. ^t000003

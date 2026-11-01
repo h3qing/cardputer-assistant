@@ -1,0 +1,19 @@
+Official MCP JSON schemas, vendored unchanged for the cpa mcp contract tests (docs/15 §8, ADR 0004 rule 3).
+
+schema-2026-07-28.json
+  from      https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2026-07-28/schema.json
+  fetched   2026-10-21
+  sha256    ef70b61f99b6d2e5e3b46863822eab08dff6a45bedc7a08914e0e5b133f40203
+
+schema-2025-11-25.json
+  from      https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2025-11-25/schema.json
+  fetched   2026-10-21
+  sha256    268a5f82ba70fd7e4b6dc4aa1e64f116f74b4d0edcb69dc046829c79dd4e97e7
+
+License: the MCP project is moving from MIT to Apache-2.0. Its LICENSE file (read 2026-10-21) says new code and
+specification contributions are Apache-2.0, documentation is CC-BY-4.0, and older contributions whose authors have
+not relicensed stay MIT. Both licenses allow copying these files into a test suite with this notice.
+
+golden-legacy.jsonl / golden-modern.jsonl are ours: one request per line, with the $def its reply must satisfy.
+To refresh the schemas, download the files above, update the sha256 lines and rerun
+`uv run pytest tests/contract/test_mcp_schema.py`.

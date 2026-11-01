@@ -1,0 +1,26 @@
+{
+  "doc": "pending",
+  "name": "a later cpa: an unknown field and unknown why, src, kind values are kept",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "rows": [
+      {
+        "ref": "3QZK1M7-00045-0000",
+        "why": "later",
+        "dest": "url.grok",
+        "label": "Grok",
+        "kind": "cmd",
+        "fl": "lck",
+        "st": null,
+        "code": null,
+        "project": "acmeshop",
+        "src": "photo",
+        "at": "2026-10-22T09:00:00.000+00:00",
+        "text": "给 Grok：明天把首页改了",
+        "x_new": 1
+      }
+    ],
+    "x_more": true
+  }
+}

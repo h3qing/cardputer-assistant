@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/outbox.item.schema.json",
+  "title": "outbox.item",
+  "description": "Reliable delivery of captured content. kind is note or queue ONLY: execution never travels through the outbox (§6.5).",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [
+    {"$ref": "common.schema.json#/$defs/request"},
+    {
+      "if": {"required": ["kind"], "properties": {"kind": {"const": "note"}}},
+      "then": {
+        "properties": {
+          "body": {
+            "type": "object",
+            "required": ["text"],
+            "properties": {
+              "text": {"$ref": "common.schema.json#/$defs/userText"},
+              "project": {
+                "anyOf": [{"$ref": "common.schema.json#/$defs/projectKey"}, {"type": "null"}]
+              },
+              "dest": {
+                "description": "v0.4.1 (docs/13 §9.3): where the note goes; absent or null = the daily note. v0.4.1 firmware sends only todo.",
+                "anyOf": [{"$ref": "common.schema.json#/$defs/destId"}, {"type": "null"}]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"required": ["kind"], "properties": {"kind": {"const": "queue"}}},
+      "then": {
+        "properties": {
+          "body": {
+            "type": "object",
+            "required": ["text", "project", "intent"],
+            "properties": {
+              "text": {"$ref": "common.schema.json#/$defs/userText"},
+              "project": {"$ref": "common.schema.json#/$defs/projectKey"},
+              "intent": {"$ref": "common.schema.json#/$defs/intent"},
+              "sid": {"anyOf": [{"$ref": "common.schema.json#/$defs/sid"}, {"type": "null"}]},
+              "uncertain": {"type": ["boolean", "null"]}
+            },
+            "allOf": [
+              {
+                "if": {"required": ["intent"], "properties": {"intent": {"const": "feedback"}}},
+                "then": {
+                  "required": ["sid"],
+                  "properties": {"sid": {"$ref": "common.schema.json#/$defs/sid"}}
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "required": ["kind", "at", "body"],
+  "properties": {
+    "t": {"const": "outbox.item"},
+    "id": {"$ref": "common.schema.json#/$defs/monoId"},
+    "kind": {"enum": ["note", "queue"]},
+    "at": {
+      "type": "object",
+      "required": ["up_ms"],
+      "properties": {
+        "up_ms": {"$ref": "common.schema.json#/$defs/uint32"},
+        "wall_ms": {"anyOf": [{"$ref": "common.schema.json#/$defs/epochMs"}, {"type": "null"}]}
+      }
+    },
+    "body": {"type": "object"}
+  }
+}

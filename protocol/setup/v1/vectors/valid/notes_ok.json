@@ -1,0 +1,14 @@
+{
+  "doc": "row",
+  "name": "notes folder",
+  "data": {
+    "v": 1,
+    "id": "notes",
+    "state": "ok",
+    "required": true,
+    "blocked_by": [],
+    "title": "笔记目录 ~/CardputerNotes",
+    "detail": "",
+    "fix": []
+  }
+}

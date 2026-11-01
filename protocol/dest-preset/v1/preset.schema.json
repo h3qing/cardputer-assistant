@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-preset/v1/preset.schema.json",
+  "title": "destination preset v1",
+  "description": "docs/25 §2.3: one app as data. cpad ships some (daemon/src/cpad/dest/presets/v1); yours go in $CPA_HOME/presets/*.json (0600) or cpa dest add --preset-file. Unknown fields are refused, so no field can hold a secret. The schema is the shape; cpad also refuses denied schemes, routes and handlers (presets/v1/deny.json), templates of any other shape (README), and credentials in map values.",
+  "type": "object",
+  "required": ["v", "preset", "name", "label", "kind", "detect", "leaves_mac", "note"],
+  "properties": {
+    "v": {"const": 1},
+    "preset": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,23}$", "description": "the preset's id; yours may not reuse a shipped one"},
+    "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,11}$", "description": "the destination is <kind>.<name>"},
+    "label": {"type": "string", "minLength": 1, "maxLength": 24, "pattern": "^[^\\u0000-\\u001f\\u007f\"\\\\]+$", "description": "at most 24 UTF-8 bytes (cpad counts bytes)"},
+    "kind": {"enum": ["url", "app", "file"]},
+    "detect": {
+      "type": "object",
+      "required": ["bundle"],
+      "additionalProperties": false,
+      "properties": {"bundle": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9.-]{0,154}$", "description": "CFBundleIdentifier of the app; it is pinned with its Team ID when the destination is added"}}
+    },
+    "leaves_mac": {"type": "boolean", "description": "the text may leave this Mac (a url destination always does)"},
+    "key_hint": {"enum": ["b", "c", "f", "j", "k", "o", "u", "x", "y"], "description": "suggested letter, used only when free"},
+    "note": {"type": "string", "minLength": 1, "maxLength": 300, "description": "shown before you allow it; apps never write their own wording"},
+    "template": {"type": "string", "maxLength": 512, "description": "url: <scheme>://<host>/<path>?name=value&...; {text} exactly once as a whole query value; {p} and {project} likewise"},
+    "focus": {"type": "string", "maxLength": 512, "description": "url: same scheme, no {text}; only brings the target forward (overflow, a draft still there)"},
+    "effect": {"enum": ["draft", "act"], "description": "url: absent = unknown, act until this Mac's test answers 'appeared, not sent' (only for shipped presets); act = never a draft"},
+    "max_text_utf16": {"type": "integer", "minimum": 1, "maximum": 16384, "description": "url: header + text in UTF-16 code units (default 1000)"},
+    "max_url": {"type": "integer", "minimum": 16, "maximum": 65536, "description": "url: the encoded link in bytes (default 2048)"},
+    "overflow": {"const": "clip", "description": "url: too long or a draft still there -> clipboard + focus, only while the clip destination is on"},
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pattern": {"type": "string", "description": "url: what a {p} value looks like"},
+        "from_link": {"type": "string", "description": "url: a regular expression with one group taking the value out of a pasted link"}
+      }
+    },
+    "file": {
+      "type": "object",
+      "required": ["path"],
+      "additionalProperties": false,
+      "properties": {"path": {"type": "string", "minLength": 1, "description": "file: relative to the --root you give (.md or .txt)"}}
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"kind": {"const": "url"}}}, "then": {"required": ["template"], "properties": {"file": false}}},
+    {"if": {"properties": {"kind": {"const": "app"}}}, "then": {"properties": {"template": false, "focus": false, "effect": false, "max_text_utf16": false, "max_url": false, "overflow": false, "map": false, "file": false}}},
+    {"if": {"properties": {"kind": {"const": "file"}}}, "then": {"required": ["file"], "properties": {"template": false, "focus": false, "effect": false, "max_text_utf16": false, "max_url": false, "overflow": false, "map": false}}}
+  ],
+  "additionalProperties": false
+}

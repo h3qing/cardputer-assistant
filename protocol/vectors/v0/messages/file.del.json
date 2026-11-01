@@ -1,0 +1,121 @@
+{
+  "$comment": "Vectors for file.del (v0.3, docs/11-m3-design.md §5); format in protocol/README.md.",
+  "type": "file.del",
+  "valid": [
+    {
+      "name": "delete a verified segment (docs/11 §5.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "size": 384044,
+        "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f"
+      }
+    },
+    {
+      "name": "recovered segment: size only",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.del", "id": "h99", "fid": "3QZK1M7-00042-0A1E", "size": 1953836}
+    },
+    {
+      "name": "sha256 null means absent",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "size": 384044,
+        "sha256": null
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "upper-case sha256",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "size": 384044,
+        "sha256": "15FCF5FE0175F8BC4181C75EF77E9CEFA15C87406A9EEE55FC98EB4A21FBBD5F"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sha256"
+    },
+    {
+      "name": "sha256 with 63 digits",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "size": 384044,
+        "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sha256"
+    },
+    {
+      "name": "fid is not a MonoId",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "h99",
+        "size": 384044,
+        "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "fid"
+    },
+    {
+      "name": "size missing",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "size"
+    },
+    {
+      "name": "size above one max segment",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "size": 19200045,
+        "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "size"
+    },
+    {
+      "name": "file.del carrying re",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h99",
+        "fid": "3QZK1M7-00042-0A1C",
+        "size": 384044,
+        "sha256": "15fcf5fe0175f8bc4181c75ef77e9cefa15c87406a9eee55fc98eb4a21fbbd5f",
+        "re": "d98"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

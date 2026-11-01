@@ -1,0 +1,25 @@
+# docs/20 U12 regression (from the review's s02): the board's queue cursor follows the item,
+# not the row. Before the fix a snapshot that removed an earlier item moved the highlight
+# to the next one, and Opt+D (no confirm) marked that one done.
+boot store=sd usb=on bat=4100
+include ../common/hello.cpas
+host time.set {"epoch_ms":1792546860000,"tz_min":480}
+host projects.snapshot {"rev":3,"projects":[{"slot":1,"key":"acmeshop","name":"Acmeshop 宠物","run":1,"need":0,"queued":3,"ok":true}],"other":{"run":0,"n":0}}
+host sessions.snapshot {"rev":5,"total":0,"sessions":[]}
+host queue.snapshot {"rev":2,"items":[{"qid":"q17","slot":1,"text":"给 webhook 加签名校验","intent":"todo"},{"qid":"q18","slot":1,"text":"write e2e test for refunds","intent":"spawn"},{"qid":"q19","slot":1,"text":"ask lawyer about ToS wording","intent":"todo"}]}
+wait 1200
+press opt+1
+press /
+press down
+shot 01-cursor-on-q18  cursor on q18 (e2e test)
+# meanwhile q17 is closed on the Mac (cpa queue done q17)
+host queue.snapshot {"rev":3,"items":[{"qid":"q18","slot":1,"text":"write e2e test for refunds","intent":"spawn"},{"qid":"q19","slot":1,"text":"ask lawyer about ToS wording","intent":"todo"}]}
+shot 02-after-snapshot  the highlight stays on q18 (now row 1)
+press opt+d
+shot 03-opt-d  Opt+D: "已完成：write e2e test for refunds" (q18, not q19)
+reply ack queue.done {}
+host queue.snapshot {"rev":4,"items":[{"qid":"q19","slot":1,"text":"ask lawyer about ToS wording","intent":"todo"}]}
+shot 04-gone  q18 left: nothing selected; q19 is still there
+wait 2600
+press opt+d
+shot 05-nothing  Opt+D with nothing selected: nothing is done, the hint "选中的那条已经不在了：按 ; . 选一条"

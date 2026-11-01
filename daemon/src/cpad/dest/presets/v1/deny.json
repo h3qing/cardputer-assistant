@@ -1,0 +1,8 @@
+{
+  "$comment": "docs/25 §2.3: where a url destination may never point. Data, so that code names no app.",
+  "schemes": ["http", "https", "file", "data", "javascript", "applescript", "shortcuts", "smb", "vnc", "afp", "ftp", "ssh", "telnet"],
+  "scheme_prefixes": ["x-apple"],
+  "routes": ["/mcp/install", "run-shortcut", "advanced-uri", "x-callback-url"],
+  "handlers": ["com.apple.shortcuts", "com.apple.Terminal", "com.googlecode.iterm2", "com.apple.ScriptEditor2"],
+  "secret_prefixes": ["xai-", "crsr_", "sk-", "sk_", "ghp_", "github_pat_", "AKIA", "xox"]
+}

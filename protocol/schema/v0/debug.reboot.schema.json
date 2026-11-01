@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/debug.reboot.schema.json",
+  "title": "debug.reboot",
+  "description": "TEST FIRMWARE ONLY. Device replies ack, then restarts via esp_restart().",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "properties": {"t": {"const": "debug.reboot"}}
+}

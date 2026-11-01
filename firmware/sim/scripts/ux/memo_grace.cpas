@@ -1,0 +1,30 @@
+# gh #51 (docs/20 U26) regression: G0 slips mid-sentence. Before the fix the memo ended the
+# moment G0 read up once (a memo ended and the next began 0.82 s later). Now a let-go G0
+# records on through a 0.6 s grace and the page says so; pressed again inside it, it is
+# the same memo (one Start, one file); only a grace that runs out ends it, saved.
+# The grace counts toward rec_min_ms: a hold let go 0.2 s after ● REC is still too short.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1000
+down g0
+wait 600
+mic 2500 speech
+shot held  按住 G0 说：语音便条，提示栏"G0 松开结束"
+up g0
+mic 200 speech
+shot slipped  松开 0.2 秒：还在录，黄色胶囊"松开了 · 0.6 秒内按回继续"
+down g0
+mic 2000 speech
+shot pressed-again  按回来了：同一条便条接着录，计时没断
+up g0
+wait 400
+shot grace-again  又松开 0.4 秒：还在宽限里
+wait 300
+shot ended  0.6 秒没按回：结束，"录音已保存 · 0:05"
+wait 2600
+shot home  回到主页：录1，只有一条
+# a short hold: 0.7 s in all, the grace and all under 1 s of audio
+hold g0 700
+wait 900
+shot short  按住 0.7 秒就松开：宽限过后"录音太短，已丢弃"
+wait 2600

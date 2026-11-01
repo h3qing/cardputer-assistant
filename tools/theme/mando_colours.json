@@ -1,0 +1,33 @@
+{
+  "box": [
+    82,
+    12,
+    302,
+    404
+  ],
+  "colours": [
+    "#f0e7de",
+    "#e6c4a3",
+    "#f0af70",
+    "#dfa976",
+    "#dd9e62",
+    "#d29059",
+    "#bc8e66",
+    "#b67f52",
+    "#aa714b",
+    "#a06243",
+    "#876045",
+    "#7c5239",
+    "#734731",
+    "#5e3e2b",
+    "#412d20"
+  ],
+  "height": 64,
+  "pillow": "13.0.0",
+  "sources": {
+    "website/mando/hd/hop.webp": "ee4dc0db9c044040e6d1b0fdc105299629a8350135fd7ab5e7654223be783cf5",
+    "website/mando/hd/review.webp": "9924f586f3a4fe031511193942d5a7e7cef8a27eb9e517b94d8ec9828f930031",
+    "website/mando/hd/think.webp": "9148960923a940b0b6fb680737faf73cfd7640aa81fa091dd504208c344b3395",
+    "website/mando/hd/wait.webp": "4cb38c44661c744c37bd5923423310f86f33776a74c3a0b91b4816d5a5c239e9"
+  }
+}

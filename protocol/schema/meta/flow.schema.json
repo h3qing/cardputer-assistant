@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/meta/flow.schema.json",
+  "title": "flow vector file",
+  "description": "Format of vectors/v0/flows/<name>.json: a timeline of wire lines, events and expectations. See protocol/README.md.",
+  "type": "object",
+  "required": ["name", "spec", "description", "initial", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z0-9_]{1,40}$"},
+    "spec": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "initial": {"$ref": "#/$defs/state"},
+    "steps": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/step"}}
+  },
+  "$defs": {
+    "time": {"type": "integer", "minimum": 0},
+    "step": {
+      "type": "object",
+      "required": ["t"],
+      "properties": {"t": {"$ref": "#/$defs/time"}},
+      "anyOf": [{"required": ["from"]}, {"required": ["event"]}, {"required": ["expect"]}],
+      "allOf": [
+        {"if": {"required": ["from"]}, "then": {"$ref": "#/$defs/line"}},
+        {"if": {"required": ["event"]}, "then": {"$ref": "#/$defs/event"}},
+        {"if": {"required": ["expect"]}, "then": {"$ref": "#/$defs/expect"}}
+      ]
+    },
+    "line": {
+      "description": "One wire line sent at t. deliver_t: when it reaches the peer (device TX parking only). lost: never arrives. outcome: receiver verdict when not ok.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "t": {"$ref": "#/$defs/time"},
+        "from": {"enum": ["host", "device"]},
+        "msg": {"type": "object"},
+        "line_b64": {"type": "string", "minLength": 4, "pattern": "^[A-Za-z0-9+/]+={0,2}$"},
+        "deliver_t": {"$ref": "#/$defs/time"},
+        "lost": {"const": true},
+        "outcome": {
+          "enum": ["ok", "noise", "ignored", "E_PARSE", "E_TOO_LARGE", "E_VERSION", "E_UNKNOWN_TYPE", "E_BAD_FIELD"]
+        },
+        "note": {"type": "string"}
+      },
+      "oneOf": [{"required": ["msg"]}, {"required": ["line_b64"]}]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "t": {"$ref": "#/$defs/time"},
+        "event": {"enum": ["detach", "daemon_restart", "device_reboot", "user_spawn"]},
+        "args": {"type": "object"},
+        "note": {"type": "string"}
+      }
+    },
+    "expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "t": {"$ref": "#/$defs/time"},
+        "expect": {"allOf": [{"$ref": "#/$defs/state"}], "minProperties": 1},
+        "note": {"type": "string"}
+      }
+    },
+    "state": {
+      "description": "host.credit_used, device.outbox_inflight and device.agent_inflight are recomputed by check_vectors; the rest are declarative.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "device.link": {"enum": ["Detached", "Attached", "Ready"]},
+        "device.outbox_pending": {"type": "integer", "minimum": 0},
+        "device.outbox_inflight": {"type": "integer", "minimum": 0, "maximum": 4},
+        "device.agent_inflight": {"enum": [0, 1]},
+        "host.link": {"enum": ["offline", "handshaking", "ready"]},
+        "host.credit_used": {"type": "integer", "minimum": 0},
+        "host.items_stored": {"type": "integer", "minimum": 0},
+        "host.queue_added": {"type": "integer", "minimum": 0},
+        "host.spawn_calls": {"type": "integer", "minimum": 0},
+        "host.reboot_detected": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/dropped.schema.json",
+  "title": "dropped",
+  "description": "`cpa dest drop REF --json`: dest.dropped was written for a held or suggested row; its daily-note line stays.",
+  "type": "object",
+  "required": [
+    "ok",
+    "v",
+    "ref",
+    "dest"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "v": {
+      "$ref": "common.schema.json#/$defs/version"
+    },
+    "ref": {
+      "$ref": "common.schema.json#/$defs/ref"
+    },
+    "dest": {
+      "$ref": "common.schema.json#/$defs/destId"
+    }
+  }
+}

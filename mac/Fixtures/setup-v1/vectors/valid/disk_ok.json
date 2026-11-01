@@ -1,0 +1,14 @@
+{
+  "doc": "row",
+  "name": "FileVault on",
+  "data": {
+    "v": 1,
+    "id": "disk",
+    "state": "ok",
+    "required": false,
+    "blocked_by": [],
+    "title": "FileVault 已打开",
+    "detail": "",
+    "fix": []
+  }
+}

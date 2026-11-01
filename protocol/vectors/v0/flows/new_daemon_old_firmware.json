@@ -1,0 +1,72 @@
+{
+  "name": "new_daemon_old_firmware",
+  "spec": "docs/13-assistant-v2-plan.md §12.2",
+  "description": "A v0.4.1 cpad talks to v0.4.0 firmware: the extra hello fields are ignored and the link works as before. cpad starts nothing new on its own; rec.* only ever comes from the device.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7f3a9c1e5b2d4a60",
+        "host_label": "Studio Mac"
+      },
+      "note": "a v0.4.1 cpad: caps.recs, caps.todo, host_id, host_label"
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.4.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      },
+      "note": "the v0.4.0 firmware ignores the fields it does not know"
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {
+      "t": 120,
+      "from": "host",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000, "tz_min": -420}
+    },
+    {"t": 135, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d2", "re": "h2"}},
+    {"t": 5100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h3"}},
+    {
+      "t": 5115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d3",
+        "re": "h3",
+        "up_ms": 58226,
+        "pending": 0,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "files": {"n": 0, "rev": 9, "live": false}
+      },
+      "note": "the old firmware never sends rec.* and its notes carry no dest; cpad sends nothing new"
+    },
+    {"t": 5115, "expect": {"host.credit_used": 0, "host.reboot_detected": false}}
+  ]
+}

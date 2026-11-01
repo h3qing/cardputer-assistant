@@ -1,0 +1,5 @@
+# Nine projects, every slot taken, each key at the protocol's longest (12 characters) and
+# the names in Chinese (gh #53: the recording pages' legend shows the keys). Sent after
+# demo_state.cpas: a newer rev replaces its two projects.
+host projects.snapshot {"rev":9,"projects":[{"slot":1,"key":"acmeshop-app","name":"Acmeshop 宠物","run":1,"need":1,"queued":2,"ok":true},{"slot":2,"key":"cardputer-ui","name":"Cardputer 助手","run":1,"need":0,"queued":1,"ok":true},{"slot":3,"key":"garden-crm-x","name":"Garden 花园CRM","run":0,"need":0,"queued":0,"ok":true},{"slot":4,"key":"reading-list","name":"读书清单笔记库","run":0,"need":0,"queued":0,"ok":true},{"slot":5,"key":"run-2026-10k","name":"2026 跑步","run":0,"need":0,"queued":0,"ok":true},{"slot":6,"key":"albums-photo","name":"家庭相册整理清单","run":0,"need":0,"queued":0,"ok":true},{"slot":7,"key":"lesson-piano","name":"Bingo 训练","run":0,"need":0,"queued":0,"ok":true},{"slot":8,"key":"demo-video-1","name":"ChatCut 宣传片","run":0,"need":0,"queued":0,"ok":true},{"slot":9,"key":"thesis-ch3-x","name":"论文第三章","run":0,"need":0,"queued":0,"ok":true}],"other":{"run":0,"n":0}}
+wait 200

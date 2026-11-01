@@ -1,0 +1,17 @@
+{
+  "doc": "tested",
+  "name": "not handed, without a code",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "code"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "dest": "url.grok",
+    "marker": "4821",
+    "handed": false,
+    "via": null,
+    "code": null
+  }
+}

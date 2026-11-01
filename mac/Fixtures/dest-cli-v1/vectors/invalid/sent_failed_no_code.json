@@ -1,0 +1,21 @@
+{
+  "doc": "sent",
+  "name": "failed without a code",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "code"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "ref": "3QZK1M7-00045-0000",
+    "dest": "url.grok",
+    "label": "Grok",
+    "kind": "url",
+    "outcome": "failed",
+    "via": null,
+    "why": null,
+    "code": null,
+    "leaves_mac": true
+  }
+}

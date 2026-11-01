@@ -1,0 +1,52 @@
+# docs/20 D3 regression (U1, U23; from the review's refute_t02/r2_habit, refute_t02b/sweep_300
+# and s07_back_key). Before the fix an Enter inside the boxes' 400 ms guard vanished without a
+# word, the start box never went away and ignored Opt+L, so a pocket Enter minutes later
+# started a meeting; ` on the meeting page opened the end box.
+boot store=sd usb=off bat=4100
+include ../common/demo_state.cpas
+wait 1500
+# the habit, brisk: Opt+R, Enter ~170 ms later, Opt+L
+press opt+r
+wait 170
+press enter
+shot fast-enter  Enter inside 400 ms: "太快了，再按一次 Enter", the box stays
+press opt+l
+shot brisk-optl  Opt+L on the start box: cancelled and locked ("已锁屏" 2 s)
+wait 2500
+press enter
+mic 3000 1200
+shot pocket-enter  a pocket Enter later: locked, nothing records
+press opt+l
+press enter
+# a start box left alone goes away after 15 s; a letter cancels it at once
+press opt+r
+wait 15500
+shot start-alone  15 s without a key: no box, nothing recorded
+press opt+r
+wait 200
+type e
+shot start-letter  a letter on the start box cancels it
+# the meeting, then the end box: too fast, then left alone for 10 s
+press opt+r
+wait 450
+press enter
+mic 4000 1200
+press `
+shot grave-hint  ` on the meeting page: "开会中：Opt+R 结束", still recording
+press opt+r
+wait 300
+press enter
+shot end-fast  Enter 300 ms after Opt+R: says so, still the end box
+mic 10500 1200
+shot end-alone  10 s without a key: back to the meeting, recording on
+press opt+r
+press opt+l
+mic 2000 1200
+shot end-optl  Opt+L on the end box: still recording, locked (● line)
+press opt+l
+press enter
+press opt+r
+wait 450
+press enter
+wait 1500
+shot ended  Opt+R, Enter after 400 ms: the meeting is over

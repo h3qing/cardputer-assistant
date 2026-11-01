@@ -1,0 +1,19 @@
+{
+  "v": 1,
+  "session": "3QZK1M7-00042-0034",
+  "attempt": 1,
+  "lead_ms": 200,
+  "engine": {
+    "stt": "fake-stt"
+  },
+  "sentences": [
+    {
+      "t_ms": 0,
+      "text": "把 Mando 的图标‮换成新的"
+    },
+    {
+      "t_ms": 61000,
+      "text": "然后再看一下菜单栏。"
+    }
+  ]
+}

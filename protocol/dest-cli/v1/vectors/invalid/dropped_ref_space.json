@@ -1,0 +1,14 @@
+{
+  "doc": "dropped",
+  "name": "a ref with a space",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "ref"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "ref": "a b",
+    "dest": "clip"
+  }
+}

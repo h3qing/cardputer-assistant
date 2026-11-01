@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "running": true,
+  "version": "0.1.0",
+  "link": "ready",
+  "paused_s": 0.0,
+  "device": {
+    "serial": "02:00:5e:10:00:01",
+    "dev": "02005e100001",
+    "fw": "cpa-fw/0.4.0",
+    "boot": "3QZK1M7-000B1",
+    "pending": 0,
+    "store": "sd",
+    "launcher": false
+  },
+  "agent": {
+    "status": "ok",
+    "version": "2.1.306",
+    "spawn": true,
+    "reply": false,
+    "login": true
+  },
+  "projects": [
+    {
+      "key": "acmeshop",
+      "slot": 1,
+      "ok": true
+    },
+    {
+      "key": "cardputer",
+      "slot": 2,
+      "ok": true
+    }
+  ],
+  "projects_error": null,
+  "items_stored": 3,
+  "queue_open": 2,
+  "reboots": 0,
+  "last_release": null,
+  "backoff_s": 0.0,
+  "recordings": {
+    "on_device": 0,
+    "pulling": 0,
+    "waiting": 19,
+    "processing": 0,
+    "blocked": 0,
+    "failed": 2,
+    "last_result_at": null
+  },
+  "hooks": {
+    "sessions": 0,
+    "last_ago_s": null
+  },
+  "warnings": []
+}

@@ -1,0 +1,191 @@
+{
+  "name": "handshake",
+  "spec": "05 §6.4",
+  "description": "Host opens the port safely, sends hello, then time.set and the three snapshots; the device uploads its outbox.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking", "device.outbox_pending": 2},
+  "steps": [
+    {
+      "t": 0,
+      "from": "device",
+      "line_b64": "RVNQLVJPTTplc3AzMnMzLTIwMjEwMzI3DQo=",
+      "outcome": "noise",
+      "note": "boot log already in the buffer: dropped and counted, never answered"
+    },
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "sent right after SafeOpen; the device never initiates the handshake"
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 2,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready", "host.credit_used": 0}},
+    {
+      "t": 120,
+      "from": "host",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000, "tz_min": -420}
+    },
+    {
+      "t": 120,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      }
+    },
+    {
+      "t": 120,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      }
+    },
+    {
+      "t": 120,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo"}
+        ]
+      }
+    },
+    {"t": 120, "expect": {"host.credit_used": 758}, "note": "all four fit in the 4096 B window"},
+    {"t": 135, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d2", "re": "h2"}},
+    {"t": 136, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d3", "re": "h3"}},
+    {"t": 137, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d4", "re": "h4"}},
+    {"t": 138, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d5", "re": "h5"}},
+    {
+      "t": 140,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      }
+    },
+    {
+      "t": 140,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {
+          "text": "write native tests for chord detector",
+          "project": "cpa",
+          "intent": "spawn"
+        }
+      }
+    },
+    {"t": 140, "expect": {"device.outbox_inflight": 2, "host.credit_used": 0}},
+    {
+      "t": 160,
+      "from": "host",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h6", "re": "3QZK1M7-0000C-0003", "status": "stored"}
+    },
+    {
+      "t": 161,
+      "from": "host",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h7", "re": "3QZK1M7-0000C-0004", "status": "stored"}
+    },
+    {
+      "t": 161,
+      "expect": {
+        "device.outbox_inflight": 0,
+        "device.outbox_pending": 0,
+        "host.items_stored": 2,
+        "host.queue_added": 1
+      }
+    },
+    {"t": 5100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h8"}},
+    {
+      "t": 5115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d6",
+        "re": "h8",
+        "up_ms": 58226,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9}
+      }
+    },
+    {"t": 5115, "expect": {"host.credit_used": 0, "host.reboot_detected": false}}
+  ]
+}

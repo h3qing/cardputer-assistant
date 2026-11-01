@@ -1,0 +1,5 @@
+{"problem": null, "dests": [
+ {"slot": 3, "key": "c", "id": "clip", "kind": "clip", "label": "Clipboard", "state": "on", "leaves_mac": false, "fl": "l", "profiles": [], "file": null},
+ {"slot": 4, "key": "x", "id": "url.grok", "kind": "url", "label": "Grok", "state": "on", "leaves_mac": true, "fl": "lck", "profiles": [], "file": null,
+  "handler": {"bundle": "invalid.example.bot", "team": "TEAMID0000"}, "effect": "draft", "verified": null, "preset": "grok-bot", "newer_preset": false, "takes_map": true}
+]}

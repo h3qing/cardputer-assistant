@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/queue.snapshot.schema.json",
+  "title": "queue.snapshot",
+  "description": "Queue summaries (text is a <=80 B summary; the daemon keeps the full text).",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["rev", "items"],
+  "properties": {
+    "t": {"const": "queue.snapshot"},
+    "rev": {"$ref": "common.schema.json#/$defs/uint32"},
+    "items": {
+      "type": "array",
+      "maxItems": 12,
+      "x-uniqueBy": "qid",
+      "x-maxPerKey": {"key": "slot", "max": 4},
+      "items": {
+        "type": "object",
+        "required": ["qid", "slot", "text", "intent"],
+        "properties": {
+          "qid": {"$ref": "common.schema.json#/$defs/qid"},
+          "slot": {"$ref": "common.schema.json#/$defs/slot"},
+          "text": {"$ref": "common.schema.json#/$defs/queueText"},
+          "intent": {"$ref": "common.schema.json#/$defs/intent"},
+          "sid": {"anyOf": [{"$ref": "common.schema.json#/$defs/sid"}, {"type": "null"}]},
+          "uncertain": {
+            "description": "v0.4.1 (docs/20 U25): true when the item was saved after an agent.spawn whose result never came back, so the session may already run. Absent, null or false: a plain item.",
+            "type": ["boolean", "null"]
+          }
+        }
+      }
+    }
+  }
+}

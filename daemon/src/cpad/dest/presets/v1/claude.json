@@ -1,0 +1,15 @@
+{
+  "v": 1,
+  "preset": "claude",
+  "name": "claude",
+  "label": "Claude",
+  "kind": "url",
+  "detect": {"bundle": "com.anthropic.claudefordesktop"},
+  "template": "claude://claude.ai/new?q={text}",
+  "max_text_utf16": 4000,
+  "max_url": 16384,
+  "overflow": "clip",
+  "leaves_mac": true,
+  "key_hint": "k",
+  "note": "Opens a new Claude chat with the text. Whether Claude only fills a draft is checked by the test send on this Mac; until then every capture is confirmed on the device."
+}

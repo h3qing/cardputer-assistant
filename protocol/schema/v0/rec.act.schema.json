@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/rec.act.schema.json",
+  "title": "rec.act",
+  "description": "v0.4.1 (docs/13 §8.2, §8.4, §12.2): star, unstar, tag (assign a project; project null = none) or hide one session. cpad only appends events: no file is written, moved or deleted, manifest.json is never rewritten. project is required with tag and absent or null otherwise. Reply: ack, or error (E_UNKNOWN_ITEM, E_BAD_FIELD, E_INTERNAL; E_UNKNOWN_TYPE from an older cpad).",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [
+    {"$ref": "common.schema.json#/$defs/request"},
+    {
+      "if": {"required": ["op"], "properties": {"op": {"const": "tag"}}},
+      "then": {
+        "required": ["project"],
+        "properties": {"project": {"anyOf": [{"$ref": "common.schema.json#/$defs/projectKey"}, {"type": "null"}]}}
+      },
+      "else": {"properties": {"project": {"type": "null"}}}
+    }
+  ],
+  "required": ["rec", "op"],
+  "properties": {
+    "t": {"const": "rec.act"},
+    "rec": {"$ref": "common.schema.json#/$defs/monoId"},
+    "op": {"$ref": "common.schema.json#/$defs/recOp"}
+  }
+}

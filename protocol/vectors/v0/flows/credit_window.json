@@ -1,0 +1,447 @@
+{
+  "name": "credit_window",
+  "spec": "05 §6.3 rules 3 and 6",
+  "description": "Host-initiated bytes awaiting a reply never exceed 4096. projects (998 B) + sessions (1531 B) fit; queue (1607 B) waits for the first ack. The sessions line is lost, so its credit is reclaimed after 5 s and the pong revs show the device is behind: the host re-pushes that snapshot.",
+  "initial": {"device.link": "Ready", "host.link": "ready"},
+  "steps": [
+    {
+      "t": 0,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h30",
+        "rev": 43,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "project-1",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 2,
+            "key": "project-2",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 3,
+            "key": "project-3",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 4,
+            "key": "project-4",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 5,
+            "key": "project-5",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 6,
+            "key": "project-6",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 7,
+            "key": "project-7",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 8,
+            "key": "project-8",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 9,
+            "key": "project-9",
+            "name": "八个汉字项目名称",
+            "run": 1,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          }
+        ],
+        "other": {"run": 0, "n": 1}
+      }
+    },
+    {
+      "t": 0,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h31",
+        "rev": 18,
+        "total": 12,
+        "sessions": [
+          {
+            "sid": "a0000000",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 0,
+            "short": "short00000000000"
+          },
+          {
+            "sid": "a0000001",
+            "slot": 2,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 30,
+            "short": "short00000000001"
+          },
+          {
+            "sid": "a0000002",
+            "slot": 3,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 60,
+            "short": "short00000000002"
+          },
+          {
+            "sid": "a0000003",
+            "slot": 4,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 90,
+            "short": "short00000000003"
+          },
+          {
+            "sid": "a0000004",
+            "slot": 5,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 120,
+            "short": "short00000000004"
+          },
+          {
+            "sid": "a0000005",
+            "slot": 6,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 150,
+            "short": "short00000000005"
+          },
+          {
+            "sid": "a0000006",
+            "slot": 7,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 180,
+            "short": "short00000000006"
+          },
+          {
+            "sid": "a0000007",
+            "slot": 8,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 210,
+            "short": "short00000000007"
+          },
+          {
+            "sid": "a0000008",
+            "slot": 9,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 240,
+            "short": "short00000000008"
+          },
+          {
+            "sid": "a0000009",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 270,
+            "short": "short00000000009"
+          }
+        ]
+      },
+      "lost": true,
+      "note": "simulated loss; the window must still recover"
+    },
+    {
+      "t": 0,
+      "expect": {"host.credit_used": 2529},
+      "note": "queue.snapshot would make 4136 > 4096: the host holds it"
+    },
+    {"t": 14, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d40", "re": "h30"}},
+    {"t": 14, "expect": {"host.credit_used": 1531}},
+    {
+      "t": 15,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h32",
+        "rev": 10,
+        "items": [
+          {
+            "qid": "q100",
+            "slot": 1,
+            "text": "queued item 00 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q101",
+            "slot": 1,
+            "text": "queued item 01 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q102",
+            "slot": 1,
+            "text": "queued item 02 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q103",
+            "slot": 1,
+            "text": "queued item 03 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q104",
+            "slot": 2,
+            "text": "queued item 04 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q105",
+            "slot": 2,
+            "text": "queued item 05 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q106",
+            "slot": 2,
+            "text": "queued item 06 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q107",
+            "slot": 2,
+            "text": "queued item 07 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q108",
+            "slot": 3,
+            "text": "queued item 08 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q109",
+            "slot": 3,
+            "text": "queued item 09 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q110",
+            "slot": 3,
+            "text": "queued item 10 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          },
+          {
+            "qid": "q111",
+            "slot": 3,
+            "text": "queued item 11 tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+            "intent": "todo"
+          }
+        ]
+      }
+    },
+    {"t": 15, "expect": {"host.credit_used": 3138}},
+    {"t": 29, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d41", "re": "h32"}},
+    {"t": 4999, "expect": {"host.credit_used": 1531}},
+    {
+      "t": 5000,
+      "expect": {"host.credit_used": 0},
+      "note": "no reply to h31 within 5 s: its credit is reclaimed"
+    },
+    {"t": 5000, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h33"}},
+    {
+      "t": 5012,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d42",
+        "re": "h33",
+        "up_ms": 300012,
+        "pending": 0,
+        "revs": {"projects": 43, "sessions": 17, "queue": 10}
+      },
+      "note": "device still holds sessions rev 17"
+    },
+    {
+      "t": 5020,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h34",
+        "rev": 18,
+        "total": 12,
+        "sessions": [
+          {
+            "sid": "a0000000",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 0,
+            "short": "short00000000000"
+          },
+          {
+            "sid": "a0000001",
+            "slot": 2,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 30,
+            "short": "short00000000001"
+          },
+          {
+            "sid": "a0000002",
+            "slot": 3,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 60,
+            "short": "short00000000002"
+          },
+          {
+            "sid": "a0000003",
+            "slot": 4,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 90,
+            "short": "short00000000003"
+          },
+          {
+            "sid": "a0000004",
+            "slot": 5,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 120,
+            "short": "short00000000004"
+          },
+          {
+            "sid": "a0000005",
+            "slot": 6,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 150,
+            "short": "short00000000005"
+          },
+          {
+            "sid": "a0000006",
+            "slot": 7,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 180,
+            "short": "short00000000006"
+          },
+          {
+            "sid": "a0000007",
+            "slot": 8,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 210,
+            "short": "short00000000007"
+          },
+          {
+            "sid": "a0000008",
+            "slot": 9,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 240,
+            "short": "short00000000008"
+          },
+          {
+            "sid": "a0000009",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 270,
+            "short": "short00000000009"
+          }
+        ]
+      },
+      "note": "rev reconciliation: push the snapshot the device lacks"
+    },
+    {"t": 5035, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d43", "re": "h34"}},
+    {"t": 5035, "expect": {"host.credit_used": 0}}
+  ]
+}

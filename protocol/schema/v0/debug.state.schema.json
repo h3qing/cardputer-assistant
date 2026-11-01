@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/debug.state.schema.json",
+  "title": "debug.state",
+  "description": "TEST FIRMWARE ONLY. Host request (no fields) or device reply with an AppState summary; *_ms are device up_ms timestamps.",
+  "x-dir": ["h2d", "d2h"],
+  "type": "object",
+  "properties": {"t": {"const": "debug.state"}},
+  "allOf": [
+    {
+      "if": {"required": ["re"]},
+      "then": {"$ref": "#/$defs/summary"},
+      "else": {"$ref": "common.schema.json#/$defs/request"}
+    }
+  ],
+  "$defs": {
+    "summary": {
+      "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+      "required": ["up_ms", "link", "mod", "overlay", "outbox", "revs", "need", "projects"],
+      "properties": {
+        "up_ms": {"$ref": "common.schema.json#/$defs/uint32"},
+        "link": {"$ref": "common.schema.json#/$defs/linkState"},
+        "mod": {"$ref": "common.schema.json#/$defs/moduleId"},
+        "overlay": {"enum": ["none", "compose", "confirm"]},
+        "overlay_ms": {"anyOf": [{"$ref": "common.schema.json#/$defs/uint32"}, {"type": "null"}]},
+        "key_ms": {"anyOf": [{"$ref": "common.schema.json#/$defs/uint32"}, {"type": "null"}]},
+        "outbox": {
+          "type": "object",
+          "required": ["pending", "inflight", "bad"],
+          "properties": {
+            "pending": {"$ref": "common.schema.json#/$defs/count"},
+            "inflight": {"$ref": "common.schema.json#/$defs/count"},
+            "bad": {"$ref": "common.schema.json#/$defs/count"}
+          }
+        },
+        "revs": {"$ref": "common.schema.json#/$defs/revs"},
+        "need": {"$ref": "common.schema.json#/$defs/count"},
+        "rec": {
+          "description": "v0.3: recording summary for HIL assertions. mode and seg are null while idle. The optional health counters (G-A2, G-A4, G-A6) cover the current recording, or the last one while idle, and restart at the next recording; absent or null means this build does not measure them, or (protocol README item 21) that nothing has recorded since boot.",
+          "type": ["object", "null"],
+          "required": ["live", "mode", "seg", "files_n", "files_rev"],
+          "properties": {
+            "live": {"type": "boolean"},
+            "mode": {"anyOf": [{"$ref": "common.schema.json#/$defs/recMode"}, {"type": "null"}]},
+            "seg": {"anyOf": [{"$ref": "common.schema.json#/$defs/segIndex"}, {"type": "null"}]},
+            "files_n": {"$ref": "common.schema.json#/$defs/filesN"},
+            "files_rev": {"$ref": "common.schema.json#/$defs/uint32"},
+            "ring_high": {
+              "description": "Most full microphone ring blocks waiting for the writer at once (high-water mark).",
+              "anyOf": [{"$ref": "common.schema.json#/$defs/count"}, {"type": "null"}]
+            },
+            "mic_missing": {
+              "description": "Times the capture callback found no free ring block to re-arm (each one risks a dropped block; G-A2 expects 0).",
+              "anyOf": [{"$ref": "common.schema.json#/$defs/uint32"}, {"type": "null"}]
+            },
+            "rot_ms_max": {
+              "description": "Slowest segment change in ms (header back-fill, .M commit and next segment open).",
+              "anyOf": [{"$ref": "common.schema.json#/$defs/uint32"}, {"type": "null"}]
+            },
+            "heap_free": {
+              "description": "Free heap in bytes, the lowest seen during the recording.",
+              "anyOf": [{"$ref": "common.schema.json#/$defs/uint32"}, {"type": "null"}]
+            },
+            "heap_block": {
+              "description": "Largest free heap block in bytes, the lowest seen during the recording.",
+              "anyOf": [{"$ref": "common.schema.json#/$defs/uint32"}, {"type": "null"}]
+            }
+          }
+        },
+        "projects": {
+          "type": "array",
+          "maxItems": 9,
+          "x-uniqueBy": "slot",
+          "items": {
+            "type": "object",
+            "required": ["slot", "run", "need", "queued"],
+            "properties": {
+              "slot": {"$ref": "common.schema.json#/$defs/slot"},
+              "run": {"$ref": "common.schema.json#/$defs/count"},
+              "need": {"$ref": "common.schema.json#/$defs/count"},
+              "queued": {"$ref": "common.schema.json#/$defs/count"}
+            }
+          }
+        },
+        "ui": {
+          "description": "v0.4.0 (docs/13 §12.1): shell UI flags for HIL. menu: the Tab menu is open (overlay still reports the layer under it); locked: the device is locked (Opt+L). Absent or null: a build before v0.4.0. overlay gains no values, because an old cpad rejects any value beyond none / compose / confirm.",
+          "type": ["object", "null"],
+          "required": ["menu", "locked"],
+          "properties": {
+            "menu": {"type": "boolean"},
+            "locked": {"type": "boolean"},
+            "lang": {
+              "description": "v0.4.3 (protocol README item 25, docs/21 §7): the UI language shown now. Absent: a build before it.",
+              "enum": ["zh", "en"]
+            }
+          }
+        },
+        "diag": {
+          "description": "TEST FIRMWARE ONLY (protocol README item 21, gh #21): the device's health counters for HIL and soak runs. Absent or null: a build without them. Platforms that do not time the loop (the host simulator, device test programs) report the loop counters as 0.",
+          "type": ["object", "null"],
+          "required": ["heap_free", "heap_min", "heap_block", "stack_left", "audio_stack_left", "loop_n", "loop_max_us", "loop_win_max_us", "gap_max_us", "gap_win_max_us", "loop_over_20", "loop_over_50", "loop_over_100", "loop_over_500", "ghost_n", "kb_reinit_n"],
+          "properties": {
+            "heap_free": {"$ref": "common.schema.json#/$defs/uint32", "description": "Free heap in bytes, sampled once a second (the system page's number)."},
+            "heap_min": {"$ref": "common.schema.json#/$defs/uint32", "description": "Lowest free heap in bytes since boot."},
+            "heap_block": {"$ref": "common.schema.json#/$defs/uint32", "description": "Largest free heap block in bytes, sampled once a second."},
+            "stack_left": {"$ref": "common.schema.json#/$defs/uint32", "description": "Loop task stack in bytes never used since boot."},
+            "audio_stack_left": {"$ref": "common.schema.json#/$defs/uint32", "description": "Audio task stack in bytes never used since boot; 0 without the task (no SD card)."},
+            "loop_n": {"$ref": "common.schema.json#/$defs/uint32", "description": "loop() passes since boot (wraps at 2^32)."},
+            "loop_max_us": {"$ref": "common.schema.json#/$defs/uint32", "description": "Longest loop() pass since boot, microseconds."},
+            "loop_win_max_us": {"$ref": "common.schema.json#/$defs/uint32", "description": "Longest loop() pass in the last 15 to 30 s (two 15 s buckets), microseconds."},
+            "gap_max_us": {"$ref": "common.schema.json#/$defs/uint32", "description": "Longest time from one loop() pass start to the next since boot, microseconds (the pass plus everything that ran between passes)."},
+            "gap_win_max_us": {"$ref": "common.schema.json#/$defs/uint32", "description": "Longest pass-start gap in the last 15 to 30 s, microseconds."},
+            "loop_over_20": {"$ref": "common.schema.json#/$defs/uint32", "description": "loop() passes longer than 20 ms since boot."},
+            "loop_over_50": {"$ref": "common.schema.json#/$defs/uint32", "description": "loop() passes longer than 50 ms since boot."},
+            "loop_over_100": {"$ref": "common.schema.json#/$defs/uint32", "description": "loop() passes longer than 100 ms since boot."},
+            "loop_over_500": {"$ref": "common.schema.json#/$defs/uint32", "description": "loop() passes longer than 500 ms since boot."},
+            "ghost_n": {"$ref": "common.schema.json#/$defs/count", "description": "Keyboard ghost frames rejected since boot (the system page's 幽灵)."},
+            "kb_reinit_n": {"$ref": "common.schema.json#/$defs/count", "description": "Keyboard re-inits by the watchdog since boot (the system page's 重置)."}
+          }
+        }
+      }
+    }
+  }
+}

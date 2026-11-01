@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/pending.schema.json",
+  "title": "pending",
+  "description": "`cpa dest pending [--expired] --json`: the 等你送 list (docs/25 §5.4). Rows: held (st hold: waits for a confirmation or the device; st failed: a delivery failed, code says why), then usual (a memo its project's usual destination preselects, D21; st null), then, with --expired, expired (st null). dest is the preselected destination; one removed since shows its id as label, and kind and fl null when unknown. Sending one: `cpa dest send REF [DEST]`; dropping one: `cpa dest drop REF`.",
+  "type": "object",
+  "required": [
+    "ok",
+    "v",
+    "rows"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "v": {
+      "$ref": "common.schema.json#/$defs/version"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref",
+          "why",
+          "dest",
+          "label",
+          "kind",
+          "fl",
+          "st",
+          "code",
+          "project",
+          "src",
+          "at",
+          "text"
+        ],
+        "properties": {
+          "ref": {
+            "$ref": "common.schema.json#/$defs/ref"
+          },
+          "why": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,15}$",
+            "x-knownValues": [
+              "held",
+              "usual",
+              "expired"
+            ]
+          },
+          "dest": {
+            "$ref": "common.schema.json#/$defs/destId"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "$ref": "common.schema.json#/$defs/label"
+              },
+              {
+                "$ref": "common.schema.json#/$defs/destId"
+              }
+            ]
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "$ref": "common.schema.json#/$defs/kind"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fl": {
+            "anyOf": [
+              {
+                "$ref": "common.schema.json#/$defs/fl"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "st": {
+            "anyOf": [
+              {
+                "enum": [
+                  "hold",
+                  "failed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "code": {
+            "anyOf": [
+              {
+                "$ref": "common.schema.json#/$defs/code"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "project": {
+            "anyOf": [
+              {
+                "$ref": "common.schema.json#/$defs/projectKey"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "src": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,15}$",
+            "x-knownValues": [
+              "voice",
+              "typed"
+            ]
+          },
+          "at": {
+            "$ref": "common.schema.json#/$defs/time"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "$ref": "common.schema.json#/$defs/excerpt"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "why"
+              ],
+              "properties": {
+                "why": {
+                  "const": "held"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "st": {
+                  "enum": [
+                    "hold",
+                    "failed"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "st"
+              ],
+              "properties": {
+                "st": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "code": {
+                  "$ref": "common.schema.json#/$defs/code"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

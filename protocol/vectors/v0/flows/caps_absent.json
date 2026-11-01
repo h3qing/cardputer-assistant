@@ -1,0 +1,87 @@
+{
+  "name": "caps_absent",
+  "spec": "docs/13-assistant-v2-plan.md §8.2, §9.3, §12.2",
+  "description": "A v0.4.1 device talks to a v0.4.0 cpad: the host hello has no caps.recs and no caps.todo, so the device never sends rec.* (it tells the user cpad needs an upgrade instead); the link otherwise works as before.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      }
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.4.1",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {
+      "t": 120,
+      "from": "host",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000, "tz_min": -420}
+    },
+    {"t": 135, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d2", "re": "h2"}},
+    {
+      "t": 3000,
+      "expect": {"device.link": "Ready"},
+      "note": "the user opens the recordings app (Opt+V): no caps.recs, so the device sends no rec.list and shows that cpad needs an upgrade; a todo saved now warns that it will be stored as a plain note (no caps.todo)"
+    },
+    {"t": 5100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h3"}},
+    {
+      "t": 5115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d3",
+        "re": "h3",
+        "up_ms": 58226,
+        "pending": 0,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 10100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h4"}},
+    {
+      "t": 10115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d4",
+        "re": "h4",
+        "up_ms": 63226,
+        "pending": 0,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 10115, "expect": {"host.credit_used": 0, "host.reboot_detected": false}}
+  ]
+}

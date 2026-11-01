@@ -1,0 +1,21 @@
+{
+  "doc": "sent",
+  "name": "a label with a bidirectional control",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "label"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "ref": "3QZK1M7-00045-0000",
+    "dest": "url.grok",
+    "label": "Gr‮ok",
+    "kind": "url",
+    "outcome": "handed",
+    "via": "url",
+    "why": null,
+    "code": null,
+    "leaves_mac": true
+  }
+}

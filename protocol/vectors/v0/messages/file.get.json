@@ -1,0 +1,87 @@
+{
+  "$comment": "Vectors for file.get (v0.3, docs/11-m3-design.md §5); format in protocol/README.md.",
+  "type": "file.get",
+  "valid": [
+    {
+      "name": "first chunk (docs/11 §5.6)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "off": 0, "len": 1380}
+    },
+    {
+      "name": "resume after a restart: .part size minus 64 KB",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "off": 704, "len": 1380}
+    },
+    {
+      "name": "short read near the end",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "off": 384000, "len": 44}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "len above file_get_b64_max",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "off": 0, "len": 1381},
+      "code": "E_BAD_FIELD",
+      "field": "len"
+    },
+    {
+      "name": "len 0",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "off": 0, "len": 0},
+      "code": "E_BAD_FIELD",
+      "field": "len"
+    },
+    {
+      "name": "fid is not a MonoId",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "h41", "off": 0, "len": 1380},
+      "code": "E_BAD_FIELD",
+      "field": "fid"
+    },
+    {
+      "name": "negative off",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "off": -1, "len": 1380},
+      "code": "E_BAD_FIELD",
+      "field": "off"
+    },
+    {
+      "name": "off above uint32",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.get",
+        "id": "h42",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 4294967296,
+        "len": 1380
+      },
+      "code": "E_BAD_FIELD",
+      "field": "off"
+    },
+    {
+      "name": "off missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.get", "id": "h42", "fid": "3QZK1M7-00042-0A1C", "len": 1380},
+      "code": "E_BAD_FIELD",
+      "field": "off"
+    },
+    {
+      "name": "file.get carrying re",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "file.get",
+        "id": "h42",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 0,
+        "len": 1380,
+        "re": "d41"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

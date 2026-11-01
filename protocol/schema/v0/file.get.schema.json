@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/file.get.schema.json",
+  "title": "file.get",
+  "description": "v0.3 (docs/11 §5.3): host reads len bytes of segment fid from off (offsets include the 44 B header). Reply: file.data, or error (E_BUSY msg live|full, E_UNKNOWN_ITEM, E_STORAGE, E_NOT_READY).",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["fid", "off", "len"],
+  "properties": {
+    "t": {"const": "file.get"},
+    "fid": {"$ref": "common.schema.json#/$defs/monoId"},
+    "off": {"$ref": "common.schema.json#/$defs/uint32"},
+    "len": {"type": "integer", "minimum": 1, "maximum": 1380}
+  }
+}

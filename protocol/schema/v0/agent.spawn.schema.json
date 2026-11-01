@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/agent.spawn.schema.json",
+  "title": "agent.spawn",
+  "description": "Online request to start a session (Ready + Confirm only; never stored, never retried). With qid the daemon uses its saved full text.",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["project", "text"],
+  "properties": {
+    "t": {"const": "agent.spawn"},
+    "project": {"$ref": "common.schema.json#/$defs/projectKey"},
+    "text": {"$ref": "common.schema.json#/$defs/agentText"},
+    "qid": {"anyOf": [{"$ref": "common.schema.json#/$defs/qid"}, {"type": "null"}]}
+  }
+}

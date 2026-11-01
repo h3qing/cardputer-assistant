@@ -1,0 +1,9 @@
+# Demo state, played by the daemon's side after boot: the handshake, the clock (09:41,
+# UTC+8), two projects, three sessions in different states and a short queue.
+include hello.cpas
+host time.set {"epoch_ms":1792546860000,"tz_min":480}
+host projects.snapshot {"rev":3,"projects":[{"slot":1,"key":"acmeshop","name":"Acmeshop 宠物","run":1,"need":1,"queued":2,"ok":true},{"slot":2,"key":"cardputer","name":"Cardputer 助手","run":1,"need":0,"queued":1,"ok":true}],"other":{"run":0,"n":2}}
+host sessions.snapshot {"rev":5,"total":3,"sessions":[{"sid":"8d3e7a19","slot":1,"name":"支付回调重试","kind":"tty","st":"waiting","need":true,"age_s":540},{"sid":"5c2e8a14","slot":2,"name":"cpa/host-sim","kind":"bg","st":"busy","need":false,"age_s":75,"short":"a1b2c3"},{"sid":"9f00aa11","slot":1,"name":"landing page copy","kind":"bg","st":"idle","need":false,"age_s":3600,"short":"d4e5f6"}]}
+host queue.snapshot {"rev":2,"items":[{"qid":"q17","slot":1,"text":"给 webhook 加签名校验","intent":"todo"},{"qid":"q18","slot":1,"text":"write e2e test for refunds","intent":"spawn"},{"qid":"q19","slot":2,"text":"host sim: contact sheet","intent":"todo"}]}
+# the battery is sampled once a second
+wait 1200

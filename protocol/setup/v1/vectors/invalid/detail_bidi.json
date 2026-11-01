@@ -1,0 +1,18 @@
+{
+  "doc": "row",
+  "name": "bidi control in detail",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "detail"
+  },
+  "data": {
+    "v": 1,
+    "id": "service",
+    "state": "ok",
+    "required": true,
+    "blocked_by": [],
+    "title": "后台服务在跑，版本 0.5.0",
+    "detail": "x‮y",
+    "fix": []
+  }
+}

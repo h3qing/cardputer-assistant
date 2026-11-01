@@ -1,0 +1,206 @@
+Cardputer Assistant
+Copyright (c) 2026 Heqing Huang
+
+This product is licensed under the MIT License (see LICENSE). Before v0.5.0 it
+was licensed under the Apache License, Version 2.0; the vendored Apache-2.0
+code below keeps that license (full text in LICENSES/Apache-2.0.txt).
+The notices below cover third-party components that the firmware build links
+or embeds, and projects whose code or design this repository adapts.
+THIRD_PARTY_LICENSES.md lists every third-party component linked into the
+firmware image, the Mac daemon and the Mac app, with the versions pinned by the
+build manifests and SPDX licence identifiers; LICENSES/ holds the licence texts.
+
+===============================================================================
+1. Firmware dependencies (fetched by PlatformIO, linked into the firmware image)
+===============================================================================
+
+M5Cardputer, git tag 1.2.0 - https://github.com/m5stack/M5Cardputer
+  SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+  SPDX-License-Identifier: MIT (per-file SPDX headers; the repository has no
+  LICENSE file)
+
+M5Unified 0.2.26 - https://github.com/m5stack/M5Unified
+  Copyright (c) 2021 M5Stack
+  MIT License
+
+M5GFX 0.2.33 - https://github.com/m5stack/M5GFX
+  Copyright (c) 2021 M5Stack
+  MIT License
+
+ArduinoJson 7.4.3 - https://github.com/bblanchon/ArduinoJson
+  Copyright (c) Benoit BLANCHON (years as stated in the LICENSE.txt it ships)
+  MIT License
+
+The MIT License text that applies to the four components above:
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+-------------------------------------------------------------------------------
+efont Unicode bitmap fonts (bundled in M5GFX; the firmware embeds efontCN_12)
+  (c) Copyright 2000-2001 /efont/ The Electronic Font Open Laboratory.
+  All rights reserved.
+  Source in M5GFX: src/lgfx/Fonts/efont/COPYRIGHT.txt (3-clause BSD License)
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+  3. Neither the name of the team nor the names of its contributors
+     may be used to endorse or promote products derived from this font
+     without specific prior written permission.
+
+  THIS FONT IS PROVIDED BY THE TEAM AND CONTRIBUTORS ``AS IS'' AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE TEAM OR CONTRIBUTORS BE
+  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS FONT, EVEN
+  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-------------------------------------------------------------------------------
+arduino-esp32 (Arduino core for ESP32) - https://github.com/espressif/arduino-esp32
+  Copyright (c) Espressif Systems (Shanghai) Co., Ltd. and contributors
+  GNU Lesser General Public License v2.1 (LGPL-2.1)
+
+  The firmware is linked against this core. As required by LGPL-2.1 section 6,
+  users can rebuild and relink the firmware with a modified version of the
+  core: the complete source of this project is available under MIT, and
+  firmware/app/platformio.ini pins the exact platform and core version used.
+  The core's source is available from the URL above.
+
+-------------------------------------------------------------------------------
+arduino-esp32 SD library, vendored and modified in firmware/third_party/SD
+  Source: https://github.com/espressif/arduino-esp32, libraries/SD of core
+  2.0.17 (as shipped in PlatformIO framework-arduinoespressif32
+  3.20017.241212), copied unchanged except three changes marked "CPA patch"
+  in src/sd_diskio.cpp:
+    1. the SPI-mode ACMD41 argument carries only HCS (0x40000000 instead of
+       0x40100000), so cards that stay idle with the voltage bit initialize;
+    2. GET_BLOCK_SIZE reports 8192 sectors (4 MiB) instead of 1, so f_mkfs
+       aligns the FAT data area;
+    3. the 25 MHz SPI clock cap is skipped only when CPA_SD_UNCAPPED_CLOCK is
+       defined (the hardware probes in firmware/hwtest; the app keeps it).
+  Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
+  src/sd_diskio_crc.c: Copyright (c) 2014 Neil Thiessen
+  Apache License, Version 2.0 (full text in LICENSES/Apache-2.0.txt)
+
+===============================================================================
+2. Adapted designs and code (ADAPT, docs/05-architecture.md section 4) - all MIT
+===============================================================================
+
+cc-buddy-bridge - https://github.com/SnowWarri0r/cc-buddy-bridge
+  LaunchAgent plist generation with plistlib (_service_launchd.py approach).
+m5stack-coding-toys - https://github.com/houxiaomu/m5stack-coding-toys
+  cwd to git-root mapping with a cache, dropping serial lines that do not start
+  with '{', HWCDC RX buffer sizing lessons.
+cardputer-adv-ai-console - https://github.com/m0rg0t/cardputer-adv-ai-console
+  One file per outbox item.
+CardMind - https://github.com/varlolwut/cardmind
+  Budgeting JSON payload sizes for the firmware.
+
+Whenever code (not only design) is copied from these projects, the file keeps
+the original copyright header and the entry above lists the copied files.
+Projects without a license, and GPL-3.0 code, are used for design reference
+only; no code is copied from them.
+
+===============================================================================
+3. Host simulator (firmware/sim, gh #32) - not part of the firmware image
+===============================================================================
+
+M5GFX 0.2.33 / LovyanGFX - https://github.com/m5stack/M5GFX,
+https://github.com/lovyan03/LovyanGFX
+  firmware/sim/lib/simfb/efont.cpp ports the U8g2 font decoder of M5GFX's
+  src/lgfx/v1/lgfx_fonts.cpp (U8g2font: getGlyph, updateFontMetric, drawChar)
+  and the text layout of src/lgfx/v1/LGFXBase.cpp (text_width, draw_string),
+  and carries the LovyanGFX header of the file it ports. (Since the palette
+  canvas of docs/19, fb.cpp no longer repeats M5GFX's colour conversions.)
+  The simulator binary also embeds the efontCN_12 data,
+  copied out of M5GFX at build time, and firmware/sim/test/test_efont/
+  oracle_golden.h holds the bitmaps of five of its glyphs, as M5GFX draws
+  them (efont licence above). firmware/sim/oracle builds M5GFX itself on the
+  host; it copies no M5GFX code into the repository.
+  M5GFX: Copyright (c) 2021 M5Stack, MIT License (text above).
+  The font format and its decoder come from U8g2 (https://github.com/olikraus/u8g2,
+  olikraus, 2-clause BSD License, the conditions below).
+  LovyanGFX: Copyright (c) 2020 lovyan03, FreeBSD License:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are met:
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+
+===============================================================================
+4. Visual theme (docs/19-visual-theme.md) - embedded in the firmware image
+===============================================================================
+
+WhisperWoof - the same author's project, MIT License,
+Copyright (c) 2026 Heqing Huang (the MIT License text in section 1 applies)
+  The colour tokens in tools/theme/tokens.py (and so in
+  firmware/app/lib/theme/gen/palette_gen.h) are WhisperWoof's dark theme
+  (DESIGN.md, src/index.css .dark) plus REC; ink3 is raised from #8f8276 to
+  #96897b. Mando's 15 colours (tools/theme/mando_colours.json; palette entries
+  0x20-0x2E and their dimmed copies 0x30-0x3E) are a median cut of every frame
+  of website/mando/hd/{wait,think,review,hop}.webp (sha256 in
+  mando_colours.json), cropped to their union box, scaled to 64 px and
+  composited on #1a1512 by tools/theme/gen_mando.py with Pillow 13.0.0. The
+  status bar's 11 x 9 head (firmware/app/lib/theme/gen/icons_gen.h) is
+  hand-pixelled in those colours after Mando. Mando's sprites
+  (firmware/app/lib/theme/gen/mando46_gen.h and mando64_gen.h) are key poses of
+  those same loops - at 46 px frames 0/6/12/18 of wait, review and think, hop
+  2/6/10/14 and a dozing frame; at 64 px frames 0/6/12/18 of wait, review and
+  think - cropped the same way, scaled with Pillow's Lanczos filter, composited
+  on #1a1512, cut to the 15 colours (under 30 % cover is clear) and packed 4 bits
+  a pixel; the dozing frame is wait 0 with ten pixels repainted as closed eyes.
+  WhisperWoof is only read; the firmware build does not need it
+  (tools/theme/README.md).
+
+Nunito (ExtraBold, weight 800) - Copyright 2014 The Nunito Project Authors
+(https://github.com/googlefonts/nunito), SIL Open Font License, Version 1.1
+(full text in LICENSES/OFL-1.1.txt; no Reserved Font Name)
+  firmware/app/lib/theme/gen/digits_gen.h holds bitmaps of 11 glyphs (0-9 and
+  ":") at 30 and 34 px, rendered from WhisperWoof's copy of the font,
+  src/assets/fonts/Nunito-normal-latin.woff2 (sha256 20fc9b6f...4798), by
+  tools/theme/gen_digits.py with Pillow 13.0.0 and cut to six coverage levels.
+  The font software itself is not distributed; the OFL text is included as the
+  licence asks of any copy of the Font Software or of parts of it.

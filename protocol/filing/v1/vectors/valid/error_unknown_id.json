@@ -1,0 +1,10 @@
+{
+  "doc": "error",
+  "name": "a well-formed id that names no recording",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_UNKNOWN_ID",
+    "field": "id"
+  }
+}

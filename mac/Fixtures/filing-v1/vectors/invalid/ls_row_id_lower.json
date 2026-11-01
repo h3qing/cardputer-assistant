@@ -1,0 +1,49 @@
+{
+  "doc": "ls",
+  "name": "row id not a MonoId",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "rows[0].id"
+  },
+  "data": {
+    "v": 1,
+    "counts": {
+      "new": 16,
+      "other_mac": 0,
+      "clips_waiting": 0,
+      "on_device": 0
+    },
+    "next_cursor": null,
+    "rows": [
+      {
+        "id": "3qzk1m7-00042-0a1f",
+        "kind": "memo",
+        "filing": "new",
+        "why": [
+          "unfiled"
+        ],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": "5c0e9a7b3d21",
+        "env": {
+          "host": "公司",
+          "link": "unknown"
+        },
+        "prof": null,
+        "project": null,
+        "starred": false,
+        "tx": "waiting",
+        "title": null,
+        "text": null,
+        "intent": null,
+        "clips": null,
+        "queue": null
+      }
+    ]
+  }
+}

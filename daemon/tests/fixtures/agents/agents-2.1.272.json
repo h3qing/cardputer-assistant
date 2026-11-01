@@ -1,0 +1,20 @@
+[
+  {"cwd": "/Users/user/Repos/Cardputer Assistant", "kind": "interactive", "name": "设置页面和字体修复", "pid": 41001,
+   "sessionId": "8d3e7a19-4c2b-4a6e-9f10-2b7c5d8e3a61", "startedAt": 1792455000000, "status": "busy"},
+  {"cwd": "/Users/user/Repos/Cardputer Assistant/firmware", "kind": "interactive", "name": "Acme Web 登录页面改版",
+   "pid": 41002, "sessionId": "5c2e8a14-1111-4222-8333-444455556666", "startedAt": 1792455100000, "status": "idle"},
+  {"pid": 96190, "id": "2a9c4f17", "cwd": "/Users/user/docs", "kind": "background", "startedAt": 1792455500000,
+   "sessionId": "2a9c4f17-d3b8-4e21-a6f5-7c0e9b1d2f38", "name": "docs/写一份周报", "status": "idle", "state": "blocked"},
+  {"pid": 96200, "id": "a1b2c3d4", "cwd": "/Users/user/Repos/Cardputer Assistant", "kind": "background",
+   "startedAt": 1792455600000, "sessionId": "a1b2c3d4-0000-4000-8000-000000000001", "name": "cpa/等待权限确认",
+   "status": "waiting", "state": "blocked", "waitingFor": "input needed"},
+  {"pid": 96300, "id": "b2c3d4e5", "cwd": "/private/tmp/scratch", "kind": "bg", "startedAt": 1792455700000,
+   "sessionId": "b2c3d4e5-0000-4000-8000-000000000002", "name": "scratch/跑测试", "status": "shell", "state": "working"},
+  {"pid": 96400, "id": "c3d4e5f6", "cwd": "/Users/user/docs", "kind": "background", "startedAt": 1792455800000,
+   "sessionId": "c3d4e5f6-0000-4000-8000-000000000003", "name": "blog/未来状态", "status": "thinking", "state": "running"},
+  {"pid": 90001, "kind": "daemon", "sessionId": "d4e5f6a7-0000-4000-8000-000000000004", "status": "idle"},
+  {"pid": 90002, "kind": "daemon-worker", "sessionId": "e5f6a7b8-0000-4000-8000-000000000005", "status": "busy"},
+  {"pid": 90003, "kind": "interactive", "name": "缺少 sessionId", "status": "idle"},
+  {"pid": 90004, "kind": "mystery", "sessionId": "f6a7b8c9-0000-4000-8000-000000000006", "status": "idle"},
+  "not an object"
+]

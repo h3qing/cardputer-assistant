@@ -1,0 +1,32 @@
+{
+  "v": 1,
+  "session": "3QZK1M7-00042-0033",
+  "attempt": 1,
+  "state": "done",
+  "level": "summary",
+  "mode": "memo",
+  "title": "Send Alice the quote",
+  "memo": {
+    "text": "To-do: send Alice the quote by Friday.",
+    "intent": "todo"
+  },
+  "outputs": {
+    "transcript_json": {
+      "path": "transcript.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "transcript_md": {
+      "path": "transcript.md",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "actions": [],
+  "pipeline": {
+    "app": "fake-stt/0.1",
+    "stt": "fake-stt",
+    "llm": null,
+    "prompt": null
+  },
+  "error": null,
+  "finished_at": "2026-09-16T05:50:31.000+08:00"
+}

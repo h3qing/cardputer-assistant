@@ -1,0 +1,19 @@
+{
+  "doc": "row",
+  "name": "no name yet",
+  "data": {
+    "v": 1,
+    "id": "name",
+    "state": "act",
+    "required": false,
+    "blocked_by": [],
+    "title": "这台 Mac 还没有名字",
+    "detail": "设备上会显示这个名字。",
+    "fix": [
+      {
+        "op": "host.name",
+        "label": "改名字…"
+      }
+    ]
+  }
+}

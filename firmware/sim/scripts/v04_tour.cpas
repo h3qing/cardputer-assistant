@@ -1,0 +1,251 @@
+# v0.4.0 tour: whole-device navigation (docs/13 §4-§7, docs/releases/v0.4.0.md). The home
+# launcher and its letters, the Tab menu (本页 / 去哪 / 控制) on pages and over overlays,
+# Opt+L lock on a lit and on a dark screen, a memo and a meeting while locked (● always
+# visible), and back navigation. Captions are short: the contact sheet cuts them at 240 px.
+# Run:
+#   .pio/build/sim/cpa-sim shots scripts/v04_tour.cpas --out out/v04_tour
+boot store=sd usb=on bat=4100
+wait 1200
+shot home-empty  主页：开机，还没连上 Mac
+
+# The demo board: two projects, one session waiting (acmeshop/支付回调重试, 9 分钟).
+include common/demo_state.cpas
+wait 2600
+shot home  主页：跑2、!1 和最急的等你
+
+# On home a letter is Opt+that letter; 1-9 opens a project page.
+press p
+shot home-p  主页按 P：项目看板
+press opt+h
+press i
+shot home-i  主页按 I：等你
+press opt+h
+press m
+shot home-m  主页按 M：系统
+press opt+h
+press 1
+shot home-1  主页按 1：第 1 个项目页
+press opt+h
+# ; . , / move the selection; Enter presses the selected tile's key.
+press right
+press down
+shot home-move  主页 / . 移到 Q 排队给AI
+press opt+h
+
+# Tab on home: 本页 (the tiles), 去哪, 控制.
+press tab
+shot menu-here  Tab 菜单 · 本页（主页）
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+shot menu-here-scroll  本页往下翻：L 和 1-9
+press /
+shot menu-goto  , / 换页：去哪
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+shot menu-goto-scroll  去哪往下翻
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+shot menu-goto-end  去哪的最后几行
+press /
+shot menu-control  控制：锁屏和只读状态
+press tab
+shot menu-closed  Tab 关掉菜单
+
+# Enter on a row: the menu closes and presses that row's key.
+press tab
+press /
+press down
+shot menu-goto-sel  去哪：选中 Opt+P 项目
+press enter
+shot menu-enter  Enter：替你按了 Opt+P
+press opt+h
+
+# Tab, then a letter: Opt+that letter.
+press tab
+press i
+shot menu-letter  Tab 再按 I：等你
+press opt+h
+
+# The menu over a project page: the page's own keys on 本页.
+press opt+1
+press tab
+shot menu-project  项目页上的 Tab：本页
+press /
+shot menu-project-goto  项目页上的 Tab：去哪
+press tab
+
+# The menu over the capture page: only 本页 and 控制; the draft stays.
+press g0
+shot capture-empty  空的采集页：提示栏有 Tab菜单
+type call the vet on Friday
+shot capture  采集页：提示栏以 Tab菜单 结尾
+press tab
+shot menu-capture  采集页的 Tab：只有本页和控制
+press p
+shot menu-capture-letter  本页按 P：被菜单吃掉
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+shot menu-capture-scroll  采集页本页往下翻
+press /
+shot menu-capture-control  采集页的 Tab：控制
+press tab
+shot capture-kept  关掉菜单：草稿还在
+# Opt+L on the capture page: the draft stays under the lock.
+press opt+l
+shot lock-capture  采集页 Opt+L：锁住
+press opt+l
+press enter
+shot unlock-capture  解锁：草稿还在
+press `
+press tab
+shot menu-discard  放弃草稿？上的 Tab
+press tab
+wait 400  # the prompt's 400 ms guard (docs/20 U18)
+press enter
+press opt+h
+wait 2600
+
+# G0 held with the menu open: the menu closes and the memo starts as usual.
+press tab
+down g0
+wait 600
+mic 1500 2500
+shot menu-memo  菜单开着按住 G0：便条，● 可见
+up g0
+wait 300
+wait 2600
+
+# Opt+L on a lit screen (USB in): the keyboard locked; the card says so for 2 s, then dark
+# (docs/20 D7).
+press opt+l
+shot lock-lit  Opt+L：锁住，卡片亮 2 秒「已锁屏」
+wait 2200
+press p
+press enter
+press tab
+shot lock-keys  锁住时别的键都无效
+press g0
+shot lock-card  点一下 G0：亮出锁屏卡片
+# The card is lit: holding G0 now records a memo, still locked.
+down g0
+wait 600
+mic 2400 2500
+shot lock-memo  卡片亮着按住G0录音
+up g0
+wait 900
+shot lock-memo-done  录完：卡片亮 2 秒说结果，再回到黑屏锁定
+press opt+l
+shot unlock-1  Opt+L：亮卡片，开 3 秒窗口
+wait 3200
+press enter
+shot unlock-late  过 3 秒 Enter 无效
+press opt+l
+press enter
+shot unlock  Opt+L 再 Enter：回到主页
+wait 2600
+
+# A dark screen: on battery (USB out), 60 s without a key turn the screen off and lock it
+# (docs/20 D2); Opt+L there is the lock's own key.
+usb off
+wait 61000
+shot dark  60 秒无按键：熄屏并上锁
+press opt+l
+shot lock-dark  黑屏时 Opt+L：亮卡片，开 3 秒窗口
+hold g0 600
+shot lock-dark-hold  按住 G0：只亮卡片不录（要先点一下 G0）
+wait 3200
+press opt+l
+press enter
+shot unlock-dark  解锁：离线的主页
+usb on
+wait 200
+include common/hello.cpas
+wait 2600
+
+# A meeting: consent, the page, the Tab menu over it (● stays in the status bar).
+press opt+r
+shot meeting-confirm  Opt+R：会议确认框
+press tab
+shot menu-meeting-confirm  会议确认框上的 Tab
+press tab
+wait 500
+press enter
+# A block every 128 ms, as on the device: speech, so the timeline grows and the ★ lands on it.
+mic 5000 speech
+press space
+mic 1500 speech
+shot meeting  会议页：录音中，★1
+press tab
+shot menu-meeting  会议页的 Tab：● 仍可见
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+press down ms=60
+shot menu-meeting-scroll  会议页本页往下翻
+press /
+shot menu-meeting-control  会议页的 Tab：控制
+press g0
+mic 600 speech
+shot menu-meeting-g0  菜单里按 G0：关菜单加 ★
+mic 2000 speech
+host sessions.snapshot {"rev":6,"total":3,"sessions":[{"sid":"5a1e0c7d","slot":1,"name":"支付回调重试","kind":"tty","st":"waiting","need":true,"age_s":600},{"sid":"5c2e8a14","slot":2,"name":"cpa/host-sim","kind":"bg","st":"waiting","need":true,"age_s":5,"short":"a1b2c3"},{"sid":"9f00aa11","slot":1,"name":"landing page copy","kind":"bg","st":"idle","need":false,"age_s":3600,"short":"d4e5f6"}]}
+host projects.snapshot {"rev":4,"projects":[{"slot":1,"key":"acmeshop","name":"Acmeshop 宠物","run":1,"need":1,"queued":2,"ok":true},{"slot":2,"key":"cardputer","name":"Cardputer 助手","run":1,"need":1,"queued":1,"ok":true}],"other":{"run":0,"n":2}}
+shot meeting-toast  开会时弹提示：● 仍可见
+press tab
+shot menu-meeting-toast  菜单 + 提示：● 仍可见
+press tab
+# Locked in a meeting: dimmed, only the ● line; G0 still stars.
+press opt+l
+mic 2000 speech
+shot lock-meeting  开会锁屏：只剩●一行
+press g0
+mic 700 speech
+shot lock-meeting-star  锁着按 G0：加 ★
+press opt+l
+mic 600 speech
+shot lock-meeting-card  开会时的锁屏卡片
+press enter
+mic 1500 speech
+shot meeting-unlocked  解锁：回到会议页
+press opt+r
+shot meeting-end  Opt+R：结束确认
+press tab
+shot menu-meeting-end  结束确认上的 Tab
+press tab
+wait 500
+press enter
+wait 1500
+shot meeting-saved  会议已保存
+wait 2600
+
+# Back: a project page opened from the board is a second layer.
+press opt+p
+shot back-board  Opt+P：项目看板
+press enter
+shot back-project  Enter：项目页（第二层）
+press `
+shot back-to-board  返回：回到看板
+press `
+shot back-home  再返回：回到主页

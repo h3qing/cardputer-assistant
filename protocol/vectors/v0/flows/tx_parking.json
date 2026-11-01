@@ -1,0 +1,88 @@
+{
+  "name": "tx_parking",
+  "spec": "05 §1.1, §6.3 rule 1; 03 §3",
+  "description": "HWCDC parks the device's first reply until the host writes again. The host retries hello after 2 s; that write releases the parked reply. The host accepts a reply to any attempt of the current handshake and ignores the duplicate (same boot, up_ms grew).",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 0,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      }
+    },
+    {
+      "t": 12,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "deliver_t": 2000,
+      "note": "parked in the device TX ring until the next host write (the 20 ms kick normally frees it sooner)"
+    },
+    {
+      "t": 1999,
+      "expect": {"device.link": "Ready", "host.link": "handshaking", "host.credit_used": 112}
+    },
+    {
+      "t": 2000,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h2",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "attempt 2 of 3"
+    },
+    {
+      "t": 2000,
+      "expect": {"host.link": "ready", "host.credit_used": 112},
+      "note": "d1 (re h1) arrived together with this write"
+    },
+    {
+      "t": 2014,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d2",
+        "re": "h2",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 55213,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "note": "device in Ready got hello again: it re-handshakes and replies"
+    },
+    {"t": 2014, "expect": {"host.credit_used": 0, "host.reboot_detected": false}}
+  ]
+}

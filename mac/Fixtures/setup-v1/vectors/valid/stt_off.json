@@ -1,0 +1,14 @@
+{
+  "doc": "row",
+  "name": "no whisper-cli",
+  "data": {
+    "v": 1,
+    "id": "stt",
+    "state": "off",
+    "required": false,
+    "blocked_by": [],
+    "title": "本地转写没设置",
+    "detail": "brew install whisper-cpp，再 cpa-stt setup 你的模型文件。",
+    "fix": []
+  }
+}

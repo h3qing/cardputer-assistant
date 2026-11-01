@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/sent.schema.json",
+  "title": "sent",
+  "description": "`cpa dest send REF [DEST] --json` and `cpa filing send ID DEST --json` that ran (origin mac, docs/25 §5.4): outcome handed (another app was given the text: via url, a pre-fill link, or clip; whether it took it is unknown), delivered (a local file or the clipboard destination) or failed (code; the row waits in pending, exit code 1; E_INTERRUPTED: the delivery raised or was cut off). why says why a link went to the clipboard instead: too_long (D9) or draft_busy (the same bot got a draft within 30 min, D10). Never the text.",
+  "type": "object",
+  "required": [
+    "ok",
+    "v",
+    "ref",
+    "dest",
+    "label",
+    "kind",
+    "outcome",
+    "via",
+    "why",
+    "code",
+    "leaves_mac"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "v": {
+      "$ref": "common.schema.json#/$defs/version"
+    },
+    "ref": {
+      "$ref": "common.schema.json#/$defs/ref"
+    },
+    "dest": {
+      "$ref": "common.schema.json#/$defs/destId"
+    },
+    "label": {
+      "$ref": "common.schema.json#/$defs/label"
+    },
+    "kind": {
+      "$ref": "common.schema.json#/$defs/kind"
+    },
+    "outcome": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,15}$",
+      "x-knownValues": [
+        "handed",
+        "delivered",
+        "failed"
+      ]
+    },
+    "via": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/via"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "why": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,15}$",
+          "x-knownValues": [
+            "too_long",
+            "draft_busy"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "code": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/code"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "leaves_mac": {
+      "type": "boolean"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "code": {
+            "$ref": "common.schema.json#/$defs/code"
+          },
+          "via": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "handed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "via": {
+            "$ref": "common.schema.json#/$defs/via"
+          },
+          "code": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "delivered"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "via": {
+            "type": "null"
+          },
+          "code": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

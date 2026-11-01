@@ -1,0 +1,28 @@
+{
+  "doc": "pending",
+  "name": "text with a terminal escape",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "rows[0].text"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "rows": [
+      {
+        "ref": "3QZK1M7-00045-0000",
+        "why": "usual",
+        "dest": "url.grok",
+        "label": "Grok",
+        "kind": "url",
+        "fl": "lc",
+        "st": null,
+        "code": null,
+        "project": "acmeshop",
+        "src": "voice",
+        "at": "2026-10-22T09:00:00.000+00:00",
+        "text": "a\u001b[31mb"
+      }
+    ]
+  }
+}

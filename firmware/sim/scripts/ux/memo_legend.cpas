@@ -1,0 +1,85 @@
+# gh #53, the user's memos (2026-10-22): "当我说话这个界面的时候，角屏幕能显示我这个 1 到 9
+# 是什么项目" and, on v0.4.0, "the quick tip of 1-2-3 project when I'm talking is not working
+# yet". Before: the page said only "存到 #acmeshop"; which digit was which had to be
+# remembered. Now the memo page (held, the grace, hands free) and the meeting page keep a
+# legend in the number row's order, [1] acmeshop [2] cardputer [0] 不归属, the current
+# choice lit (the live-words capsule), at the press; a press never moves it (a digit with no
+# project lights "9 ?" in a cell kept for it after 0). The fewest rows where no key is cut:
+# two projects one row under Mando's sign; five three rows, whole, the waveform 2/3 as tall;
+# nine 12-letter keys three rows of six letters, each cut one ending in two dots, the chosen
+# key whole in the title ("存到 #key"). The meeting: the row under the timer; with nine,
+# the timeline's labels' row as well and 0 a bare [0] (the title says where it goes).
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1000
+down g0
+wait 600
+mic 2400 speech
+shot held  held: [1] acmeshop [2] cardputer [0] 不归属 under the sign, 0 lit; the hint bar without 0
+press 2
+mic 300 speech
+shot held-2  pressed 2: cardputer lit at once, the recording goes on
+up g0
+mic 200 speech
+shot grace  let go: the grace keeps the legend
+down g0
+mic 300 speech
+up g0
+wait 3000
+press g0
+press g0
+mic 2000 speech
+press 9
+mic 300 speech
+shot handsfree-9  hands free, pressed 9 (no project there): "9 ?" lit
+press 0
+mic 300 speech
+shot handsfree-0  pressed 0: 不归属 lit
+press g0
+wait 3000
+press opt+r
+wait 600
+press enter
+mic 3000 speech
+press 1
+mic 300 speech
+shot meeting  the meeting: the row under the timer, acmeshop lit; 0:00 and 现在 stay
+press opt+r
+wait 600
+press enter
+wait 3000
+host projects.snapshot {"rev":5,"projects":[{"slot":1,"key":"acmeshop","name":"Acmeshop 宠物","run":1,"need":1,"queued":2,"ok":true},{"slot":2,"key":"cardputer","name":"Cardputer 助手","run":1,"need":0,"queued":1,"ok":true},{"slot":3,"key":"garden","name":"Garden 花园CRM","run":0,"need":0,"queued":0,"ok":true},{"slot":4,"key":"reading-list","name":"读书清单笔记库","run":0,"need":0,"queued":0,"ok":true},{"slot":5,"key":"run-2026","name":"2026 跑步","run":0,"need":0,"queued":0,"ok":true}],"other":{"run":0,"n":0}}
+wait 200
+down g0
+wait 600
+mic 1500 speech
+press 4
+mic 300 speech
+shot five-held  five projects: three rows, every key whole, the waveform 2/3 as tall; 4 lit
+press 8
+mic 300 speech
+shot five-8  pressed 8 (no project): "8 ?" lit after 0, nothing else moves
+up g0
+wait 3000
+include ../common/nine_projects.cpas
+down g0
+wait 600
+mic 2400 speech
+press 9
+mic 300 speech
+shot nine-held  nine 12-letter keys: three rows of six letters and two dots; 9 lit, "存到 #thesis-ch3-x" in the title
+frames nine-ticks 3 200 mic=speech  the ticks move the waveform and Mando, never the legend
+up g0
+wait 3000
+press opt+r
+wait 600
+press enter
+mic 3000 speech
+shot nine-meeting  the meeting with nine: two rows, 0:00 and 现在 give way, a bare [0] lit (the title says 未归属)
+press 5
+mic 13000 speech
+shot nine-meeting-merged  past the first merge, 5 lit: the timeline keeps clear of the legend
+press opt+r
+wait 600
+press enter
+wait 3000

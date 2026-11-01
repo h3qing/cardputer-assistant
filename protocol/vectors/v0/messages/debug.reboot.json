@@ -1,0 +1,23 @@
+{
+  "$comment": "Vectors for debug.reboot; format in protocol/README.md.",
+  "type": "debug.reboot",
+  "valid": [
+    {"name": "soft reboot request", "dir": "h2d", "msg": {"v": 0, "t": "debug.reboot", "id": "h72"}}
+  ],
+  "invalid": [
+    {
+      "name": "debug.reboot carrying re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.reboot", "id": "h72", "re": "d1"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "empty id",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.reboot", "id": ""},
+      "code": "E_BAD_FIELD",
+      "field": "id"
+    }
+  ]
+}

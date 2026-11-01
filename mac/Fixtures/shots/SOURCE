@@ -1,0 +1,3 @@
+Synthetic data for CardputerShots (mac/Sources/CardputerShots): the cpa mcp setup snippets are
+what daemon/src/cpad/mcp/cli.py snippet() prints for /Users/you/.local/bin/cpa; the tool names are those of
+daemon/src/cpad/mcp/catalog.py; the audit lines are made up in its record shape. No real text or ids.

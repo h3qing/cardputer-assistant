@@ -1,0 +1,96 @@
+{
+  "$comment": "Vectors for rec.act (v0.4.1, docs/13-assistant-v2-plan.md §12.2); format in protocol/README.md.",
+  "type": "rec.act",
+  "valid": [
+    {
+      "name": "hide (docs/13 §12.2): only hidden, nothing on the Mac is deleted",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "hide"}
+    },
+    {
+      "name": "star",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d29", "rec": "3QZK1M7-00009-0001", "op": "star"}
+    },
+    {
+      "name": "unstar, project null",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d30", "rec": "3QZK1M7-00009-0001", "op": "unstar", "project": null}
+    },
+    {
+      "name": "tag: assign a project",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d31", "rec": "3QZK1M7-00009-0001", "op": "tag", "project": "cpa"}
+    },
+    {
+      "name": "tag with project null: no project",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d32", "rec": "3QZK1M7-00009-0001", "op": "tag", "project": null}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "op 'delete': v0.4.1 has no delete (docs/13 §8.4)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "delete"},
+      "code": "E_BAD_FIELD",
+      "field": "op"
+    },
+    {
+      "name": "op 'trash'",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "trash"},
+      "code": "E_BAD_FIELD",
+      "field": "op"
+    },
+    {
+      "name": "op 'unhide' (cpa rec unhide on the Mac only)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "unhide"},
+      "code": "E_BAD_FIELD",
+      "field": "op"
+    },
+    {
+      "name": "op missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001"},
+      "code": "E_BAD_FIELD",
+      "field": "op"
+    },
+    {
+      "name": "tag with an invalid project key",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "tag", "project": "Not A Key"},
+      "code": "E_BAD_FIELD",
+      "field": "project"
+    },
+    {
+      "name": "tag without project",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "tag"},
+      "code": "E_BAD_FIELD",
+      "field": "project"
+    },
+    {
+      "name": "star with a project",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "star", "project": "cpa"},
+      "code": "E_BAD_FIELD",
+      "field": "project"
+    },
+    {
+      "name": "rec not a MonoId",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "h99", "op": "hide"},
+      "code": "E_BAD_FIELD",
+      "field": "rec"
+    },
+    {
+      "name": "rec.act carrying re",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.act", "id": "d27", "rec": "3QZK1M7-00009-0001", "op": "hide", "re": "h27"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

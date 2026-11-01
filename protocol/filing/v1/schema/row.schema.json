@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/row.schema.json",
+  "title": "row",
+  "description": "One recording in the filing list (docs/23 §3.2): an item of `cpa filing ls --json` rows, the `row` of `cpa filing show --json` and one line of the export's data/filing.jsonl. Ids, times and states; at most 80 + 280 characters of display_safe text; never a path, the device's own id or a network. Every field is always present. kind, why, tx, env.link, intent and queue.intent are extensible enums (x-knownValues): a reader shows a value it does not know as unknown and keeps the row.",
+  "type": "object",
+  "required": ["id", "kind", "filing", "why", "asked", "at", "dur_ms", "device", "env", "prof", "project", "starred",
+    "tx", "title", "text", "intent", "clips", "queue"],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/monoId" },
+    "kind": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$", "x-knownValues": ["memo", "meeting"] },
+    "filing": { "$ref": "common.schema.json#/$defs/filing" },
+    "why": {
+      "description": "unfiled: a new row; orphan: a new row whose project is another Mac's key (see asked); no_text: the transcription failed or timed out.",
+      "type": "array",
+      "maxItems": 8,
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$", "x-knownValues": ["unfiled", "orphan", "no_text"] }
+    },
+    "asked": {
+      "description": "Only on a new row of the other-Mac group: the key pressed while recording, which this Mac does not know.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/projectKey" }, { "type": "null" }]
+    },
+    "at": {
+      "type": "object",
+      "required": ["wall_ms", "tz_min", "uncertain"],
+      "properties": {
+        "wall_ms": { "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+        "tz_min": { "anyOf": [{ "type": "integer", "minimum": -1439, "maximum": 1439 }, { "type": "null" }] },
+        "uncertain": { "type": "boolean" }
+      }
+    },
+    "dur_ms": { "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+    "device": { "anyOf": [{ "$ref": "common.schema.json#/$defs/deviceId" }, { "type": "null" }] },
+    "env": {
+      "description": "The Mac-side stamp (docs/23 §4.2): the name of the Mac that pulled it (null: it had none) and whether it was recorded while linked to it (null: not a word this cpa writes), both always present; null for older recordings.",
+      "type": ["object", "null"],
+      "required": ["host", "link"],
+      "properties": {
+        "host": { "anyOf": [{ "$ref": "common.schema.json#/$defs/name" }, { "type": "null" }] },
+        "link": {
+          "anyOf": [
+            { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$", "x-knownValues": ["here", "unknown"] },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "prof": { "description": "Reserved for the context profile (docs/18 v0.8); null until then." },
+    "project": {
+      "description": "The effective project when it is one of this Mac's keys; null otherwise.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/projectKey" }, { "type": "null" }]
+    },
+    "starred": { "type": "boolean" },
+    "tx": {
+      "description": "The transcription: docs/15 §3.4's recording state plus stale (no result 24 h after archiving).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,15}$",
+      "x-knownValues": ["pulling", "waiting", "processing", "blocked", "transcript", "done", "failed", "stale"]
+    },
+    "title": { "anyOf": [{ "$ref": "common.schema.json#/$defs/title" }, { "type": "null" }] },
+    "text": {
+      "description": "The memo text, else the transcript's first sentences; null with --no-text.",
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/excerpt" }, { "type": "null" }]
+    },
+    "intent": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$", "x-knownValues": ["note", "todo"] },
+        { "type": "null" }
+      ]
+    },
+    "clips": { "description": "Reserved for voice captures (#52); null until then." },
+    "queue": {
+      "description": "The queue item handed from this recording; open until it is spawned or done.",
+      "$ref": "common.schema.json#/$defs/queueItem"
+    }
+  },
+  "allOf": [
+    {
+      "description": "A handed row carries its queue item.",
+      "if": { "required": ["filing"], "properties": { "filing": { "const": "handed" } } },
+      "then": { "required": ["queue"], "properties": { "queue": { "type": "object" } } }
+    },
+    {
+      "description": "Only a new row asks for another Mac's key.",
+      "if": { "required": ["asked"], "properties": { "asked": { "type": "string" } } },
+      "then": { "properties": { "filing": { "const": "new" } } }
+    }
+  ]
+}

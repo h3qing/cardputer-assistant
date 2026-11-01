@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/error.schema.json",
+  "title": "error",
+  "description": "Error reply (§6.8). msg is a short English reason; never echoes bodies, paths or command output.",
+  "x-dir": ["h2d", "d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+  "required": ["code"],
+  "properties": {
+    "t": {"const": "error"},
+    "code": {"$ref": "common.schema.json#/$defs/errorCode"},
+    "field": {"type": ["string", "null"], "pattern": "^[!-~]{1,48}$"},
+    "msg": {"type": ["string", "null"], "pattern": "^[ -~]{1,80}$"}
+  }
+}

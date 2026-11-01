@@ -1,0 +1,12 @@
+{
+  "doc": "host",
+  "name": "Mac name with a control character",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "host"
+  },
+  "data": {
+    "v": 1,
+    "host": "公\u0000司"
+  }
+}

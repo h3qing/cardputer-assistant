@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/error.schema.json",
+  "title": "error",
+  "description": "Any `cpa filing ... --json` or `cpa project ls --json` that failed (docs/23 §3.3 rule 4). The codes are fixed; field names the argument or part at fault and never echoes a value. Exit code 2 for E_BAD_ARG and E_UNKNOWN_PROJECT, 1 for the others.",
+  "type": "object",
+  "required": ["ok", "v", "error"],
+  "properties": {
+    "ok": { "const": false },
+    "v": { "$ref": "common.schema.json#/$defs/version" },
+    "error": {
+      "enum": ["E_BAD_ARG", "E_UNKNOWN_ID", "E_UNKNOWN_PROJECT", "E_NO_TEXT", "E_ALREADY", "E_UNAVAILABLE"]
+    },
+    "field": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$" }
+  }
+}

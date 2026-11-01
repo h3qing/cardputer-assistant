@@ -1,0 +1,13 @@
+{
+  "doc": "status",
+  "name": "blocked: the transcriber's command cannot run (engine), written by cpa-stt (docs/22 §4.6, §7)",
+  "data": {
+    "v": 1,
+    "session": "3QZK1M7-00042-0A1C",
+    "attempt": 1,
+    "state": "blocked",
+    "reason": "engine",
+    "by": "cpa-stt",
+    "at": "2026-10-21T14:45:12.000+08:00"
+  }
+}

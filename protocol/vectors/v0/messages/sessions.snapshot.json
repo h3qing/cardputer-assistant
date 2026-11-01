@@ -1,0 +1,654 @@
+{
+  "$comment": "Vectors for sessions.snapshot; format in protocol/README.md.",
+  "type": "sessions.snapshot",
+  "valid": [
+    {
+      "name": "sessions.snapshot (05 §6.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "no sessions",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "sessions.snapshot", "id": "h4", "rev": 17, "total": 0, "sessions": []}
+    },
+    {
+      "name": "ten sessions, 32-byte names; total counts the rest",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 14,
+        "sessions": [
+          {
+            "sid": "00000000",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 0,
+            "short": "s000000"
+          },
+          {
+            "sid": "00000001",
+            "slot": 2,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 60,
+            "short": "s000001"
+          },
+          {
+            "sid": "00000002",
+            "slot": 3,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 120,
+            "short": "s000002"
+          },
+          {
+            "sid": "00000003",
+            "slot": 4,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 180,
+            "short": "s000003"
+          },
+          {
+            "sid": "00000004",
+            "slot": 5,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 240,
+            "short": "s000004"
+          },
+          {
+            "sid": "00000005",
+            "slot": 6,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 300,
+            "short": "s000005"
+          },
+          {
+            "sid": "00000006",
+            "slot": 7,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 360,
+            "short": "s000006"
+          },
+          {
+            "sid": "00000007",
+            "slot": 8,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 420,
+            "short": "s000007"
+          },
+          {
+            "sid": "00000008",
+            "slot": 9,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 480,
+            "short": "s000008"
+          },
+          {
+            "sid": "00000009",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 540,
+            "short": "s000009"
+          }
+        ]
+      }
+    },
+    {
+      "name": "unknown state, short as null",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "unknown",
+            "need": false,
+            "age_s": 75,
+            "short": null
+          }
+        ]
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "eleven sessions",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 11,
+        "sessions": [
+          {
+            "sid": "00000000",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 0,
+            "short": "s000000"
+          },
+          {
+            "sid": "00000001",
+            "slot": 2,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 60,
+            "short": "s000001"
+          },
+          {
+            "sid": "00000002",
+            "slot": 3,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 120,
+            "short": "s000002"
+          },
+          {
+            "sid": "00000003",
+            "slot": 4,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 180,
+            "short": "s000003"
+          },
+          {
+            "sid": "00000004",
+            "slot": 5,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 240,
+            "short": "s000004"
+          },
+          {
+            "sid": "00000005",
+            "slot": 6,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 300,
+            "short": "s000005"
+          },
+          {
+            "sid": "00000006",
+            "slot": 7,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 360,
+            "short": "s000006"
+          },
+          {
+            "sid": "00000007",
+            "slot": 8,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 420,
+            "short": "s000007"
+          },
+          {
+            "sid": "00000008",
+            "slot": 9,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 480,
+            "short": "s000008"
+          },
+          {
+            "sid": "00000009",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 540,
+            "short": "s000009"
+          },
+          {
+            "sid": "0000000b",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxx",
+            "kind": "bg",
+            "st": "idle",
+            "need": false,
+            "age_s": 0,
+            "short": "s000000"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions"
+    },
+    {
+      "name": "sid in upper case",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8D3E7A19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[0].sid"
+    },
+    {
+      "name": "duplicate sid",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[1].sid"
+    },
+    {
+      "name": "kind daemon is never sent",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "daemon",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[0].kind"
+    },
+    {
+      "name": "unknown st value",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "sleeping",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[0].st"
+    },
+    {
+      "name": "name of 33 bytes",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "设置页面和字体修复xxxxxx",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[0].name"
+    },
+    {
+      "name": "short longer than 16",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "aaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[1].short"
+    },
+    {
+      "name": "need as a number",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": 1,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[0].need"
+    },
+    {
+      "name": "slot 10",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 10,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sessions[0].slot"
+    },
+    {
+      "name": "total missing",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "total"
+    },
+    {
+      "name": "line over 2048 bytes (daemon must drop tail entries instead)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h4",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ],
+        "x_pad": "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+      },
+      "code": "E_TOO_LARGE"
+    }
+  ]
+}

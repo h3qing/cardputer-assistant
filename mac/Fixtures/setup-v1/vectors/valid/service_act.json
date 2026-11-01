@@ -1,0 +1,19 @@
+{
+  "doc": "row",
+  "name": "no LaunchAgent yet",
+  "data": {
+    "v": 1,
+    "id": "service",
+    "state": "act",
+    "required": true,
+    "blocked_by": [],
+    "title": "后台服务还没装",
+    "detail": "装上以后，登录时自动启动。",
+    "fix": [
+      {
+        "op": "service.install",
+        "label": "装上"
+      }
+    ]
+  }
+}

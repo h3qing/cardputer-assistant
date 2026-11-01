@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/debug.codec.schema.json",
+  "title": "debug.codec",
+  "description": "TEST FIRMWARE ONLY (v0.3.2, issue #31). Puts the ES8311 codec into the state a power-on leaves it in (its soft reset, REG00 = 0x1F, with the microphone off), so the next recording starts while the codec still holds its output muted. warm: true then runs the boot's codec warm-up as after a real power-on. Refused with E_BUSY \"live\" while a recording is live. Reply: ack or error.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["warm"],
+  "properties": {
+    "t": {"const": "debug.codec"},
+    "warm": {"type": "boolean"}
+  }
+}

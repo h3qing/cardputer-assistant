@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/queue.done.schema.json",
+  "title": "queue.done",
+  "description": "Online request: mark a queue item done. Reply: ack or error.",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["qid"],
+  "properties": {"t": {"const": "queue.done"}, "qid": {"$ref": "common.schema.json#/$defs/qid"}}
+}

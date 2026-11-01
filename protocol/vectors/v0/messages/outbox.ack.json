@@ -1,0 +1,84 @@
+{
+  "$comment": "Vectors for outbox.ack; format in protocol/README.md.",
+  "type": "outbox.ack",
+  "valid": [
+    {
+      "name": "stored (05 §6.6)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h6", "re": "3QZK1M7-0000C-0003", "status": "stored"}
+    },
+    {
+      "name": "duplicate: already in events.jsonl",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h6",
+        "re": "3QZK1M7-0000C-0003",
+        "status": "duplicate"
+      }
+    },
+    {
+      "name": "rejected with a code",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h6",
+        "re": "3QZK1M7-0000C-0003",
+        "status": "rejected",
+        "code": "E_BAD_FIELD"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "unknown status",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h6", "re": "3QZK1M7-0000C-0003", "status": "ok"},
+      "code": "E_BAD_FIELD",
+      "field": "status"
+    },
+    {
+      "name": "rejected without code",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h6",
+        "re": "3QZK1M7-0000C-0003",
+        "status": "rejected"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "code"
+    },
+    {
+      "name": "re is not a MonoId",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h6", "re": "d7", "status": "stored"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "re missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h6", "status": "stored"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "unknown code",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h6",
+        "re": "3QZK1M7-0000C-0003",
+        "status": "rejected",
+        "code": "E_NOPE"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "code"
+    }
+  ]
+}

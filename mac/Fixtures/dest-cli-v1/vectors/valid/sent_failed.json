@@ -1,0 +1,17 @@
+{
+  "doc": "sent",
+  "name": "the app was removed since it was added",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "ref": "3QZK1M7-00045-0000",
+    "dest": "url.grok",
+    "label": "Grok",
+    "kind": "url",
+    "outcome": "failed",
+    "via": null,
+    "why": null,
+    "code": "E_DEST_MISSING",
+    "leaves_mac": true
+  }
+}

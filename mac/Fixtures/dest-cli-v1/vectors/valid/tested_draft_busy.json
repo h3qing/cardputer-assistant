@@ -1,0 +1,13 @@
+{
+  "doc": "tested",
+  "name": "a bot that still holds a draft: not handed",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "dest": "url.chat",
+    "marker": "1234",
+    "handed": false,
+    "via": null,
+    "code": "E_DRAFT_BUSY"
+  }
+}

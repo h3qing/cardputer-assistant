@@ -1,0 +1,195 @@
+{
+  "$comment": "Vectors for agent.spawn; format in protocol/README.md.",
+  "type": "agent.spawn",
+  "valid": [
+    {
+      "name": "agent.spawn (05 §6.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "Write native tests for the chord detector"
+      }
+    },
+    {
+      "name": "hostile but literal: '$(rm -rf ~)' reaches claude as one argv element after --",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "$(rm -rf ~)"}
+    },
+    {
+      "name": "hostile but literal: '; ls' reaches claude as one argv element after --",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "; ls"}
+    },
+    {
+      "name": "spawn from a queue item: daemon uses its saved full text",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "add LittleFS fault-injection test",
+        "qid": "q17"
+      }
+    },
+    {
+      "name": "prompt of exactly 500 bytes",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "name": "a dash inside the text is fine",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "fix the off-by-one in a-b"
+      }
+    },
+    {
+      "name": "leading spaces before a letter",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "  write tests"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "hostile: '--dangerously-skip-permissions' (30 B)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "--dangerously-skip-permissions"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "hostile: '-c' (2 B)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "-c"},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "hostile: '--permission-mode=bypassPermissions' (35 B)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "--permission-mode=bypassPermissions"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "hostile: '  -c test' (9 B)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "  -c test"},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "hostile: '\\x00' (1 B)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "\u0000"},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "hostile: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'... (501 B)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "empty text",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": ""},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "two lines",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.spawn", "id": "d7", "project": "cpa", "text": "a\nb"},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "project in upper case",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "CPA",
+        "text": "Write native tests for the chord detector"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "project"
+    },
+    {
+      "name": "project missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "text": "Write native tests for the chord detector"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "project"
+    },
+    {
+      "name": "qid without q",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "Write native tests for the chord detector",
+        "qid": "17"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "qid"
+    },
+    {
+      "name": "agent.spawn carrying re",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d7",
+        "project": "cpa",
+        "text": "Write native tests for the chord detector",
+        "re": "h1"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

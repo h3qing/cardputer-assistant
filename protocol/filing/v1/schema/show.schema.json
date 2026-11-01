@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/show.schema.json",
+  "title": "show",
+  "description": "`cpa filing show ID --json` (docs/23 §3.1): the row, the whole memo text, the transcript sentence by sentence, the summary's todos, the audio file names (no directory), the firmware and the handed queue item's text. All text is display_safe.",
+  "type": "object",
+  "required": ["v", "row", "text", "sentences", "todos", "audio", "fw", "queue_text"],
+  "properties": {
+    "v": { "$ref": "common.schema.json#/$defs/version" },
+    "row": { "$ref": "row.schema.json" },
+    "text": { "anyOf": [{ "$ref": "common.schema.json#/$defs/memoText" }, { "type": "null" }] },
+    "sentences": {
+      "description": "null when there is no readable transcript.",
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["t_s", "text"],
+        "properties": {
+          "t_s": { "anyOf": [{ "$ref": "common.schema.json#/$defs/seconds" }, { "type": "null" }] },
+          "text": { "$ref": "common.schema.json#/$defs/safeText" }
+        }
+      }
+    },
+    "todos": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["n", "text", "owner", "due", "t_s", "confident"],
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "text": { "$ref": "common.schema.json#/$defs/actionText" },
+          "owner": { "anyOf": [{ "$ref": "common.schema.json#/$defs/short" }, { "type": "null" }] },
+          "due": { "anyOf": [{ "$ref": "common.schema.json#/$defs/short" }, { "type": "null" }] },
+          "t_s": { "anyOf": [{ "$ref": "common.schema.json#/$defs/seconds" }, { "type": "null" }] },
+          "confident": { "type": "boolean" }
+        }
+      }
+    },
+    "audio": {
+      "description": "Segment file names inside the recording's directory; empty once the 30-day sweep removed them.",
+      "type": "array",
+      "maxItems": 10000,
+      "items": { "type": "string", "pattern": "^seg-[0-9]{3,4}\\.wav$" }
+    },
+    "fw": { "anyOf": [{ "$ref": "common.schema.json#/$defs/fw" }, { "type": "null" }] },
+    "queue_text": { "anyOf": [{ "$ref": "common.schema.json#/$defs/queueText" }, { "type": "null" }] }
+  }
+}

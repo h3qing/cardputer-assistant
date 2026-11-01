@@ -1,0 +1,8 @@
+{
+  "doc": "host",
+  "name": "this Mac has no name (the default)",
+  "data": {
+    "v": 1,
+    "host": null
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "name": "file_list_paging",
+  "spec": "docs/11-m3-design.md §5.3, §6.2.3",
+  "description": "Six committed segments (a five-segment meeting and a memo): the host pages through them with file.list{after, max:4} until more is false.",
+  "initial": {"device.link": "Ready", "host.link": "ready"},
+  "steps": [
+    {"t": 0, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h40"}},
+    {
+      "t": 10,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d40",
+        "re": "h40",
+        "up_ms": 2500000,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 6, "rev": 12, "live": false}
+      }
+    },
+    {
+      "t": 20,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "max": 4},
+      "note": "first page: no after"
+    },
+    {
+      "t": 30,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d41",
+        "re": "h41",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1C",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 0,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 735000, "wall_ms": null},
+            "project": "cpa",
+            "lead_ms": 200,
+            "consent": "ack",
+            "stars": [12800]
+          },
+          {
+            "id": "3QZK1M7-00042-0A1D",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 1,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 1035000, "wall_ms": null},
+            "project": "cpa"
+          },
+          {
+            "id": "3QZK1M7-00042-0A1E",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 2,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 1335000, "wall_ms": null},
+            "project": "cpa"
+          },
+          {
+            "id": "3QZK1M7-00042-0A1F",
+            "kind": "rec",
+            "size": 9600044,
+            "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 3,
+            "last": false,
+            "mode": "meeting",
+            "dur_ms": 300000,
+            "at": {"up_ms": 1635000, "wall_ms": null},
+            "project": "cpa"
+          }
+        ],
+        "more": true
+      }
+    },
+    {
+      "t": 40,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.list", "id": "h42", "after": "3QZK1M7-00042-0A1F", "max": 4},
+      "note": "next page starts after the last id of the previous one (exclusive)"
+    },
+    {
+      "t": 50,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d42",
+        "re": "h42",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A1G",
+            "kind": "rec",
+            "size": 1920044,
+            "sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 4,
+            "last": true,
+            "mode": "meeting",
+            "dur_ms": 60000,
+            "at": {"up_ms": 1935000, "wall_ms": null},
+            "project": "cpa"
+          },
+          {
+            "id": "3QZK1M7-00042-0A1H",
+            "kind": "rec",
+            "size": 160044,
+            "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "rec": "3QZK1M7-00042-0A1H",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 5000,
+            "at": {"up_ms": 2400000, "wall_ms": null},
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "note": "more:false ends the listing; the host pulls memo sessions first, then by id (docs/11 §6.2.5)"
+    },
+    {"t": 50, "expect": {"host.credit_used": 0}}
+  ]
+}

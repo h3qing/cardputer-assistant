@@ -1,0 +1,22 @@
+{
+  "doc": "row",
+  "name": "op with a space",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "fix[0].op"
+  },
+  "data": {
+    "v": 1,
+    "id": "service",
+    "state": "ok",
+    "required": true,
+    "blocked_by": [],
+    "title": "后台服务在跑，版本 0.5.0",
+    "detail": "",
+    "fix": [
+      {
+        "op": "service install"
+      }
+    ]
+  }
+}

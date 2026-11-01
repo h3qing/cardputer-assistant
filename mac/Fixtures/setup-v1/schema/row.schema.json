@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/setup/v1/row.schema.json",
+  "title": "row",
+  "description": "One line of `cpa setup check --json` (JSON Lines, docs/27 §2.6): one setup row of this Mac. Unknown fields are always allowed; id, state and fix[].op are extensible enums (x-knownValues): show an unknown one as it is, offer no button for an unknown op. Never carries host_id, a USB serial or dev (check_setup.py rejects those keys anywhere). Only keywords the WhisperWoof validator knows are used.",
+  "type": "object",
+  "required": [
+    "v",
+    "id",
+    "state",
+    "required",
+    "blocked_by",
+    "title",
+    "detail",
+    "fix"
+  ],
+  "properties": {
+    "v": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/rowId"
+    },
+    "state": {
+      "description": "ok done; act needs a click; wait waits for something outside (the device); warn works but should change; off not set up (optional rows); skip you said no; na does not apply here; err broken.",
+      "type": "string",
+      "pattern": "^[a-z]{2,6}$",
+      "x-knownValues": [
+        "ok",
+        "act",
+        "wait",
+        "warn",
+        "off",
+        "skip",
+        "na",
+        "err"
+      ]
+    },
+    "required": {
+      "description": "Counted in 'N steps left' (docs/27 §2.3); cpa setup check --quiet exits 0 only when every required row is ok.",
+      "type": "boolean"
+    },
+    "blocked_by": {
+      "description": "Rows that must be ok before this row's buttons work (the device row waits for service and notes).",
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/rowId"
+      }
+    },
+    "title": {
+      "description": "One line for a person, display_safe: no C0, DEL, C1, line or paragraph separators, bidirectional controls or lone surrogates.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "detail": {
+      "description": "May be empty. display_safe: no C0, DEL, C1, line or paragraph separators, bidirectional controls or lone surrogates.",
+      "type": "string",
+      "maxLength": 400,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "fix": {
+      "description": "Buttons, in order. The app builds the argv from op with its own verb table and checks every argument; it never runs a string from the row.",
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/fix"
+      }
+    }
+  },
+  "$defs": {
+    "rowId": {
+      "type": "string",
+      "pattern": "^[a-z]{2,12}$",
+      "x-knownValues": [
+        "service",
+        "notes",
+        "name",
+        "import",
+        "device",
+        "profile",
+        "disk",
+        "stt",
+        "hooks",
+        "claude",
+        "mcp",
+        "dest"
+      ]
+    },
+    "fix": {
+      "description": "service.install: cpa service install. hooks.install: cpa hooks install (shows the change; --yes writes). host.name: cpa host name -- NAME. stt.setup: cpa-stt setup. Reserved for docs/27 O2-O6: notes.dir, device.bind, device.forget, settings.import, setup.skip.",
+      "type": "object",
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "type": "string",
+          "pattern": "^[a-z]{2,12}\\.[a-z]{2,12}$",
+          "x-knownValues": [
+            "service.install",
+            "hooks.install",
+            "host.name",
+            "stt.setup",
+            "notes.dir",
+            "device.bind",
+            "device.forget",
+            "settings.import",
+            "setup.skip"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 24,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+        },
+        "cand": {
+          "description": "device.bind: the one-off candidate cpad gave (docs/27 §3.1), never a serial.",
+          "type": "string",
+          "pattern": "^c[0-9a-f]{8,16}$"
+        }
+      }
+    }
+  }
+}

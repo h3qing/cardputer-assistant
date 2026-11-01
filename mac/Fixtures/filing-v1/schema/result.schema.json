@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/result.schema.json",
+  "title": "result",
+  "description": "A write that succeeded: `cpa filing file|done|hide|reopen|hand ... --json` (docs/23 §3.3, §3.4). filing is the state after it; changed is false when nothing was written. undo is a neutral description of the inverse: a client rebuilds its own argv from op and args (cpa prints it as a command), never copying one. op is an extensible enum. queue is the recording's queue item after the write, as row.queue: after hand, the new item and its qid.",
+  "type": "object",
+  "required": ["ok", "v", "id", "filing", "changed", "undo"],
+  "properties": {
+    "ok": { "const": true },
+    "v": { "$ref": "common.schema.json#/$defs/version" },
+    "id": { "$ref": "common.schema.json#/$defs/monoId" },
+    "filing": { "$ref": "common.schema.json#/$defs/filing" },
+    "changed": { "type": "boolean" },
+    "undo": {
+      "type": ["object", "null"],
+      "required": ["op", "id", "args"],
+      "properties": {
+        "op": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$", "x-knownValues": ["file", "reopen", "done", "hide"] },
+        "id": { "$ref": "common.schema.json#/$defs/monoId" },
+        "args": {
+          "description": "file: {project: a key, or null for no project}, project always present; the others: {}.",
+          "type": "object",
+          "properties": {
+            "project": { "anyOf": [{ "$ref": "common.schema.json#/$defs/projectKey" }, { "type": "null" }] }
+          }
+        }
+      },
+      "if": { "required": ["op"], "properties": { "op": { "const": "file" } } },
+      "then": { "properties": { "args": { "required": ["project"] } } }
+    },
+    "queue": { "$ref": "common.schema.json#/$defs/queueItem" }
+  },
+  "if": { "required": ["changed"], "properties": { "changed": { "const": false } } },
+  "then": { "properties": { "undo": { "type": "null" } } }
+}

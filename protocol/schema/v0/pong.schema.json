@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/pong.schema.json",
+  "title": "pong",
+  "description": "Reply to ping: uptime, outbox backlog and the snapshot revs the device holds.",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+  "required": ["up_ms", "pending", "revs"],
+  "properties": {
+    "t": {"const": "pong"},
+    "up_ms": {"$ref": "common.schema.json#/$defs/uint32"},
+    "pending": {"$ref": "common.schema.json#/$defs/count"},
+    "revs": {"$ref": "common.schema.json#/$defs/revs"},
+    "files": {"$ref": "common.schema.json#/$defs/files"}
+  }
+}

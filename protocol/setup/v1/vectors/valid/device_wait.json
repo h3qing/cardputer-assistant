@@ -1,0 +1,17 @@
+{
+  "doc": "row",
+  "name": "no board plugged in",
+  "data": {
+    "v": 1,
+    "id": "device",
+    "state": "wait",
+    "required": true,
+    "blocked_by": [
+      "service",
+      "notes"
+    ],
+    "title": "没发现设备",
+    "detail": "常见原因：数据线只能充电；第一次插线时没点“允许配件连接”；设备没开。",
+    "fix": []
+  }
+}

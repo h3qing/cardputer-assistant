@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/agent.result.schema.json",
+  "title": "agent.result",
+  "description": "Reply to agent.spawn / agent.reply. ok=false always carries a code.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [
+    {"$ref": "common.schema.json#/$defs/reply"},
+    {
+      "if": {"required": ["ok"], "properties": {"ok": {"const": false}}},
+      "then": {
+        "required": ["code"],
+        "properties": {"code": {"$ref": "common.schema.json#/$defs/errorCode"}}
+      }
+    }
+  ],
+  "required": ["ok"],
+  "properties": {
+    "t": {"const": "agent.result"},
+    "ok": {"type": "boolean"},
+    "code": {"anyOf": [{"$ref": "common.schema.json#/$defs/errorCode"}, {"type": "null"}]},
+    "name": {"anyOf": [{"$ref": "common.schema.json#/$defs/sessionName"}, {"type": "null"}]},
+    "short": {"anyOf": [{"$ref": "common.schema.json#/$defs/short"}, {"type": "null"}]},
+    "why": {
+      "description": "v0.4 (#25): why a spawn failed, when the Mac knows. untrusted = Claude Code has not trusted the project folder; login = claude is not logged in. Optional; a device treats a value it does not know as absent.",
+      "anyOf": [{"type": "string", "pattern": "^[a-z][a-z_]{0,15}$"}, {"type": "null"}]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "v": 1,
+  "preset": "grok-bot",
+  "name": "grok",
+  "label": "Grok",
+  "kind": "url",
+  "detect": {"bundle": "com.anysphere.sand"},
+  "template": "grokbot://app/v1/prompt?text={text}&id={p}",
+  "focus": "grokbot://app/v1/agent?id={p}",
+  "max_text_utf16": 1000,
+  "max_url": 2048,
+  "overflow": "clip",
+  "map": {
+    "pattern": "^[A-Za-z0-9_-]{1,128}$",
+    "from_link": "^grokbot://app/v1/(?:agent|prompt)\\?(?:[^#]*&)?id=([A-Za-z0-9_-]{1,128})"
+  },
+  "leaves_mac": true,
+  "key_hint": "x",
+  "note": "Fills a draft in a Grok Bot chat and brings it forward. Nothing is sent until you press Return in Grok Bot; then the text goes to Grok Bot's cloud computer."
+}

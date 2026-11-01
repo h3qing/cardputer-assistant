@@ -1,0 +1,78 @@
+# docs/21's new strings; python3 -I width.py <efont_cn12.c> < strings.txt
+# settings page (§4.2): row labels at x=8, values at x=100; fact values from x=44 to 236
+WiFi
+语言 Language
+无 · 只用 USB 线
+None · USB only
+中文
+English
+USB 线 · 
+USB · 
+在线
+离线
+online
+offline
+cpad/0.4.1
+123456789012345678901234
+3 分钟前 · 待传 ↑0 录2
+3 min ago · to sync ↑0 R2
+59 分钟前 · 待传 ↑99 录99
+59 min ago · to sync ↑99 R99
+never · to sync ↑0 R0
+# tab pills
+(设置)
+(设备)
+(Settings)
+(Device)
+# language toasts (§4.3), the names filled from kLangNames
+English · Enter again: 中文
+中文 · 再按 Enter 换回 English
+没存上：重启后会回到中文
+Not saved: 中文 after a restart
+# WiFi page W0 (§4.4): zh values at x=36, en at x=42
+(无)
+(None)
+这个固件不带 WiFi
+No WiFi in this firmware
+只用 USB 线连你的 Mac，不上网
+USB to your Mac, never online
+出厂固件有 WiFi：
+Factory firmware has WiFi:
+关开电源进 Launcher 切过去
+power-cycle into the Launcher
+先装 Launcher（见 README）
+Needs the Launcher (README)
+它会把 WiFi 密码明文打到串口
+Prints WiFi passwords to serial
+还没排期
+not planned yet
+Later
+# device tab (§4.5): values from x=46 to 236; English labels at most 36 px
+FW
+dev
+Boot
+Store
+outbox
+Heap
+Bat
+cpa-fw/0.4.1 rst poweron
+a1b2c3d4e5f6 boot ABCDEFG-HJKMN
+Launcher daemon cpad/0.4.1
+SD 476G 剩 412G
+SD 476G free 412G
+SD 476G 已迁移 3 迁移失败 1
+SD 476G moved 3 failed 1
+内部 1.5M 已迁移 12 迁移失败 12
+Flash 1.5M moved 12 failed 12
+待发 99 在途 4 坏 99 已满
+pending 99 out 4 bad 99 full
+180K 最小 170K 块 160K
+180K min 170K blk 160K
+4012mV 栈余 3.2K
+4012mV stack 3.2K
+键盘 幽灵 3 重置 1
+# W1, later (§5.4)
+关了，重启后再用
+Off until restart
+没插 Mac 时才扫描
+Unplug to scan

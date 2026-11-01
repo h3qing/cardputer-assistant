@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/common.schema.json",
+  "title": "common",
+  "description": "Shared definitions of the dest-cli contract v1: the JSON of `cpa dest pending|send|drop|usual|test --send` and `cpa filing send` with --json (docs/25 §5.4, §5.5). Unknown fields are always allowed; pattern follows ECMA-262. Only keywords the WhisperWoof validator knows are used (protocol/filing/tools/check_filing.KEYWORDS), so one validator reads both contracts.",
+  "$defs": {
+    "version": {
+      "const": 1
+    },
+    "ref": {
+      "description": "What waits or was sent: a recording id (MonoId, upper case) or another capture's id (a typed note's outbox id).",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "destId": {
+      "description": "A destination id: the kind, or <kind>.<name> with a name of at most 12 characters (docs/25 §2.2).",
+      "type": "string",
+      "pattern": "^[a-z]{3,7}(\\.[a-z0-9][a-z0-9-]{0,11})?$"
+    },
+    "kind": {
+      "type": "string",
+      "pattern": "^[a-z]{3,7}$",
+      "x-knownValues": [
+        "daily",
+        "todo",
+        "queue",
+        "session",
+        "clip",
+        "paste",
+        "file",
+        "url",
+        "app"
+      ]
+    },
+    "fl": {
+      "description": "The destination's flags (docs/25 §2.2), letters in this order: l live (only while you are there, never replayed), c leaves the Mac, p needs a project, k each capture is confirmed on the device. A reader that cannot read it treats it as lck.",
+      "type": "string",
+      "pattern": "^l?c?p?k?$"
+    },
+    "projectKey": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,11}$"
+    },
+    "label": {
+      "description": "A destination's label, display_safe: 1-24 UTF-8 bytes where it is stored, so at most 24 characters here.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 24,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "excerpt": {
+      "description": "At most 280 characters (code points), display_safe.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "code": {
+      "description": "A fixed error or failure code; an extensible enum: show an unknown one as it is.",
+      "type": "string",
+      "pattern": "^E_[A-Z_]{1,30}$"
+    },
+    "time": {
+      "description": "An ISO 8601 time with its zone, as events.jsonl has it.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:.]+([+-][0-9]{2}:[0-9]{2}|Z)$"
+    },
+    "via": {
+      "description": "How another app was handed the text: url (a pre-fill link) or clip (the clipboard, the app brought forward).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,15}$",
+      "x-knownValues": [
+        "url",
+        "clip"
+      ]
+    }
+  }
+}

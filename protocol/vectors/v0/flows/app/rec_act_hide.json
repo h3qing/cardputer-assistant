@@ -1,0 +1,176 @@
+{
+  "name": "rec_act_hide",
+  "spec": "docs/13-assistant-v2-plan.md §8.2, §8.4, §12.2",
+  "description": "rec.act star, tag (a project, then none) and hide, each answered by ack; the next rec.list leaves the hidden session out; an unknown session gets E_UNKNOWN_ITEM. Hide only hides: cpad appends events and touches no file, and manifest.json is never rewritten.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7f3a9c1e5b2d4a60",
+        "host_label": "Studio Mac"
+      }
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.4.1",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {"t": 2000, "from": "device", "msg": {"v": 0, "t": "rec.list", "id": "d2", "filter": "all", "max": 6}},
+    {
+      "t": 2030,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h2",
+        "re": "d2",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0004",
+            "mode": "memo",
+            "st": "done",
+            "wall_ms": 1792447320000,
+            "dur_ms": 12000,
+            "title": "买牛奶和鸡蛋",
+            "todo_n": 1
+          },
+          {
+            "rec": "2B7XW4R-00003-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792447120000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          },
+          {
+            "rec": "3QZK1M7-00009-0003",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792323120000,
+            "dur_ms": 3300000,
+            "title": "周会",
+            "todo_n": 0
+          }
+        ]
+      }
+    },
+    {
+      "t": 3000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.act", "id": "d3", "rec": "2B7XW4R-00003-0004", "op": "star"},
+      "note": "space on a row"
+    },
+    {
+      "t": 3020,
+      "from": "host",
+      "msg": {"v": 0, "t": "ack", "id": "h3", "re": "d3"},
+      "note": "cpad appends rec.edited{rec, starred}; manifest.json is not rewritten"
+    },
+    {
+      "t": 4000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.act", "id": "d4", "rec": "2B7XW4R-00003-0004", "op": "tag", "project": "cpa"},
+      "note": "1-9 on a row: assign that project"
+    },
+    {"t": 4020, "from": "host", "msg": {"v": 0, "t": "ack", "id": "h4", "re": "d4"}},
+    {
+      "t": 5000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.act", "id": "d5", "rec": "3QZK1M7-00009-0003", "op": "tag", "project": null},
+      "note": "0 on a row: no project"
+    },
+    {"t": 5020, "from": "host", "msg": {"v": 0, "t": "ack", "id": "h5", "re": "d5"}},
+    {
+      "t": 6000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.act", "id": "d6", "rec": "2B7XW4R-00003-0001", "op": "hide"},
+      "note": "Opt+D, then Enter on the confirm (docs/13 §8.4)"
+    },
+    {
+      "t": 6020,
+      "from": "host",
+      "msg": {"v": 0, "t": "ack", "id": "h6", "re": "d6"},
+      "note": "cpad appends rec.hidden{rec}; no file is written, moved or deleted; cpa rec unhide brings it back"
+    },
+    {
+      "t": 6100,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.list", "id": "d7", "filter": "all", "max": 6},
+      "note": "the list reloads"
+    },
+    {
+      "t": 6130,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h7",
+        "re": "d7",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0004",
+            "mode": "memo",
+            "st": "done",
+            "wall_ms": 1792447320000,
+            "dur_ms": 12000,
+            "title": "买牛奶和鸡蛋",
+            "todo_n": 1,
+            "starred": true,
+            "project": "cpa"
+          },
+          {
+            "rec": "3QZK1M7-00009-0003",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792323120000,
+            "dur_ms": 3300000,
+            "title": "周会",
+            "todo_n": 0,
+            "project": null
+          }
+        ]
+      },
+      "note": "the hidden session is left out"
+    },
+    {
+      "t": 7000,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.act", "id": "d8", "rec": "3QZK1M7-00009-0ZZZ", "op": "hide"},
+      "note": "a session cpad does not know"
+    },
+    {"t": 7020, "from": "host", "msg": {"v": 0, "t": "error", "id": "h8", "re": "d8", "code": "E_UNKNOWN_ITEM"}},
+    {"t": 7020, "expect": {"host.credit_used": 0, "device.link": "Ready"}}
+  ]
+}

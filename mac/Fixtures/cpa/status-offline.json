@@ -1,0 +1,31 @@
+{
+  "running": false,
+  "version": "0.1.0",
+  "device": {
+    "serial": "02:00:5e:10:00:01"
+  },
+  "projects": [
+    {
+      "key": "acmeshop",
+      "slot": 1,
+      "ok": true
+    },
+    {
+      "key": "cardputer",
+      "slot": 2,
+      "ok": true
+    }
+  ],
+  "projects_error": null,
+  "items_stored": 3,
+  "queue_open": 2,
+  "recordings": {
+    "on_device": null,
+    "pulling": 0,
+    "waiting": 4,
+    "processing": 0,
+    "blocked": 0,
+    "failed": 1,
+    "last_result_at": "2026-10-21T14:50:31.000+08:00"
+  }
+}

@@ -1,0 +1,15 @@
+(version 1)
+; #71 backstop for what the audit hook in hermetic.py cannot see (stat-only checks, children that work out the
+; real home on their own): any process, pytest or a child, is killed the moment it reads file contents, writes,
+; maps, execs or connects an AF_UNIX socket under the real home. A local check before a release, macOS only.
+; Params: REAL_HOME; REPO (may be under REAL_HOME); UV_PYTHON (the interpreter the venv points at, read only).
+; Run from daemon/ with a PATH that has no REAL_HOME folders (shutil.which's exec probes there would trip it):
+;   sandbox-exec -f tests/support/hermetic-check.sb -D REAL_HOME=$HOME -D REPO=$(cd .. && pwd) \
+;     -D UV_PYTHON=$HOME/.local/share/uv/python env HOME=$(mktemp -d /tmp/cpaout.XXXX) \
+;     PATH=$PWD/.venv/bin:<PATH without $HOME entries> .venv/bin/python -m pytest -q
+; test_stt_sandbox's two sandbox tests fail under it (no sandbox inside a sandbox); everything else must pass.
+(allow default)
+(deny file-read-data file-write* file-map-executable process-exec* (subpath (param "REAL_HOME")) (with send-signal SIGKILL))
+(deny network-outbound (remote unix-socket (subpath (param "REAL_HOME"))) (with send-signal SIGKILL))
+(allow file-read-data file-map-executable process-exec* (subpath (param "UV_PYTHON")))
+(allow file-read-data file-write* file-map-executable process-exec* (subpath (param "REPO")))

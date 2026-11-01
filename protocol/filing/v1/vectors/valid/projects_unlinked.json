@@ -1,0 +1,25 @@
+{
+  "doc": "projects",
+  "name": "named groups: one linked to a folder, one without (docs/25 §8)",
+  "data": {
+    "v": 1,
+    "projects": [
+      {
+        "key": "web",
+        "name": "Web site",
+        "slot": 1,
+        "ok": true,
+        "linked": true,
+        "folder": "my-repo"
+      },
+      {
+        "key": "p2",
+        "name": "家务",
+        "slot": 2,
+        "ok": true,
+        "linked": false,
+        "folder": null
+      }
+    ]
+  }
+}

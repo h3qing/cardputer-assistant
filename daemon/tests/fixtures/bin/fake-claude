@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+"""Stand-in for the `claude` CLI (Claude Code 2.1.272 shapes, docs/gates/cli-gates.md) for cpad tests.
+
+State lives in $FAKE_CLAUDE_DIR:
+  calls.jsonl  one line per invocation: {"argv", "cwd", "env"}
+  state.json   {"sessions": [...agents --json items...], "seq": n, "spawn_mode": ok|crash|no_short|fail|untrusted,
+                "resume_mode": same|fork, "spawn_status": busy|idle|..., "logged_in": true|false (auth status)}
+Tests edit state.json to flip session states. Python 3.9 compatible, stdlib only.
+"""
+
+import fcntl
+import json
+import os
+import sys
+
+STATE_DIR = os.environ.get("FAKE_CLAUDE_DIR", "")
+CONTROL = {"--", "--bg", "--resume"}
+
+
+def _path(name):
+    return os.path.join(STATE_DIR, name)
+
+
+def _record():
+    entry = {"argv": sys.argv, "cwd": os.getcwd(), "env": dict(os.environ)}
+    with open(_path("calls.jsonl"), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+class State:
+    def __enter__(self):
+        self.lock = open(_path("state.lock"), "w")
+        fcntl.flock(self.lock, fcntl.LOCK_EX)
+        try:
+            with open(_path("state.json"), encoding="utf-8") as fh:
+                self.doc = json.load(fh)
+        except FileNotFoundError:
+            self.doc = {}
+        self.doc.setdefault("sessions", [])
+        return self.doc
+
+    def __exit__(self, *exc):
+        # Atomic replace: a reader must never see a truncated state.json.
+        tmp = _path("state.json.fake-tmp")
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump(self.doc, fh, ensure_ascii=False)
+        os.replace(tmp, _path("state.json"))
+        self.lock.close()
+
+
+def _after(args, flag):
+    return args[args.index(flag) + 1] if flag in args else None
+
+
+def _text(args):
+    return args[args.index("--") + 1] if "--" in args else None
+
+
+def _new_session(doc, name, status, state):
+    doc["seq"] = doc.get("seq", 0) + 1
+    short = "%08x" % (0xA0000000 + doc["seq"])
+    session = {"pid": 50000 + doc["seq"], "id": short, "cwd": os.getcwd(), "kind": "background",
+               "startedAt": 1792455500000 + doc["seq"], "sessionId": "%s-0000-4000-8000-%012x" % (short, doc["seq"]),
+               "name": name, "status": status, "state": state}
+    doc["sessions"].append(session)
+    return session
+
+
+def spawn(args):
+    with State() as doc:
+        mode = doc.get("spawn_mode", "ok")
+        if mode == "fail":
+            print("error: spawn failed", file=sys.stderr)
+            return 1
+        if mode == "untrusted":  # 2.1.306 wording; the path is printed unquoted
+            print("Workspace not trusted. Run `claude` in %s once and accept the trust prompt, then retry."
+                  % os.getcwd(), file=sys.stderr)
+            return 1
+        crashed = mode == "crash"
+        status = None if crashed else doc.get("spawn_status", "busy")
+        session = _new_session(doc, _after(args, "--name") or "", status, "failed" if crashed else "running")
+        if crashed:
+            session.pop("status")
+    if mode == "no_short":
+        print("Starting background service…")
+    else:
+        print("backgrounded · %s · %s" % (session["id"], session["name"]))
+    return 0
+
+
+def resume(args):
+    target_id = _after(args, "--resume")
+    extra = [a for a in args[: args.index("--")] if a not in CONTROL and a != target_id]
+    with State() as doc:
+        target = next((s for s in doc["sessions"] if s.get("sessionId") == target_id), None)
+        if target is None:
+            print("error: no such session", file=sys.stderr)
+            return 1
+        if extra or doc.get("resume_mode") == "fork":
+            copy = _new_session(doc, target.get("name", ""), "busy", "running")
+            print("backgrounded · %s" % copy["id"])
+            print("note: background session %s keeps its own saved options, so the flags you passed started a copy "
+                  "as %s." % (target["id"], copy["id"]), file=sys.stderr)
+            return 0
+        target["status"], target["state"] = "busy", "running"
+    print("backgrounded · %s · %s" % (target["id"], target.get("name", "")))
+    return 0
+
+
+def agents(args):
+    with State() as doc:
+        sessions = doc["sessions"]
+    if "--all" not in args:
+        sessions = [s for s in sessions if s.get("state") not in ("stopped", "failed", "crashed")]
+    print(json.dumps(sessions, ensure_ascii=False))
+    return 0
+
+
+def stop(args):
+    with State() as doc:
+        for session in doc["sessions"]:
+            if session.get("id") == args[1]:
+                session["state"] = "stopped"
+                session.pop("status", None)
+    print("stopped %s" % args[1])
+    return 0
+
+
+def auth_status():
+    with State() as doc:
+        logged_in = doc.get("logged_in", True)
+    shape = {"loggedIn": logged_in, "authMethod": "claude.ai" if logged_in else "none", "apiProvider": "firstParty"}
+    print(json.dumps(shape))
+    return 0 if logged_in else 1
+
+
+def main(args):
+    _record()
+    if args[:1] == ["--version"]:
+        print("2.1.272 (Claude Code)")
+        return 0
+    if args == ["auth", "status"]:
+        return auth_status()
+    if args[:1] == ["agents"]:
+        return agents(args)
+    if args[:1] == ["stop"]:
+        return stop(args)
+    if "--bg" in args:
+        return resume(args) if "--resume" in args else spawn(args)
+    print("fake-claude: unsupported %r" % (args,), file=sys.stderr)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

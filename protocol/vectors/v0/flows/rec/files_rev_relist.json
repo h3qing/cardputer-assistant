@@ -1,0 +1,229 @@
+{
+  "name": "files_rev_relist",
+  "spec": "docs/11-m3-design.md §6.2.4",
+  "description": "A memo is committed while the host is in the middle of a file. The host finishes that file from the same offset, deletes it, and only then lists again, because the observed rev differs from the expected rev (rev at listing time plus its own successful deletes). After that, its own delete alone needs no relist.",
+  "initial": {"device.link": "Ready", "host.link": "ready"},
+  "steps": [
+    {"t": 0, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h30"}},
+    {
+      "t": 10,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d30",
+        "re": "h30",
+        "up_ms": 1000000,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 1, "rev": 5, "live": false}
+      }
+    },
+    {
+      "t": 20,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.list", "id": "h31", "max": 4},
+      "note": "expected rev = 5 (listed at rev 5, no own deletes yet)"
+    },
+    {
+      "t": 30,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d31",
+        "re": "h31",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A24",
+            "kind": "rec",
+            "size": 1424,
+            "sha256": "ff9f1dda63b19a178b47714104c42f45cd0547b47c6fcd4c929cfb7ee87b99e8",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 3,
+            "last": true,
+            "mode": "meeting",
+            "dur_ms": 43,
+            "at": {"up_ms": 1600000, "wall_ms": null},
+            "project": "cpa"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "t": 40,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.get", "id": "h32", "fid": "3QZK1M7-00042-0A24", "off": 0, "len": 1380}
+    },
+    {
+      "t": 50,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d32",
+        "re": "h32",
+        "fid": "3QZK1M7-00042-0A24",
+        "off": 0,
+        "n": 1380,
+        "size": 1424,
+        "crc": 1323587514,
+        "b64": "UklGRogFAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YWQFAADpCBYK9gqCC7cLkwsWC0QKJQm/Bx8GUARgAl4AWv5h/IX60vhW9xz2LfWR9Ez0YPTN9I/1ofb795H5WftE/UT/SQFEAycF4wZqCLEJrgpZC64LqgtNC5oKlglJCL0G/QQXAxoBFf8W/S77avnZ94X2evXA9Fv0TvSb9D/1NfZ29/f4r/qO/In+jQCOAnwERwbjB0IJWwolC5oLtgt5C+UK/QnKCFMHpQXLA9UB0f/O/dz7Cfpk+Pn20/X69HX0SPR19Pr00/X59mT4Cfrc+8790f/VAcsDpQVTB8oI/QnlCnkLtguaCyULWwpCCeMHRwZ8BI4CjQCJ/o78r/r3+Hb3NfY/9Zv0TvRb9MD0evWF9tn3avku+xb9Ff8aARcD/QS9BkkIlgmaCk0LqguuC1kLrgqxCWoI4wYnBUQDSQFE/0T9WfuR+fv3ofaP9c30YPRM9JH0LfUc9lb30viF+mH8Wv5eAGACUAQfBr8HJQlEChYLkwu3C4IL9goWCukIeAfOBfgDAwIAAP39CPwy+oj4F/fq9Qr1fvRJ9G306vS89dv2Qfjh+bD7oP2i/6YBnwN7BS4HqgjkCdMKbwu0C6ALMwtxCl8JBQhvBqcEvAK8ALf+vPzZ+h35lvdP9lL1p/RS9Fb0s/Rm9Wr2t/dD+QP76fzm/usA6gLSBJYGJwh7CYYKQAulC7ILZQvBCssJiggJB1EFcgN3AXP/cv2E+7n5Hfi+9qX12/Rm9Er0h/Qb9QP2Nvet+Fv6Nfwr/i8AMgIkBPcFnAcHCS0KBguLC7gLiwsGCy0KBwmcB/cFJAQyAi8AK/41/Fv6rfg29wP2G/WH9Er0ZvTb9KX1vvYd+Ln5hPty/XP/dwFyA1EFCQeKCMsJwQplC7ILpQtAC4YKewknCJYG0gTqAusA5v7p/AP7Q/m392r2ZvWz9Fb0UvSn9FL1T/aW9x352fq8/Lf+vAC8AqcEbwYFCF8JcQozC6ALtAtvC9MK5AmqCC4HewWfA6YBov+g/bD74flB+Nv2vPXq9G30SfR+9Ar16vUX94j4MvoI/P39AAADAvgDzgV4B+kIFgr2CoILtwuTCxYLRAolCb8HHwZQBGACXgBa/mH8hfrS+Fb3HPYt9ZH0TPRg9M30j/Wh9vv3kflZ+0T9RP9JAUQDJwXjBmoIsQmuClkLrguqC00LmgqWCUkIvQb9BBcDGgEV/xb9Lvtq+dn3hfZ69cD0W/RO9Jv0P/U19nb39/iv+o78if6NAI4CfARHBuMHQglbCiULmgu2C3kL5Qr9CcoIUwelBcsD1QHR/8793PsJ+mT4+fbT9fr0dfRI9HX0+vTT9fn2ZPgJ+tz7zv3R/9UBywOlBVMHygj9CeUKeQu2C5oLJQtbCkIJ4wdHBnwEjgKNAIn+jvyv+vf4dvc19j/1m/RO9Fv0wPR69YX22fdq+S77Fv0V/xoBFwP9BL0GSQiWCZoKTQuqC64LWQuuCrEJagjjBicFRANJAUT/RP1Z+5H5+/eh9o/1zfRg9Ez0kfQt9Rz2VvfS+IX6Yfxa/l4AYAJQBB8GvwclCUQKFguTC7cLggv2ChYK6Qh4B84F+AMDAgAA/f0I/DL6iPgX9+r1CvV+9En0bfTq9Lz12/ZB+OH5sPug/aL/pgGfA3sFLgeqCOQJ0wpvC7QLoAszC3EKXwkFCG8GpwS8ArwAt/68/Nn6HfmW90/2UvWn9FL0VvSz9Gb1ava390P5A/vp/Ob+6wDqAtIElgYnCHsJhgpAC6ULsgtlC8EKywmKCAkHUQVyA3cB"
+      }
+    },
+    {
+      "t": 60,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.get", "id": "h33", "fid": "3QZK1M7-00042-0A24", "off": 1380, "len": 1380}
+    },
+    {
+      "t": 62,
+      "from": "device",
+      "msg": {"v": 0, "t": "error", "id": "d33", "re": "h33", "code": "E_BUSY", "msg": "live"},
+      "note": "the user just pressed G0: a memo is recording"
+    },
+    {"t": 5000, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h34"}},
+    {
+      "t": 5010,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d34",
+        "re": "h34",
+        "up_ms": 1004990,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 1, "rev": 5, "live": true}
+      }
+    },
+    {"t": 10000, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h35"}},
+    {
+      "t": 10010,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d35",
+        "re": "h35",
+        "up_ms": 1009990,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 2, "rev": 6, "live": false}
+      },
+      "note": "memo committed: rev 6 differs from the expected 5, but a file is in progress, so no relist yet"
+    },
+    {
+      "t": 10020,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.get", "id": "h36", "fid": "3QZK1M7-00042-0A24", "off": 1380, "len": 1380},
+      "note": "finish the current file from the same offset; never restart it"
+    },
+    {
+      "t": 10030,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d36",
+        "re": "h36",
+        "fid": "3QZK1M7-00042-0A24",
+        "off": 1380,
+        "n": 44,
+        "size": 1424,
+        "crc": 835397335,
+        "b64": "c/9y/YT7ufkd+L72pfXb9Gb0SvSH9Bv1A/Y29634W/o1/Cv+LwAyAiQE9wU="
+      }
+    },
+    {
+      "t": 10040,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h37",
+        "fid": "3QZK1M7-00042-0A24",
+        "size": 1424,
+        "sha256": "ff9f1dda63b19a178b47714104c42f45cd0547b47c6fcd4c929cfb7ee87b99e8"
+      }
+    },
+    {
+      "t": 10050,
+      "from": "device",
+      "msg": {"v": 0, "t": "ack", "id": "d37", "re": "h37"},
+      "note": "own delete: device rev 6 -> 7"
+    },
+    {
+      "t": 10060,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.list", "id": "h38", "max": 4},
+      "note": "between files and observed rev (6) != expected (5): relist"
+    },
+    {
+      "t": 10070,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d38",
+        "re": "h38",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A25",
+            "kind": "rec",
+            "size": 64044,
+            "sha256": "f2bd5a6fdc3f8bf1abc678754a79752175699cc7308c9eb852f72553d910c776",
+            "rec": "3QZK1M7-00042-0A25",
+            "seg": 0,
+            "last": true,
+            "mode": "memo",
+            "dur_ms": 2000,
+            "at": {"up_ms": 1001200, "wall_ms": null},
+            "lead_ms": 200
+          }
+        ],
+        "more": false
+      },
+      "note": "expected rev is now 6 + 1 own delete = 7"
+    },
+    {"t": 15000, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h39"}},
+    {
+      "t": 15010,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d39",
+        "re": "h39",
+        "up_ms": 1014990,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 1, "rev": 7, "live": false}
+      },
+      "note": "rev 7 == expected 7: no relist"
+    },
+    {
+      "t": 15020,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.get", "id": "h40", "fid": "3QZK1M7-00042-0A25", "off": 0, "len": 1380}
+    },
+    {
+      "t": 15030,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d40",
+        "re": "h40",
+        "fid": "3QZK1M7-00042-0A25",
+        "off": 0,
+        "n": 1380,
+        "size": 64044,
+        "crc": 1011080731,
+        "b64": "UklGRiT6AABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQD6AAC3C5MLFgtECiUJvwcfBlAEYAJeAFr+YfyF+tL4Vvcc9i31kfRM9GD0zfSP9aH2+/eR+Vn7RP1E/0kBRAMnBeMGagixCa4KWQuuC6oLTQuaCpYJSQi9Bv0EFwMaARX/Fv0u+2r52feF9nr1wPRb9E70m/Q/9TX2dvf3+K/6jvyJ/o0AjgJ8BEcG4wdCCVsKJQuaC7YLeQvlCv0JyghTB6UFywPVAdH/zv3c+wn6ZPj59tP1+vR19Ej0dfT69NP1+fZk+An63PvO/dH/1QHLA6UFUwfKCP0J5Qp5C7YLmgslC1sKQgnjB0cGfASOAo0Aif6O/K/69/h29zX2P/Wb9E70W/TA9Hr1hfbZ92r5LvsW/RX/GgEXA/0EvQZJCJYJmgpNC6oLrgtZC64KsQlqCOMGJwVEA0kBRP9E/Vn7kfn796H2j/XN9GD0TPSR9C31HPZW99L4hfph/Fr+XgBgAlAEHwa/ByUJRAoWC5MLtwuCC/YKFgrpCHgHzgX4AwMCAAD9/Qj8MvqI+Bf36vUK9X70SfRt9Or0vPXb9kH44fmw+6D9ov+mAZ8DewUuB6oI5AnTCm8LtAugCzMLcQpfCQUIbwanBLwCvAC3/rz82fod+Zb3T/ZS9af0UvRW9LP0ZvVq9rf3Q/kD++n85v7rAOoC0gSWBicIewmGCkALpQuyC2ULwQrLCYoICQdRBXIDdwFz/3L9hPu5+R34vval9dv0ZvRK9If0G/UD9jb3rfhb+jX8K/4vADICJAT3BZwHBwktCgYLiwu4C4sLBgstCgcJnAf3BSQEMgIvACv+Nfxb+q34NvcD9hv1h/RK9Gb02/Sl9b72Hfi5+YT7cv1z/3cBcgNRBQkHigjLCcEKZQuyC6ULQAuGCnsJJwiWBtIE6gLrAOb+6fwD+0P5t/dq9mb1s/RW9FL0p/RS9U/2lvcd+dn6vPy3/rwAvAKnBG8GBQhfCXEKMwugC7QLbwvTCuQJqgguB3sFnwOmAaL/oP2w++H5Qfjb9rz16vRt9En0fvQK9er1F/eI+DL6CPz9/QAAAwL4A84FeAfpCBYK9gqCC7cLkwsWC0QKJQm/Bx8GUARgAl4AWv5h/IX60vhW9xz2LfWR9Ez0YPTN9I/1ofb795H5WftE/UT/SQFEAycF4wZqCLEJrgpZC64LqgtNC5oKlglJCL0G/QQXAxoBFf8W/S77avnZ94X2evXA9Fv0TvSb9D/1NfZ29/f4r/qO/In+jQCOAnwERwbjB0IJWwolC5oLtgt5C+UK/QnKCFMHpQXLA9UB0f/O/dz7Cfpk+Pn20/X69HX0SPR19Pr00/X59mT4Cfrc+8790f/VAcsDpQVTB8oI/QnlCnkLtguaCyULWwpCCeMHRwZ8BI4CjQCJ/o78r/r3+Hb3NfY/9Zv0TvRb9MD0evWF9tn3avku+xb9Ff8aARcD/QS9BkkIlgmaCk0LqguuC1kLrgqxCWoI4wYnBUQDSQFE/0T9WfuR+fv3ofaP9c30YPRM9JH0LfUc9lb30viF+mH8Wv5eAGACUAQfBr8HJQlEChYLkwu3C4IL9goWCukIeAfOBfgDAwIAAP39CPwy+oj4F/fq9Qr1fvRJ9G306vS89dv2Qfjh+bD7oP2i/6YBnwN7BS4HqgjkCdMKbwu0C6ALMwtxCl8JBQhvBqcEvAK8ALf+vPzZ+h35lvdP9lL1p/RS9Fb0s/Rm9Wr2t/dD+QP76fzm/usA6gLSBJYGJwh7CYYKQAulC7ILZQvBCssJiggJB1EFcgN3AXP/cv2E+7n5"
+      }
+    },
+    {"t": 15030, "expect": {"host.credit_used": 0}}
+  ]
+}

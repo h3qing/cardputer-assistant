@@ -1,0 +1,4 @@
+Shaped like the output of cpa 0.1.0 on this Mac (2026-10-22): cpa status --json and cpa rec ls --json.
+Every session id, serial, MAC, boot id and time was replaced (times shifted by whole days); extra rows
+add the states the real list lacked. status-later and stt-status are synthetic (fields of a later cpa,
+cpa_stt/cli_status.py). ../notes is a synthetic notes dir for some of the rec-ls sessions; no real text.

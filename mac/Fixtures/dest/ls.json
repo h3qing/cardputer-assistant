@@ -1,0 +1,10 @@
+{"problem": null, "dests": [
+ {"slot": 1, "key": null, "id": "daily", "kind": "daily", "label": "Daily note", "state": "on", "leaves_mac": false, "fl": "", "profiles": [], "file": null},
+ {"slot": 2, "key": null, "id": "todo", "kind": "todo", "label": "To-do", "state": "on", "leaves_mac": false, "fl": "p", "profiles": [], "file": null},
+ {"slot": 3, "key": "c", "id": "clip", "kind": "clip", "label": "Clipboard", "state": "on", "leaves_mac": false, "fl": "l", "profiles": [], "file": null},
+ {"slot": 4, "key": "x", "id": "url.grok", "kind": "url", "label": "Grok", "state": "on", "leaves_mac": true, "fl": "lc", "profiles": [], "file": null,
+  "handler": {"bundle": "invalid.example.bot", "team": "TEAMID0000"}, "effect": "draft", "verified": "draft", "preset": "grok-bot", "newer_preset": false, "takes_map": true},
+ {"slot": 5, "key": "o", "id": "file.ob", "kind": "file", "label": "Vault", "state": "on", "leaves_mac": false, "fl": "", "profiles": [], "file": "~/Vault/Inbox.md"},
+ {"slot": 6, "key": "u", "id": "url.cursor", "kind": "url", "label": "Cursor", "state": "on", "leaves_mac": true, "fl": "lck", "profiles": [], "file": null,
+  "handler": {"bundle": "invalid.example.editor", "team": "TEAMID0001"}, "effect": "draft", "verified": null, "preset": "cursor", "newer_preset": false}
+]}

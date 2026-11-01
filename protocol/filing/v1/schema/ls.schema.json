@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/ls.schema.json",
+  "title": "ls",
+  "description": "`cpa filing ls --json` (docs/23 §3.1, §3.2): one page of rows, newest first. counts are over every recording, whatever the filters: new rows of this Mac, new rows of the other-Mac group, voice clips waiting for their capture, and segments still on the device (null when cpad is not running).",
+  "type": "object",
+  "required": ["v", "counts", "next_cursor", "rows"],
+  "properties": {
+    "v": { "$ref": "common.schema.json#/$defs/version" },
+    "counts": {
+      "type": "object",
+      "required": ["new", "other_mac", "clips_waiting", "on_device"],
+      "properties": {
+        "new": { "$ref": "common.schema.json#/$defs/count" },
+        "other_mac": { "$ref": "common.schema.json#/$defs/count" },
+        "clips_waiting": { "$ref": "common.schema.json#/$defs/count" },
+        "on_device": { "anyOf": [{ "$ref": "common.schema.json#/$defs/count" }, { "type": "null" }] }
+      }
+    },
+    "next_cursor": {
+      "description": "Opaque; pass it back with --cursor and the same filters for the next page. null on the last page.",
+      "anyOf": [{ "type": "string", "minLength": 1, "maxLength": 512, "pattern": "^[A-Za-z0-9_-]+$" }, { "type": "null" }]
+    },
+    "rows": { "type": "array", "maxItems": 1000, "items": { "$ref": "row.schema.json" } }
+  }
+}

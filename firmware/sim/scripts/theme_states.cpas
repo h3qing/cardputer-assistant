@@ -1,0 +1,50 @@
+# Mando's states, one shot each (docs/19 §7.2, mockups 01 and 04-07): on home he sniffs while
+# cpad does not answer, waits for you with "!", sits when nothing does, hops when a memo is
+# saved and shows "?" when one was too short; on the memo page he nods while you talk and
+# tilts his head in a pause; on the lock card he dozes; on the meeting page he listens.
+# S3: he moves while the backlight is On, so each shot catches the pose of its moment;
+# theme_motion.cpas has the frames. Run:
+#   .pio/build/sim/cpa-sim shots scripts/theme_states.cpas --out out/theme_states
+boot store=sd usb=on bat=4100
+wait 1200
+shot home-sniff  主页：Mac 插着，cpad 没响应（嗅一嗅）
+include common/demo_state.cpas
+wait 1400
+shot home-needs  主页：1 件事在等你（!）
+host sessions.snapshot {"rev":6,"total":1,"sessions":[{"sid":"9f00aa11","slot":1,"name":"landing page copy","kind":"bg","st":"idle","need":false,"age_s":3600,"short":"d4e5f6"}]}
+wait 1200
+shot home-idle  主页：都处理完了（在呢）
+
+# A memo: someone talking, a pause, and back home a hop once it is saved.
+down g0
+wait 720
+mic 1200 4096
+shot memo-listen  便条：有声音，点头在听
+mic 800 16
+shot memo-quiet  便条：安静（屋里的底噪），歪头在听
+up g0
+# the memo records on through its 0.6 s grace (gh #51), then saves
+wait 1000
+shot home-hop  主页：存好了，跳一下
+
+# Too short: dropped, and Mando heard nothing.
+wait 3000
+hold g0 560
+wait 900
+shot home-novoice  主页：太短没听到（?）
+
+# The lock card, then a meeting.
+wait 3000
+press opt+l
+press g0
+shot lock-card  锁屏卡片：打盹中
+press opt+l
+press enter
+wait 300
+press opt+r
+wait 500
+shot meeting-confirm  开会确认（原文不变）
+press enter
+wait 600
+mic 1500 4096
+shot meeting  开会：在听

@@ -1,0 +1,18 @@
+{
+  "doc": "row",
+  "name": "hooks point at an old cpa",
+  "data": {
+    "v": 1,
+    "id": "hooks",
+    "state": "warn",
+    "required": false,
+    "blocked_by": [],
+    "title": "Claude Code 的 hooks 指向另一个 cpa",
+    "detail": "",
+    "fix": [
+      {
+        "op": "hooks.install"
+      }
+    ]
+  }
+}

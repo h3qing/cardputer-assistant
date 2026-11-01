@@ -1,0 +1,9 @@
+{
+  "doc": "error",
+  "name": "an error without a field",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_UNAVAILABLE"
+  }
+}

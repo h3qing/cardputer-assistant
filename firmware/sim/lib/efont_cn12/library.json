@@ -1,0 +1,9 @@
+{
+  "name": "efont_cn12",
+  "version": "0.0.0",
+  "description": "efontCN_12 from M5GFX, generated into .pio/gen/efont by gen_font.py",
+  "build": {
+    "srcDir": "../../.pio/gen/efont",
+    "includeDir": "include"
+  }
+}

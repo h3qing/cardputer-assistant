@@ -1,0 +1,15 @@
+{
+  "v": 1,
+  "preset": "codex",
+  "name": "codex",
+  "label": "Codex",
+  "kind": "url",
+  "detect": {"bundle": "com.openai.codex"},
+  "template": "codex://threads/new?prompt={text}",
+  "max_text_utf16": 2000,
+  "max_url": 8192,
+  "overflow": "clip",
+  "leaves_mac": true,
+  "key_hint": "b",
+  "note": "Opens a new thread in the ChatGPT app (Codex) with the text. Whether it only fills a draft is checked by the test send on this Mac; until then every capture is confirmed on the device."
+}

@@ -1,0 +1,12 @@
+{
+  "doc": "result",
+  "name": "a hand withdrawn by reopen has no undo",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "id": "3QZK1M7-00042-0A1F",
+    "filing": "new",
+    "changed": true,
+    "undo": null
+  }
+}

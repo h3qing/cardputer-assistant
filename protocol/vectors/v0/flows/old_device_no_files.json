@@ -1,0 +1,75 @@
+{
+  "name": "old_device_no_files",
+  "spec": "docs/11-m3-design.md §5.2, §5.7",
+  "description": "A v0.3 daemon talks to a v0.2 device (or a nosd build): hello and pong carry no files, so the daemon never sends file.* (an old device would answer E_UNKNOWN_TYPE).",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.3.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "a v0.3 daemon"
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": false
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {"t": 5100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h2"}},
+    {
+      "t": 5115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d2",
+        "re": "h2",
+        "up_ms": 58226,
+        "pending": 0,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "note": "no files: this device cannot serve file.*"
+    },
+    {"t": 10100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h3"}},
+    {
+      "t": 10115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d3",
+        "re": "h3",
+        "up_ms": 63226,
+        "pending": 0,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      }
+    },
+    {"t": 10115, "expect": {"host.credit_used": 0, "host.reboot_detected": false}}
+  ]
+}

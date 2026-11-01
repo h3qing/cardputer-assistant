@@ -1,0 +1,12 @@
+{
+  "v": 1,
+  "preset": "obsidian",
+  "name": "ob",
+  "label": "Obsidian",
+  "kind": "file",
+  "detect": {"bundle": "md.obsidian"},
+  "file": {"path": "Cardputer.md"},
+  "leaves_mac": true,
+  "key_hint": "o",
+  "note": "Appends one line per capture to a note in your vault (--root VAULT). A vault synced by Obsidian Sync or iCloud leaves this Mac; add --local when it never does."
+}

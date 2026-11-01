@@ -1,0 +1,101 @@
+[
+  {
+    "name": "list_days",
+    "title": "List days",
+    "description": "…",
+    "annotations": {
+      "title": "List days",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "read_daily_note",
+    "title": "Read a daily note",
+    "description": "…",
+    "annotations": {
+      "title": "Read a daily note",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "list_recordings",
+    "title": "List recordings",
+    "description": "…",
+    "annotations": {
+      "title": "List recordings",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "get_recording",
+    "title": "Get a recording",
+    "description": "…",
+    "annotations": {
+      "title": "Get a recording",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "read_transcript",
+    "title": "Read a transcript",
+    "description": "…",
+    "annotations": {
+      "title": "Read a transcript",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "list_todos",
+    "title": "List tasks",
+    "description": "…",
+    "annotations": {
+      "title": "List tasks",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "list_captures",
+    "title": "List captures",
+    "description": "…",
+    "annotations": {
+      "title": "List captures",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "list_queue",
+    "title": "List the project queue",
+    "description": "…",
+    "annotations": {
+      "title": "List the project queue",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "get_status",
+    "title": "Get status",
+    "description": "…",
+    "annotations": {
+      "title": "Get status",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "search",
+    "title": "Search",
+    "description": "…",
+    "annotations": {
+      "title": "Search",
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "queue_add",
+    "title": "Add to the project queue",
+    "description": "…",
+    "annotations": {
+      "title": "Add to the project queue",
+      "readOnlyHint": false
+    }
+  }
+]

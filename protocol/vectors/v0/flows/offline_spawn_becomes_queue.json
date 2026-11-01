@@ -1,0 +1,82 @@
+{
+  "name": "offline_spawn_becomes_queue",
+  "spec": "05 §5.6, §9.2; 04 S5",
+  "description": "Confirming a spawn while the link is not Ready stores a queue item (intent=spawn) in the outbox. After the handshake it is delivered like any item; the daemon records it and never starts a session.",
+  "initial": {"device.link": "Attached", "host.link": "offline", "device.outbox_pending": 0},
+  "steps": [
+    {
+      "t": 0,
+      "event": "user_spawn",
+      "args": {"project": "cpa", "text": "Write native tests for the chord detector"},
+      "note": "Opt+S, text, Enter; Confirm shows 'save to queue' because the link is not Ready"
+    },
+    {"t": 0, "expect": {"device.outbox_pending": 1, "device.agent_inflight": 0}},
+    {
+      "t": 10000,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "daemon resumes after cpa pause"
+    },
+    {
+      "t": 10015,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 63000,
+        "rst": "poweron",
+        "time": false,
+        "pending": 1,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      }
+    },
+    {"t": 10015, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {
+      "t": 10030,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0007",
+        "kind": "queue",
+        "at": {"up_ms": 53000, "wall_ms": null},
+        "body": {
+          "text": "Write native tests for the chord detector",
+          "project": "cpa",
+          "intent": "spawn"
+        }
+      },
+      "note": "time.set and snapshots omitted, see handshake"
+    },
+    {
+      "t": 10050,
+      "from": "host",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h2", "re": "3QZK1M7-0000C-0007", "status": "stored"}
+    },
+    {
+      "t": 10050,
+      "expect": {
+        "device.outbox_pending": 0,
+        "host.items_stored": 1,
+        "host.queue_added": 1,
+        "host.spawn_calls": 0
+      },
+      "note": "a queued spawn is never executed by the daemon"
+    }
+  ]
+}

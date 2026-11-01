@@ -1,0 +1,251 @@
+{
+  "$comment": "Vectors for queue.snapshot; format in protocol/README.md.",
+  "type": "queue.snapshot",
+  "valid": [
+    {
+      "name": "queue.snapshot (05 §6.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo"}
+        ]
+      }
+    },
+    {
+      "name": "feedback item tied to a session, 80-byte CJK-mixed summary",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {
+            "qid": "q18",
+            "slot": 1,
+            "text": "回复：aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "intent": "feedback",
+            "sid": "5c2e8a14"
+          }
+        ]
+      }
+    },
+    {
+      "name": "twelve items, four per project",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q20", "slot": 1, "text": "queued item 0", "intent": "todo"},
+          {"qid": "q21", "slot": 1, "text": "queued item 1", "intent": "todo"},
+          {"qid": "q22", "slot": 1, "text": "queued item 2", "intent": "todo"},
+          {"qid": "q23", "slot": 1, "text": "queued item 3", "intent": "todo"},
+          {"qid": "q24", "slot": 2, "text": "queued item 4", "intent": "todo"},
+          {"qid": "q25", "slot": 2, "text": "queued item 5", "intent": "todo"},
+          {"qid": "q26", "slot": 2, "text": "queued item 6", "intent": "todo"},
+          {"qid": "q27", "slot": 2, "text": "queued item 7", "intent": "todo"},
+          {"qid": "q28", "slot": 3, "text": "queued item 8", "intent": "todo"},
+          {"qid": "q29", "slot": 3, "text": "queued item 9", "intent": "todo"},
+          {"qid": "q30", "slot": 3, "text": "queued item 10", "intent": "todo"},
+          {"qid": "q31", "slot": 3, "text": "queued item 11", "intent": "todo"}
+        ]
+      }
+    },
+    {
+      "name": "spawn item whose earlier Opt+S result is unknown (docs/20 U25, v0.4.1)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q18", "slot": 1, "text": "write native tests for chord detector", "intent": "spawn", "uncertain": true},
+          {"qid": "q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo", "uncertain": null}
+        ]
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "thirteen items",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q20", "slot": 1, "text": "queued item 0", "intent": "todo"},
+          {"qid": "q21", "slot": 1, "text": "queued item 1", "intent": "todo"},
+          {"qid": "q22", "slot": 1, "text": "queued item 2", "intent": "todo"},
+          {"qid": "q23", "slot": 1, "text": "queued item 3", "intent": "todo"},
+          {"qid": "q24", "slot": 2, "text": "queued item 4", "intent": "todo"},
+          {"qid": "q25", "slot": 2, "text": "queued item 5", "intent": "todo"},
+          {"qid": "q26", "slot": 2, "text": "queued item 6", "intent": "todo"},
+          {"qid": "q27", "slot": 2, "text": "queued item 7", "intent": "todo"},
+          {"qid": "q28", "slot": 3, "text": "queued item 8", "intent": "todo"},
+          {"qid": "q29", "slot": 3, "text": "queued item 9", "intent": "todo"},
+          {"qid": "q30", "slot": 3, "text": "queued item 10", "intent": "todo"},
+          {"qid": "q31", "slot": 3, "text": "queued item 11", "intent": "todo"},
+          {"qid": "q40", "slot": 4, "text": "one more", "intent": "todo"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items"
+    },
+    {
+      "name": "fifth item for one project",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q50", "slot": 1, "text": "item 0", "intent": "todo"},
+          {"qid": "q51", "slot": 1, "text": "item 1", "intent": "todo"},
+          {"qid": "q52", "slot": 1, "text": "item 2", "intent": "todo"},
+          {"qid": "q53", "slot": 1, "text": "item 3", "intent": "todo"},
+          {"qid": "q54", "slot": 1, "text": "item 4", "intent": "todo"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[4].slot"
+    },
+    {
+      "name": "duplicate qid",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo"},
+          {"qid": "q17", "slot": 2, "text": "add LittleFS fault-injection test", "intent": "todo"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[1].qid"
+    },
+    {
+      "name": "qid in upper case",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "Q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].qid"
+    },
+    {
+      "name": "qid without digits",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].qid"
+    },
+    {
+      "name": "qid with 11 digits",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {
+            "qid": "q12345678901",
+            "slot": 1,
+            "text": "add LittleFS fault-injection test",
+            "intent": "todo"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].qid"
+    },
+    {
+      "name": "unknown intent",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {"qid": "q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "exec"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].intent"
+    },
+    {
+      "name": "summary of 81 bytes",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [
+          {
+            "qid": "q17",
+            "slot": 1,
+            "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "intent": "todo"
+          }
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].text"
+    },
+    {
+      "name": "empty summary",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [{"qid": "q17", "slot": 1, "text": "", "intent": "todo"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].text"
+    },
+    {
+      "name": "uncertain as a string (docs/20 U25, v0.4.1)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h5",
+        "rev": 9,
+        "items": [{"qid": "q18", "slot": 1, "text": "write native tests", "intent": "spawn", "uncertain": "yes"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].uncertain"
+    }
+  ]
+}

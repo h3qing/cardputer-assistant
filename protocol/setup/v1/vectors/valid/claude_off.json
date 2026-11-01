@@ -1,0 +1,14 @@
+{
+  "doc": "row",
+  "name": "Claude Code not found (rerun cpa service install after installing it)",
+  "data": {
+    "v": 1,
+    "id": "claude",
+    "state": "off",
+    "required": false,
+    "blocked_by": [],
+    "title": "没找到 Claude Code",
+    "detail": "装好 Claude Code 以后再跑一次 cpa service install，设备上才能开 session。",
+    "fix": []
+  }
+}

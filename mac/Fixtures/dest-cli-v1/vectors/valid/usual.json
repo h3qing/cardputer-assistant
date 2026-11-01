@@ -1,0 +1,18 @@
+{
+  "doc": "usual",
+  "name": "two projects with a usual destination",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "usual": [
+      {
+        "project": "acmeshop",
+        "dest": "url.grok"
+      },
+      {
+        "project": "cpa",
+        "dest": "clip"
+      }
+    ]
+  }
+}

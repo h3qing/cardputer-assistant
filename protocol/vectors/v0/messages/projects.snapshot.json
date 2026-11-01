@@ -1,0 +1,353 @@
+{
+  "$comment": "Vectors for projects.snapshot; format in protocol/README.md.",
+  "type": "projects.snapshot",
+  "valid": [
+    {
+      "name": "projects.snapshot (05 §6.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      }
+    },
+    {
+      "name": "empty board",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [],
+        "other": {"run": 0, "n": 0}
+      }
+    },
+    {
+      "name": "nine projects with 24-byte names",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "proj-1",
+            "name": "一二三四五六七八",
+            "run": 0,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 2,
+            "key": "proj-2",
+            "name": "春夏秋冬东南西北",
+            "run": 1,
+            "need": 1,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 3,
+            "key": "proj-3",
+            "name": "甲乙丙丁戊己庚辛",
+            "run": 2,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 4,
+            "key": "proj-4",
+            "name": "金木水火土日月星",
+            "run": 3,
+            "need": 1,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 5,
+            "key": "proj-5",
+            "name": "琴棋书画诗酒花茶",
+            "run": 4,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 6,
+            "key": "proj-6",
+            "name": "梅兰竹菊松柏杨柳",
+            "run": 5,
+            "need": 1,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 7,
+            "key": "proj-7",
+            "name": "天地玄黄宇宙洪荒",
+            "run": 6,
+            "need": 0,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 8,
+            "key": "proj-8",
+            "name": "红橙黄绿青蓝紫白",
+            "run": 7,
+            "need": 1,
+            "queued": 4,
+            "ok": true
+          },
+          {
+            "slot": 9,
+            "key": "proj-9",
+            "name": "山川河海湖泊江溪",
+            "run": 8,
+            "need": 0,
+            "queued": 4,
+            "ok": false
+          }
+        ],
+        "other": {"run": 0, "n": 1}
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "duplicate slot",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 1, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[1].slot"
+    },
+    {
+      "name": "slot 0",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 0,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].slot"
+    },
+    {
+      "name": "key in upper case",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "CPA",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].key"
+    },
+    {
+      "name": "key longer than 12",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cardputer-assistant",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].key"
+    },
+    {
+      "name": "name of 27 bytes (9 CJK characters)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "九个汉字的项目名称",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].name"
+    },
+    {
+      "name": "name with a newline",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {"slot": 1, "key": "cpa", "name": "a\nb", "run": 1, "need": 1, "queued": 2, "ok": true},
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].name"
+    },
+    {
+      "name": "negative need",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": -1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].need"
+    },
+    {
+      "name": "ok as a number",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": 1
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "projects[0].ok"
+    },
+    {
+      "name": "other missing",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h3",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "other"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "$comment": "Vectors for agent.reply; format in protocol/README.md.",
+  "type": "agent.reply",
+  "valid": [
+    {
+      "name": "agent.reply (05 §6.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.reply",
+        "id": "d8",
+        "sid": "5c2e8a14",
+        "text": "looks good, add a test plan"
+      }
+    },
+    {
+      "name": "shell syntax is just text",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.reply", "id": "d8", "sid": "5c2e8a14", "text": "$(rm -rf ~)"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "text starting with -c",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.reply", "id": "d8", "sid": "5c2e8a14", "text": "-c"},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "text starting with --resume",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.reply", "id": "d8", "sid": "5c2e8a14", "text": "--resume abc"},
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "text of 501 bytes",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.reply",
+        "id": "d8",
+        "sid": "5c2e8a14",
+        "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "text"
+    },
+    {
+      "name": "sid in upper case",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "agent.reply",
+        "id": "d8",
+        "sid": "5C2E8A14",
+        "text": "looks good, add a test plan"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "sid"
+    },
+    {
+      "name": "sid missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "agent.reply", "id": "d8", "text": "looks good, add a test plan"},
+      "code": "E_BAD_FIELD",
+      "field": "sid"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# docs/20 D9 regression (U17; from the review's refute14/r14). Before the fix the open Tab
+# menu ate the chords it lists (Opt+I on 去哪, Opt+L on 控制). Now a chord the menu shows
+# closes it and runs; one it does not show is still eaten.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+press opt+p
+wait 200
+press tab
+press /
+shot goto  去哪
+press opt+i
+wait 200
+shot goto-opt-i  Opt+I: the menu closed, 等你 open
+press tab
+press opt+2
+wait 200
+shot opt-2  Opt+2 (the Opt+1-9 row): project 2
+press g0
+type note
+press tab
+press opt+i
+shot compose-opt-i  over the editor Opt+I is not on the menu: still open
+press opt+l
+wait 200
+shot compose-opt-l  Opt+L is (控制): locked, the draft kept ("已锁屏")

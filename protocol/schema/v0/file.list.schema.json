@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/file.list.schema.json",
+  "title": "file.list",
+  "description": "v0.3 (docs/11 §5.3): host asks for committed recording segments in id order, starting after `after` (exclusive). Reply: file.items, or error (E_BUSY msg live|full, E_NOT_READY).",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "properties": {
+    "t": {"const": "file.list"},
+    "after": {"anyOf": [{"$ref": "common.schema.json#/$defs/monoId"}, {"type": "null"}]},
+    "max": {"anyOf": [{"type": "integer", "minimum": 1, "maximum": 4}, {"type": "null"}]}
+  }
+}

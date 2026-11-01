@@ -1,0 +1,107 @@
+# gh #51 (docs/20 U26), the user's ask: G0 twice starts a hands-free memo on the second
+# press (no words lost); letting go ends nothing; the page says so plainly while Mando
+# listens; one G0 press ends it, saved. A single tap still opens the note, once the 0.35 s
+# double-tap window ran out. Locked, it goes on; G0 on the lit card ends it and the card
+# says it was saved. The 5-minute cap ends a hands-free memo too. docs/20 D5: ` leaves the
+# note (Fn+` would type a backtick into it).
+# After the review: a slow second tap (to 1 s) still starts it and closes the empty note;
+# a slow tap-then-hold records; tapping twice to end opens nothing; Tab, Enter does not end
+# it; the menu's row starts one that ends at the cap with nothing held.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1000
+press g0
+shot note  点一下 G0：等 0.35 秒没有第二下，打开记一条
+press `
+wait 600
+press g0
+press g0
+mic 3000 speech
+shot handsfree  点两下 G0：免提录音，松开也在录；Mando 在听；提示栏"G0 结束 1-9 选项目 Opt+L 锁屏"（0 不归属在图例里）
+press 2
+mic 1500 speech
+shot handsfree-tag  免提时按 2：存到第 2 个项目，录音不停
+press tab
+shot handsfree-menu  免提时的 Tab 菜单：G0 结束并保存（只是说明）、0-9、Opt+L
+press enter
+mic 300 speech
+shot handsfree-menu-enter  Tab 再 Enter：不结束，提示"按一下 G0 结束并保存"
+press tab
+mic 800 speech
+press g0
+wait 300
+shot handsfree-saved  再按一下 G0：结束，"录音已保存"
+wait 2600
+# tapping twice to end, as it started: the second tap opens nothing
+press g0
+press g0
+mic 2000 speech
+press g0
+press g0
+wait 600
+shot end-double  点两下结束：存下，第二下不打开记一条
+wait 2600
+# a slow double tap (the second press 0.5 s after the first): the note opens, then closes
+press g0
+wait 470
+shot slow-note  第一下后 0.35 秒：记一条已打开
+press g0
+mic 1500 speech
+shot slow-handsfree  0.5 秒后第二下：记一条关上，免提录音开始
+press g0
+wait 2600
+# tap, then hold: an ordinary held memo (the hold started it, no words lost)
+press g0
+down g0
+wait 800
+mic 1500 speech
+shot tap-then-hold  点一下再按住：照常是按住说的便条
+up g0
+wait 900
+wait 2600
+# a slow tap-then-hold (the hold 1.2 s after the tap): the empty note closes, a held memo
+press g0
+wait 1170
+down g0
+wait 600
+mic 1500 speech
+shot slow-hold  点一下，1.2 秒后再按住：空的记一条关上，照常按住说
+up g0
+wait 900
+wait 2600
+# locked: it goes on; G0 from dark only lights the card; on the lit card it ends and says so
+press g0
+press g0
+mic 1500 speech
+press opt+l
+mic 4000 speech
+shot locked  免提时 Opt+L：锁屏，录音不停
+press g0
+mic 300 speech
+shot locked-card  锁着点一下 G0：只亮卡片，"免提录音中：按 G0 结束"
+press g0
+wait 300
+shot locked-ended  卡片亮着再按 G0：结束，卡片写"√ 已存"、Mando 存好了（docs/20 B1），仍锁着
+wait 2200
+shot locked-still  结束后卡片还亮着（从结束那一下算 3 秒）
+wait 1500
+shot locked-dark  3 秒后熄灭
+press g0
+shot locked-again  再点亮：结果已看过，回到"先点 G0 再按住说 · 点两下免提"
+press opt+l
+press enter
+wait 2600
+# the menu's row "双击G0 免提说一段", then the 5-minute cap: saved, nothing held
+press tab
+press right
+press down down down down down down down
+shot menu-row  Tab → 去哪：双击G0 免提说一段
+press enter
+mic 290000 2500
+shot cap-4m50  免提 4:50（从菜单开始）
+mic 12000 2500
+shot cap  5:00 自动停：已到 5 分钟上限 · 已存，没有"松开 G0"
+press tab
+shot cap-tab  Tab 马上能用
+press tab
+wait 2600

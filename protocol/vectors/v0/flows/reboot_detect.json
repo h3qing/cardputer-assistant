@@ -1,0 +1,174 @@
+{
+  "name": "reboot_detect",
+  "spec": "05 §6.4",
+  "description": "debug.reboot (test firmware) restarts the device with the port still open. The next ping gets E_NOT_READY, the host re-handshakes, sees a new boot id and re-sends time.set plus all three snapshots. A hello with the same boot but a smaller up_ms counts as a reboot too.",
+  "initial": {"device.link": "Ready", "host.link": "ready"},
+  "steps": [
+    {"t": 0, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h10"}},
+    {
+      "t": 15,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d20",
+        "re": "h10",
+        "up_ms": 120400,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9}
+      }
+    },
+    {
+      "t": 1000,
+      "from": "host",
+      "msg": {"v": 0, "t": "debug.reboot", "id": "h11"},
+      "note": "test firmware only"
+    },
+    {"t": 1010, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d21", "re": "h11"}},
+    {
+      "t": 1020,
+      "event": "device_reboot",
+      "note": "esp_restart(); USB-Serial/JTAG stays enumerated, device ids restart"
+    },
+    {"t": 1020, "expect": {"device.link": "Attached"}},
+    {"t": 5000, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h12"}},
+    {
+      "t": 5012,
+      "from": "device",
+      "msg": {"v": 0, "t": "error", "id": "d1", "re": "h12", "code": "E_NOT_READY"},
+      "note": "before a handshake the device answers business messages with E_NOT_READY"
+    },
+    {"t": 5012, "expect": {"host.link": "handshaking"}},
+    {
+      "t": 5020,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h13",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      }
+    },
+    {
+      "t": 5035,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d2",
+        "re": "h13",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000D",
+        "up_ms": 3950,
+        "rst": "sw",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      }
+    },
+    {
+      "t": 5035,
+      "expect": {"device.link": "Ready", "host.reboot_detected": true},
+      "note": "boot changed: 0000C -> 0000D"
+    },
+    {
+      "t": 5040,
+      "from": "host",
+      "msg": {"v": 0, "t": "time.set", "id": "h14", "epoch_ms": 1792440000000, "tz_min": -420}
+    },
+    {
+      "t": 5040,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "projects.snapshot",
+        "id": "h15",
+        "rev": 42,
+        "projects": [
+          {
+            "slot": 1,
+            "key": "cpa",
+            "name": "Cardputer 助手",
+            "run": 1,
+            "need": 1,
+            "queued": 2,
+            "ok": true
+          },
+          {"slot": 2, "key": "blog", "name": "博客", "run": 0, "need": 0, "queued": 0, "ok": true}
+        ],
+        "other": {"run": 0, "n": 1}
+      }
+    },
+    {
+      "t": 5040,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "sessions.snapshot",
+        "id": "h16",
+        "rev": 17,
+        "total": 2,
+        "sessions": [
+          {
+            "sid": "8d3e7a19",
+            "slot": 1,
+            "name": "架构设计",
+            "kind": "tty",
+            "st": "waiting",
+            "need": true,
+            "age_s": 540
+          },
+          {
+            "sid": "5c2e8a14",
+            "slot": 1,
+            "name": "cpa/chord-tests",
+            "kind": "bg",
+            "st": "busy",
+            "need": false,
+            "age_s": 75,
+            "short": "a1b2c3"
+          }
+        ]
+      }
+    },
+    {
+      "t": 5040,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "queue.snapshot",
+        "id": "h17",
+        "rev": 9,
+        "items": [
+          {"qid": "q17", "slot": 1, "text": "add LittleFS fault-injection test", "intent": "todo"}
+        ]
+      }
+    },
+    {"t": 5055, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d3", "re": "h14"}},
+    {"t": 5056, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d4", "re": "h15"}},
+    {"t": 5057, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d5", "re": "h16"}},
+    {"t": 5058, "from": "device", "msg": {"v": 0, "t": "ack", "id": "d6", "re": "h17"}},
+    {"t": 5060, "expect": {"host.credit_used": 0}},
+    {"t": 10040, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h18"}},
+    {
+      "t": 10052,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d7",
+        "re": "h18",
+        "up_ms": 8967,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9}
+      }
+    },
+    {"t": 10052, "expect": {"host.reboot_detected": false}, "note": "same boot, up_ms grew"}
+  ]
+}

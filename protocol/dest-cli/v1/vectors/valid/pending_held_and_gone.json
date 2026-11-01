@@ -1,0 +1,38 @@
+{
+  "doc": "pending",
+  "name": "a failed send, and a held typed note whose destination was removed since",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "rows": [
+      {
+        "ref": "3QZK1M7-00045-0000",
+        "why": "held",
+        "dest": "url.grok",
+        "label": "Grok",
+        "kind": "url",
+        "fl": "lc",
+        "st": "failed",
+        "code": "E_DRAFT_BUSY",
+        "project": "acmeshop",
+        "src": "voice",
+        "at": "2026-10-22T09:00:00.000+00:00",
+        "text": "给 Grok：明天把首页改了"
+      },
+      {
+        "ref": "note-1",
+        "why": "held",
+        "dest": "app.notes",
+        "label": "app.notes",
+        "kind": "url",
+        "fl": null,
+        "st": "hold",
+        "code": null,
+        "project": null,
+        "src": "typed",
+        "at": "2026-10-22T09:00:00.000+00:00",
+        "text": null
+      }
+    ]
+  }
+}

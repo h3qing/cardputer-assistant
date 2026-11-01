@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/ack.schema.json",
+  "title": "ack",
+  "description": "Plain acknowledgement; carries only re.",
+  "x-dir": ["h2d", "d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+  "properties": {"t": {"const": "ack"}}
+}

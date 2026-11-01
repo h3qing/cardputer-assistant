@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/projects.schema.json",
+  "title": "projects",
+  "description": "`cpa project ls --json`, and every `cpa project add|rename|move|folder|rm --json` after its change (docs/23 §3.1, docs/25 §8): this Mac's projects by slot, the same 1-9 the device shows. No local path. A project is a named group; linked (2026-10-26; an older cpa leaves it out) says whether a code folder is linked, folder is that folder's last path component (never a path), null when unlinked. ok is false only when a linked folder is gone.",
+  "type": "object",
+  "required": ["v", "projects"],
+  "properties": {
+    "v": { "$ref": "common.schema.json#/$defs/version" },
+    "projects": {
+      "type": "array",
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "slot", "ok"],
+        "properties": {
+          "key": { "$ref": "common.schema.json#/$defs/projectKey" },
+          "name": { "$ref": "common.schema.json#/$defs/name" },
+          "slot": { "type": "integer", "minimum": 1, "maximum": 9 },
+          "ok": { "type": "boolean" },
+          "linked": { "type": "boolean" },
+          "folder": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[^/\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+          }
+        }
+      }
+    }
+  }
+}

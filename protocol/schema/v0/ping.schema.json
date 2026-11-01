@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/ping.schema.json",
+  "title": "ping",
+  "description": "Heartbeat, every 5 s from the host (§6.4).",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "properties": {"t": {"const": "ping"}}
+}

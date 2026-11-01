@@ -1,0 +1,58 @@
+# docs/20 B6 regression (U9, U17, U22; from the review's refute_wordwrap, refute_glossary2,
+# s01_spawn_cancel and refute-fm09-menu). Before: the confirm card said "Enter 开始" while its
+# hint bar said "Enter 确认", and "` 取消" threw the draft away; the editor cut words in two
+# ("Bingo shots o / n Friday"); a selected 说明 row in the Tab menu was a caramel row like
+# any key. Now: card and bar say one verb, keycaps on the card, "` 返回修改" over a draft and
+# "` 取消" over a queue item; the editor wraps at spaces; a selected 说明 row stays a quiet
+# Select capsule with its Raised key, and Enter on it says how to press it.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 3000
+press g0
+type remember to book the Bingo shots on Friday at the vet and ask about the flea meds too
+shot editor-wrap  the editor wraps at spaces
+press `
+wait 500
+press enter
+press opt+1
+press opt+s
+type write e2e test for refunds
+press enter
+wait 500
+shot confirm-spawn  a new session: one verb on card and bar, ` 返回修改
+press `
+shot back-to-draft  ` goes back to the draft (D6)
+press `
+wait 500
+press enter
+press /
+press down
+press enter
+wait 500
+shot confirm-item  a queue item: no draft behind it, ` 取消
+usb off
+wait 2000
+shot item-offline  unplugged with the box open: Enter 关闭
+press `
+press opt+1
+press opt+s
+type write e2e test for refunds
+press enter
+wait 500
+shot spawn-offline  offline: Enter 存为排队, ` 返回修改
+press `
+press `
+wait 500
+press enter
+press opt+h
+press tab
+wait 300
+press down down down down down down down down
+wait 300
+shot menu-explain  a selected 说明 row (1-9): a quiet capsule, not caramel
+press enter
+wait 300
+shot menu-explain-enter  Enter on it: how to press it
+press up
+wait 300
+shot menu-key  a selected key row: caramel as before

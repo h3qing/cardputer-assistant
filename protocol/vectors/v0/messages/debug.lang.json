@@ -1,0 +1,53 @@
+{
+  "$comment": "Vectors for debug.lang (v0.4.3, docs/21 §7, protocol README item 25); format in protocol/README.md.",
+  "type": "debug.lang",
+  "valid": [
+    {
+      "name": "English",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90", "lang": "en"}
+    },
+    {
+      "name": "Chinese (the default)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90", "lang": "zh"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "lang missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90"},
+      "code": "E_BAD_FIELD",
+      "field": "lang"
+    },
+    {
+      "name": "a language the device does not have",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90", "lang": "fr"},
+      "code": "E_BAD_FIELD",
+      "field": "lang"
+    },
+    {
+      "name": "lang in upper case",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90", "lang": "EN"},
+      "code": "E_BAD_FIELD",
+      "field": "lang"
+    },
+    {
+      "name": "lang null",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90", "lang": null},
+      "code": "E_BAD_FIELD",
+      "field": "lang"
+    },
+    {
+      "name": "debug.lang carrying re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.lang", "id": "h90", "lang": "en", "re": "d1"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

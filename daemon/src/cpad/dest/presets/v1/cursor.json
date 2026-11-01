@@ -1,0 +1,15 @@
+{
+  "v": 1,
+  "preset": "cursor",
+  "name": "cursor",
+  "label": "Cursor",
+  "kind": "url",
+  "detect": {"bundle": "com.todesktop.230313mzl4w4u92"},
+  "template": "cursor://anysphere.cursor-deeplink/prompt?text={text}",
+  "max_text_utf16": 2000,
+  "max_url": 10000,
+  "overflow": "clip",
+  "leaves_mac": true,
+  "key_hint": "u",
+  "note": "Opens Cursor's prompt link with the text. Whether Cursor only fills a draft is checked by the test send on this Mac; until then every capture is confirmed on the device."
+}

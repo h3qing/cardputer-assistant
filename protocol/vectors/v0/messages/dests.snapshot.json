@@ -1,0 +1,298 @@
+{
+  "$comment": "Vectors for dests.snapshot (v0.5, docs/14 §7.2, kinds v2 and fl per docs/25 §2.2); format in protocol/README.md.",
+  "type": "dests.snapshot",
+  "valid": [
+    {
+      "name": "dests.snapshot (docs/14 §7.2)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "daily", "slot": 1, "label": "今日笔记", "kind": "daily", "key": "n", "fl": ""},
+        {"id": "todo", "slot": 2, "label": "待办", "kind": "todo", "key": "t", "fl": ""},
+        {"id": "queue", "slot": 3, "label": "项目队列", "kind": "queue", "key": "q", "fl": "p"},
+        {"id": "session", "slot": 4, "label": "开 session", "kind": "session", "key": "s", "fl": "p"},
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"},
+        {"id": "file.sb", "slot": 7, "label": "reading-list", "kind": "file", "key": "o", "fl": "c"}
+      ]}
+    },
+    {
+      "name": "built-in defaults: what cpad sends without destinations.json (docs/14 §4.4)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 3642340851, "dests": [
+        {"id": "daily", "slot": 1, "label": "今日笔记", "kind": "daily", "key": "n", "fl": ""},
+        {"id": "todo", "slot": 2, "label": "待办", "kind": "todo", "key": "t", "fl": ""},
+        {"id": "queue", "slot": 3, "label": "项目队列", "kind": "queue", "key": "q", "fl": "p"},
+        {"id": "session", "slot": 4, "label": "开 session", "kind": "session", "key": "s", "fl": "p"},
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "url and app destinations: a draft verified on this Mac, an unverified link, the clipboard (docs/25 §2.2)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 1206014125, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"},
+        {"id": "url.grok", "slot": 7, "label": "Grok", "kind": "url", "key": "x", "fl": "lc"},
+        {"id": "url.cursor", "slot": 8, "label": "Cursor", "kind": "url", "key": "u", "fl": "lck"},
+        {"id": "app.notion", "slot": 9, "label": "Notion", "kind": "app", "key": "b", "fl": "lc"}
+      ]}
+    },
+    {
+      "name": "twelve rows at every limit, key null being the longest literal (docs/25 §4.6 worst case, 1507 B)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h99999999999999999999999", "rev": 4294967295, "dests": [
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 1, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 2, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 3, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 4, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 5, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 6, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 7, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 8, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 9, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 10, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 11, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"},
+        {"id": "abcdefg.zzzzzzzzzzzz", "slot": 12, "label": "一二三四五六七八", "kind": "abcdefg", "key": null, "fl": "abcdefgh"}
+      ]}
+    },
+    {
+      "name": "no rows",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 1, "dests": []}
+    },
+    {
+      "name": "key null, fl absent (the device reads it as lck)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "daily", "slot": 1, "label": "今日笔记", "kind": "daily", "key": null}
+      ]}
+    },
+    {
+      "name": "fl empty: none of l c p k",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "daily", "slot": 1, "label": "今日笔记", "kind": "daily", "key": "n", "fl": ""}
+      ]}
+    },
+    {
+      "name": "a kind, a letter and a flag this firmware does not know: the row is shown, behaviour follows the flags it knows (docs/25 §4.6)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "daily", "slot": 1, "label": "今日笔记", "kind": "daily", "key": "n", "fl": ""},
+        {"id": "fax.office", "slot": 9, "label": "传真", "kind": "fax", "key": "z", "fl": "lcz"}
+      ]}
+    },
+    {
+      "name": "a repeated letter: the device binds the first row (docs/14 §10.4)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"},
+        {"id": "file.sb", "slot": 7, "label": "reading-list", "kind": "file", "key": "c", "fl": "c"}
+      ]}
+    },
+    {
+      "name": "unknown fields are ignored (protocol/README version rules)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "x_prof": "default", "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "x_icon": "clipboard", "x_def": false, "fl": "l"}
+      ]}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "rev missing",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "rev",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "rev above uint32",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "rev",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 4294967296, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "dests missing",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651}
+    },
+    {
+      "name": "duplicate slot",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[1].slot",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "daily", "slot": 1, "label": "今日笔记", "kind": "daily", "key": "n", "fl": ""},
+        {"id": "todo", "slot": 1, "label": "待办", "kind": "todo", "key": "t", "fl": ""}
+      ]}
+    },
+    {
+      "name": "slot 0",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].slot",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 0, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "slot 13",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].slot",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 13, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "id with two dots",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].id",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "file.sb.x", "slot": 7, "label": "reading-list", "kind": "file", "key": "o", "fl": "c"}
+      ]}
+    },
+    {
+      "name": "id in upper case",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].id",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "Clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "id name of 13 characters",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].id",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "file.aaaaaaaaaaaaa", "slot": 7, "label": "reading-list", "kind": "file", "key": "o", "fl": "c"}
+      ]}
+    },
+    {
+      "name": "label with a double quote",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].label",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "say \"hi\"", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "label with a backslash",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].label",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "C:\\notes", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "label of 27 bytes (9 CJK characters)",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].label",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "一二三四五六七八九", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "empty label",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].label",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "label with a newline",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].label",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴\n板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "kind with a dot",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].kind",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "file.sb", "slot": 7, "label": "reading-list", "kind": "file.sb", "key": "o"}
+      ]}
+    },
+    {
+      "name": "kind missing",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].kind",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "key": "c"}
+      ]}
+    },
+    {
+      "name": "key in upper case",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].key",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "C", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "key of two letters",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].key",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "cc", "fl": "l"}
+      ]}
+    },
+    {
+      "name": "fl as a boolean",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].fl",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": true}
+      ]}
+    },
+    {
+      "name": "fl in upper case",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].fl",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "file.sb", "slot": 7, "label": "reading-list", "kind": "file", "key": "o", "fl": "C"}
+      ]}
+    },
+    {
+      "name": "fl of 9 letters",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "dests[0].fl",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "lcpkabcde"}
+      ]}
+    },
+    {
+      "name": "carries re",
+      "dir": "h2d",
+      "code": "E_BAD_FIELD",
+      "field": "re",
+      "msg": {"v": 0, "t": "dests.snapshot", "id": "h12", "rev": 2918374651, "re": "d12", "dests": [
+        {"id": "clip", "slot": 5, "label": "剪贴板", "kind": "clip", "key": "c", "fl": "l"}
+      ]}
+    }
+  ]
+}

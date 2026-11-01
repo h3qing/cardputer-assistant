@@ -1,0 +1,110 @@
+{
+  "$comment": "Vectors for rec.list (v0.4.1, docs/13-assistant-v2-plan.md §12.2); format in protocol/README.md.",
+  "type": "rec.list",
+  "valid": [
+    {
+      "name": "first page (docs/13 §12.2)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all", "max": 6}
+    },
+    {
+      "name": "next page: the cursor sent back unchanged",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d25", "filter": "all", "max": 6, "cursor": "t1792440000000-a1"}
+    },
+    {
+      "name": "starred tab, one row",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d26", "filter": "starred", "max": 1}
+    },
+    {
+      "name": "memo tab, cursor null",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d27", "filter": "memo", "max": 6, "cursor": null}
+    },
+    {
+      "name": "meeting tab, 32-character cursor",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "rec.list",
+        "id": "d28",
+        "filter": "meeting",
+        "max": 6,
+        "cursor": "t1792440000000-3QZK1M7-00009-001"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "max 7 (rec_list_max is 6)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all", "max": 7},
+      "code": "E_BAD_FIELD",
+      "field": "max"
+    },
+    {
+      "name": "max 0",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all", "max": 0},
+      "code": "E_BAD_FIELD",
+      "field": "max"
+    },
+    {
+      "name": "max missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all"},
+      "code": "E_BAD_FIELD",
+      "field": "max"
+    },
+    {
+      "name": "filter missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "max": 6},
+      "code": "E_BAD_FIELD",
+      "field": "filter"
+    },
+    {
+      "name": "unknown filter 'hidden'",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "hidden", "max": 6},
+      "code": "E_BAD_FIELD",
+      "field": "filter"
+    },
+    {
+      "name": "33-character cursor",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "rec.list",
+        "id": "d23",
+        "filter": "all",
+        "max": 6,
+        "cursor": "t1792440000000-3QZK1M7-00009-0001"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "cursor"
+    },
+    {
+      "name": "cursor containing '/'",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all", "max": 6, "cursor": "t1792440000000/a1"},
+      "code": "E_BAD_FIELD",
+      "field": "cursor"
+    },
+    {
+      "name": "empty cursor",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all", "max": 6, "cursor": ""},
+      "code": "E_BAD_FIELD",
+      "field": "cursor"
+    },
+    {
+      "name": "rec.list carrying re",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "rec.list", "id": "d23", "filter": "all", "max": 6, "re": "h23"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Static check of the engineering rules (06 WP4, 05 §1.2): functions under 50 lines
+# and at most 4 levels of nesting. Only this check runs, and it is promoted to an
+# error so that `pio check ... --fail-on-defect high` fails on a violation.
+Checks: '-*,readability-function-size'
+WarningsAsErrors: 'readability-function-size'
+HeaderFilterRegex: '.*/firmware/app/(lib|modules|src)/.*'
+CheckOptions:
+  - key: readability-function-size.LineThreshold
+    value: 50
+  - key: readability-function-size.NestingThreshold
+    value: 4

@@ -1,0 +1,22 @@
+# Review regression (D8). Before: "● 准备" showed the moment G0 went down even where the hold
+# would be refused (card full, battery at or below 3.45 V, 256 waiting, no ids), then the
+# refusal followed: the capsule promised a memo that never came.
+# Now: "● 准备" only where the hold records; the refusal alone otherwise.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+down g0
+wait 150
+shot ready  G0 down: ● 准备
+up g0
+wait 300
+press `
+wait 2700
+bat 3400
+wait 1500
+down g0
+wait 150
+shot low  3.40 V: no ● 准备
+wait 600
+shot refused  the hold: 电量低，不能录音 (home stays as it was)
+up g0

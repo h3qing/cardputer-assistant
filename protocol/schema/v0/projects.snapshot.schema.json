@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/projects.snapshot.schema.json",
+  "title": "projects.snapshot",
+  "description": "Board state pushed by the host; rev changes only when content changes.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["rev", "projects", "other"],
+  "properties": {
+    "t": {"const": "projects.snapshot"},
+    "rev": {"$ref": "common.schema.json#/$defs/uint32"},
+    "projects": {
+      "type": "array",
+      "maxItems": 9,
+      "x-uniqueBy": "slot",
+      "items": {
+        "type": "object",
+        "required": ["slot", "key", "name", "run", "need", "queued", "ok"],
+        "properties": {
+          "slot": {"$ref": "common.schema.json#/$defs/slot"},
+          "key": {"$ref": "common.schema.json#/$defs/projectKey"},
+          "name": {"$ref": "common.schema.json#/$defs/projectName"},
+          "run": {"$ref": "common.schema.json#/$defs/count"},
+          "need": {"$ref": "common.schema.json#/$defs/count"},
+          "queued": {"$ref": "common.schema.json#/$defs/count"},
+          "ok": {"type": "boolean"}
+        }
+      }
+    },
+    "other": {
+      "type": "object",
+      "required": ["run", "n"],
+      "properties": {
+        "run": {"$ref": "common.schema.json#/$defs/count"},
+        "n": {"$ref": "common.schema.json#/$defs/count"}
+      }
+    }
+  }
+}

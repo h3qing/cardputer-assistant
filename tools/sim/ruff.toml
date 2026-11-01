@@ -1,0 +1,9 @@
+# Lint and format settings for the simulator's tools: the daemon's rules; tools/sim and tools/hil packages are first-party.
+extend = "../../daemon/pyproject.toml"
+src = [".", "../hil"]
+
+[lint.isort]
+known-first-party = ["simtools", "harness", "scenarios"]
+
+[lint.per-file-ignores]
+"tests/**" = ["S", "PLR0915"]

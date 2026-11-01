@@ -1,0 +1,5 @@
+protocol/filing/v1 (schema/, vectors/, VECTORS.sha256), copied unchanged from
+branch feat/projects-app (docs/25 §8: projects as named groups, linked / folder) at commit e812e79.
+Left out: vectors/invalid/ls_device_mac.json (it carries a real device MAC address);
+ContractTests covers the same rule with a fake MAC.
+Re-copy when the contract changes; CardputerCoreTests checks every copied file against VECTORS.sha256.

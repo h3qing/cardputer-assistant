@@ -1,0 +1,46 @@
+{
+  "$comment": "Vectors for debug.codec (v0.3.2, docs/releases/v0.3.2.md, issue #31); format in protocol/README.md.",
+  "type": "debug.codec",
+  "valid": [
+    {
+      "name": "cold: the soft reset only",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.codec", "id": "h82", "warm": false}
+    },
+    {
+      "name": "power-on: the soft reset and the boot warm-up",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.codec", "id": "h82", "warm": true}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "warm missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.codec", "id": "h82"},
+      "code": "E_BAD_FIELD",
+      "field": "warm"
+    },
+    {
+      "name": "warm as a number",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.codec", "id": "h82", "warm": 1},
+      "code": "E_BAD_FIELD",
+      "field": "warm"
+    },
+    {
+      "name": "warm null",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.codec", "id": "h82", "warm": null},
+      "code": "E_BAD_FIELD",
+      "field": "warm"
+    },
+    {
+      "name": "debug.codec carrying re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.codec", "id": "h82", "warm": false, "re": "d1"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

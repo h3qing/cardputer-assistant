@@ -1,0 +1,10 @@
+{
+  "doc": "error",
+  "name": "already handed there: --again sends it once more",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_ALREADY",
+    "field": "dest"
+  }
+}

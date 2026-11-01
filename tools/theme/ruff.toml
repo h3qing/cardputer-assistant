@@ -1,0 +1,11 @@
+# Lint and format settings for the theme generator: the repo job's WP1 rules
+# (.github/workflows/ci.yml); the generator modules are first-party.
+line-length = 120
+src = ["."]
+target-version = "py39"  # gen_all.py --check runs on the stock macOS python3
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "C901", "PLR0915"]
+
+[lint.isort]
+known-first-party = ["tokens", "gen_all", "gen_digits", "gen_icons", "gen_mando", "gen_palette"]

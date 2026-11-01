@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/file.data.schema.json",
+  "title": "file.data",
+  "description": "v0.3 (docs/11 §5.3): reply to file.get. n bytes from off (n = 0 when off >= size, not an error); size is the whole file incl. header; crc is CRC-32/IEEE of those n bytes; b64 carries them and is present exactly when n > 0. x-b64Len: b64 must decode to exactly n bytes.",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [
+    {"$ref": "common.schema.json#/$defs/reply"},
+    {
+      "if": {"required": ["n"], "properties": {"n": {"type": "integer", "minimum": 1}}},
+      "then": {"required": ["b64"], "properties": {"b64": {"type": "string"}}}
+    },
+    {
+      "if": {"required": ["n"], "properties": {"n": {"const": 0}}},
+      "then": {"properties": {"b64": {"type": "null"}}}
+    }
+  ],
+  "required": ["fid", "off", "n", "size", "crc"],
+  "x-b64Len": {"data": "b64", "len": "n"},
+  "properties": {
+    "t": {"const": "file.data"},
+    "fid": {"$ref": "common.schema.json#/$defs/monoId"},
+    "off": {"$ref": "common.schema.json#/$defs/uint32"},
+    "n": {"type": "integer", "minimum": 0, "maximum": 1380},
+    "size": {"$ref": "common.schema.json#/$defs/fileSize"},
+    "crc": {"$ref": "common.schema.json#/$defs/uint32"},
+    "b64": {"anyOf": [{"$ref": "#/$defs/b64"}, {"type": "null"}]}
+  },
+  "$defs": {
+    "b64": {
+      "description": "standard base64 with padding; at most 4 * ceil(file_get_b64_max / 3) characters",
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 1840,
+      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+    }
+  }
+}

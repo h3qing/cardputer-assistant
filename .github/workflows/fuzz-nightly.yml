@@ -1,0 +1,44 @@
+# The runtime fuzz matrix every night (docs/20 §4.5): CI's firmware job runs two seeds of
+# three simulated minutes on every push; this runs twelve seeds of fifteen minutes on the
+# SD card, the internal store and no store. No device, no daemon.
+name: fuzz-nightly
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  UV_VERSION: "0.11.16"
+
+jobs:
+  fuzz:
+    name: runtime fuzz (${{ matrix.store }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        store: [sd, internal, none]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.platformio
+          key: pio-${{ runner.os }}-${{ hashFiles('firmware/app/platformio.ini') }}
+      - name: Install PlatformIO and M5GFX (the simulator's font)
+        run: |
+          uv tool install platformio==6.2.0
+          pio pkg install -d firmware/app -e cardputer-adv
+      - name: Fuzz matrix
+        env:
+          CPA_FUZZ_SEED: "100"
+          CPA_FUZZ_SEEDS: "12"
+          CPA_FUZZ_MINUTES: "15"
+          CPA_FUZZ_STORE: ${{ matrix.store }}
+        run: pio test -d firmware/sim -f test_fuzz_runtime

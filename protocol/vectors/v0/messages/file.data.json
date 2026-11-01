@@ -1,0 +1,230 @@
+{
+  "$comment": "Vectors for file.data (v0.3, docs/11-m3-design.md §5); format in protocol/README.md.",
+  "type": "file.data",
+  "valid": [
+    {
+      "name": "first chunk with the WAV header (docs/11 §5.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d42",
+        "re": "h42",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 0,
+        "n": 1380,
+        "size": 384044,
+        "crc": 4194768169,
+        "b64": "UklGRiTcBQBXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQDcBQAAAAMC+APOBXgH6QgWCvYKggu3C5MLFgtECiUJvwcfBlAEYAJeAFr+YfyF+tL4Vvcc9i31kfRM9GD0zfSP9aH2+/eR+Vn7RP1E/0kBRAMnBeMGagixCa4KWQuuC6oLTQuaCpYJSQi9Bv0EFwMaARX/Fv0u+2r52feF9nr1wPRb9E70m/Q/9TX2dvf3+K/6jvyJ/o0AjgJ8BEcG4wdCCVsKJQuaC7YLeQvlCv0JyghTB6UFywPVAdH/zv3c+wn6ZPj59tP1+vR19Ej0dfT69NP1+fZk+An63PvO/dH/1QHLA6UFUwfKCP0J5Qp5C7YLmgslC1sKQgnjB0cGfASOAo0Aif6O/K/69/h29zX2P/Wb9E70W/TA9Hr1hfbZ92r5LvsW/RX/GgEXA/0EvQZJCJYJmgpNC6oLrgtZC64KsQlqCOMGJwVEA0kBRP9E/Vn7kfn796H2j/XN9GD0TPSR9C31HPZW99L4hfph/Fr+XgBgAlAEHwa/ByUJRAoWC5MLtwuCC/YKFgrpCHgHzgX4AwMCAAD9/Qj8MvqI+Bf36vUK9X70SfRt9Or0vPXb9kH44fmw+6D9ov+mAZ8DewUuB6oI5AnTCm8LtAugCzMLcQpfCQUIbwanBLwCvAC3/rz82fod+Zb3T/ZS9af0UvRW9LP0ZvVq9rf3Q/kD++n85v7rAOoC0gSWBicIewmGCkALpQuyC2ULwQrLCYoICQdRBXIDdwFz/3L9hPu5+R34vval9dv0ZvRK9If0G/UD9jb3rfhb+jX8K/4vADICJAT3BZwHBwktCgYLiwu4C4sLBgstCgcJnAf3BSQEMgIvACv+Nfxb+q34NvcD9hv1h/RK9Gb02/Sl9b72Hfi5+YT7cv1z/3cBcgNRBQkHigjLCcEKZQuyC6ULQAuGCnsJJwiWBtIE6gLrAOb+6fwD+0P5t/dq9mb1s/RW9FL0p/RS9U/2lvcd+dn6vPy3/rwAvAKnBG8GBQhfCXEKMwugC7QLbwvTCuQJqgguB3sFnwOmAaL/oP2w++H5Qfjb9rz16vRt9En0fvQK9er1F/eI+DL6CPz9/QAAAwL4A84FeAfpCBYK9gqCC7cLkwsWC0QKJQm/Bx8GUARgAl4AWv5h/IX60vhW9xz2LfWR9Ez0YPTN9I/1ofb795H5WftE/UT/SQFEAycF4wZqCLEJrgpZC64LqgtNC5oKlglJCL0G/QQXAxoBFf8W/S77avnZ94X2evXA9Fv0TvSb9D/1NfZ29/f4r/qO/In+jQCOAnwERwbjB0IJWwolC5oLtgt5C+UK/QnKCFMHpQXLA9UB0f/O/dz7Cfpk+Pn20/X69HX0SPR19Pr00/X59mT4Cfrc+8790f/VAcsDpQVTB8oI/QnlCnkLtguaCyULWwpCCeMHRwZ8BI4CjQCJ/o78r/r3+Hb3NfY/9Zv0TvRb9MD0evWF9tn3avku+xb9Ff8aARcD/QS9BkkIlgmaCk0LqguuC1kLrgqxCWoI4wYnBUQDSQFE/0T9WfuR+fv3ofaP9c30YPRM9JH0LfUc9lb30viF+mH8Wv5eAGACUAQfBr8HJQlEChYLkwu3C4IL9goWCukIeAfOBfgDAwIAAP39CPwy+oj4F/fq9Qr1fvRJ9G306vS89dv2Qfjh+bD7oP2i/6YBnwN7BS4HqgjkCdMKbwu0C6ALMwtxCl8JBQhvBqcEvAK8ALf+vPzZ+h35lvdP9lL1p/RS9Fb0s/Rm9Wr2t/dD+QP76fzm/usA6gLSBJYGJwh7CYYKQAulC7ILZQvBCssJ"
+      }
+    },
+    {
+      "name": "last 44 bytes",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d43",
+        "re": "h43",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384000,
+        "n": 44,
+        "size": 384044,
+        "crc": 4137893221,
+        "b64": "Lgd7BZ8DpgGi/6D9sPvh+UH42/a89er0bfRJ9H70CvXq9Rf3iPgy+gj8/f0="
+      }
+    },
+    {
+      "name": "off at size: n 0 and no b64",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d44",
+        "re": "h44",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384044,
+        "n": 0,
+        "size": 384044,
+        "crc": 0
+      }
+    },
+    {
+      "name": "n 0 with b64 null",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d44",
+        "re": "h44",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384044,
+        "n": 0,
+        "size": 384044,
+        "crc": 0,
+        "b64": null
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "b64 decodes to fewer bytes than n",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d42",
+        "re": "h42",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 0,
+        "n": 1380,
+        "size": 384044,
+        "crc": 4194768169,
+        "b64": "UklGRiTcBQBXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQDcBQAAAAMC+APOBXgH6QgWCvYKggu3C5MLFgtECiUJvwcfBlAEYAJeAFr+YfyF+tL4Vvcc9i31kfRM9GD0zfSP9aH2+/eR+Vn7RP1E/0kBRAMnBeMGagixCa4KWQuuC6oLTQuaCpYJSQi9Bv0EFwMaARX/Fv0u+2r52feF9nr1wPRb9E70m/Q/9TX2dvf3+K/6jvyJ/o0AjgJ8BEcG4wdCCVsKJQuaC7YLeQvlCv0JyghTB6UFywPVAdH/zv3c+wn6ZPj59tP1+vR19Ej0dfT69NP1+fZk+An63PvO/dH/1QHLA6UFUwfKCP0J5Qp5C7YLmgslC1sKQgnjB0cGfASOAo0Aif6O/K/69/h29zX2P/Wb9E70W/TA9Hr1hfbZ92r5LvsW/RX/GgEXA/0EvQZJCJYJmgpNC6oLrgtZC64KsQlqCOMGJwVEA0kBRP9E/Vn7kfn796H2j/XN9GD0TPSR9C31HPZW99L4hfph/Fr+XgBgAlAEHwa/ByUJRAoWC5MLtwuCC/YKFgrpCHgHzgX4AwMCAAD9/Qj8MvqI+Bf36vUK9X70SfRt9Or0vPXb9kH44fmw+6D9ov+mAZ8DewUuB6oI5AnTCm8LtAugCzMLcQpfCQUIbwanBLwCvAC3/rz82fod+Zb3T/ZS9af0UvRW9LP0ZvVq9rf3Q/kD++n85v7rAOoC0gSWBicIewmGCkALpQuyC2ULwQrLCYoICQdRBXIDdwFz/3L9hPu5+R34vval9dv0ZvRK9If0G/UD9jb3rfhb+jX8K/4vADICJAT3BZwHBwktCgYLiwu4C4sLBgstCgcJnAf3BSQEMgIvACv+Nfxb+q34NvcD9hv1h/RK9Gb02/Sl9b72Hfi5+YT7cv1z/3cBcgNRBQkHigjLCcEKZQuyC6ULQAuGCnsJJwiWBtIE6gLrAOb+6fwD+0P5t/dq9mb1s/RW9FL0p/RS9U/2lvcd+dn6vPy3/rwAvAKnBG8GBQhfCXEKMwugC7QLbwvTCuQJqgguB3sFnwOmAaL/oP2w++H5Qfjb9rz16vRt9En0fvQK9er1F/eI+DL6CPz9/QAAAwL4A84FeAfpCBYK9gqCC7cLkwsWC0QKJQm/Bx8GUARgAl4AWv5h/IX60vhW9xz2LfWR9Ez0YPTN9I/1ofb795H5WftE/UT/SQFEAycF4wZqCLEJrgpZC64LqgtNC5oKlglJCL0G/QQXAxoBFf8W/S77avnZ94X2evXA9Fv0TvSb9D/1NfZ29/f4r/qO/In+jQCOAnwERwbjB0IJWwolC5oLtgt5C+UK/QnKCFMHpQXLA9UB0f/O/dz7Cfpk+Pn20/X69HX0SPR19Pr00/X59mT4Cfrc+8790f/VAcsDpQVTB8oI/QnlCnkLtguaCyULWwpCCeMHRwZ8BI4CjQCJ/o78r/r3+Hb3NfY/9Zv0TvRb9MD0evWF9tn3avku+xb9Ff8aARcD/QS9BkkIlgmaCk0LqguuC1kLrgqxCWoI4wYnBUQDSQFE/0T9WfuR+fv3ofaP9c30YPRM9JH0LfUc9lb30viF+mH8Wv5eAGACUAQfBr8HJQlEChYLkwu3C4IL9goWCukIeAfOBfgDAwIAAP39CPwy+oj4F/fq9Qr1fvRJ9G306vS89dv2Qfjh+bD7oP2i/6YBnwN7BS4HqgjkCdMKbwu0C6ALMwtxCl8JBQhvBqcEvAK8ALf+vPzZ+h35lvdP9lL1p/RS9Fb0s/Rm9Wr2t/dD+QP76fzm/usA6gLSBJYGJwh7CYYKQAulC7ILZQvB"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "b64"
+    },
+    {
+      "name": "n > 0 without b64",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d42",
+        "re": "h42",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 0,
+        "n": 1380,
+        "size": 384044,
+        "crc": 4194768169
+      },
+      "code": "E_BAD_FIELD",
+      "field": "b64"
+    },
+    {
+      "name": "n 0 with b64",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d44",
+        "re": "h44",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384044,
+        "n": 0,
+        "size": 384044,
+        "crc": 0,
+        "b64": "AAAA"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "b64"
+    },
+    {
+      "name": "b64 is not base64",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d43",
+        "re": "h43",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384000,
+        "n": 44,
+        "size": 384044,
+        "crc": 4137893221,
+        "b64": "Lgd7BZ8DpgGi/6D9sPvh+UH42/a89er0bfRJ9H70CvXq9Rf3iPgy+gj8@@@@"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "b64"
+    },
+    {
+      "name": "negative n",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d44",
+        "re": "h44",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384044,
+        "n": -1,
+        "size": 384044,
+        "crc": 0
+      },
+      "code": "E_BAD_FIELD",
+      "field": "n"
+    },
+    {
+      "name": "size below the WAV header",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d43",
+        "re": "h43",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384000,
+        "n": 44,
+        "size": 43,
+        "crc": 4137893221,
+        "b64": "Lgd7BZ8DpgGi/6D9sPvh+UH42/a89er0bfRJ9H70CvXq9Rf3iPgy+gj8/f0="
+      },
+      "code": "E_BAD_FIELD",
+      "field": "size"
+    },
+    {
+      "name": "crc above uint32",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d43",
+        "re": "h43",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384000,
+        "n": 44,
+        "size": 384044,
+        "crc": 4294967296,
+        "b64": "Lgd7BZ8DpgGi/6D9sPvh+UH42/a89er0bfRJ9H70CvXq9Rf3iPgy+gj8/f0="
+      },
+      "code": "E_BAD_FIELD",
+      "field": "crc"
+    },
+    {
+      "name": "fid is not a MonoId",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d43",
+        "re": "h43",
+        "fid": "3qzk1m7-00042-0a1c",
+        "off": 384000,
+        "n": 44,
+        "size": 384044,
+        "crc": 4137893221,
+        "b64": "Lgd7BZ8DpgGi/6D9sPvh+UH42/a89er0bfRJ9H70CvXq9Rf3iPgy+gj8/f0="
+      },
+      "code": "E_BAD_FIELD",
+      "field": "fid"
+    },
+    {
+      "name": "file.data without re",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d43",
+        "fid": "3QZK1M7-00042-0A1C",
+        "off": 384000,
+        "n": 44,
+        "size": 384044,
+        "crc": 4137893221,
+        "b64": "Lgd7BZ8DpgGi/6D9sPvh+UH42/a89er0bfRJ9H70CvXq9Rf3iPgy+gj8/f0="
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

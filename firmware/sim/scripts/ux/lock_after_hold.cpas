@@ -1,0 +1,40 @@
+# Review regression (stale result, pocket hold). Before: a memo saved while locked, then 10
+# minutes later the habitual hold from the dark: the instant G0 went up the card flipped to
+# the 10-minute-old "√ 已存 0:02" with Mando's 存好了, which on a silent device reads "my memo
+# was saved"; and a G0 held in a pocket kept the backlight fully on for as long as it stayed down.
+# Now: 没有在录 / 松开，点一下再按住 with Mando awake until the card goes dark, the old result gone
+# with the hold (a tap shows the clock); a held G0 lights the card 10 s past its time at most.
+boot store=sd usb=off bat=4100
+include ../common/demo_state.cpas
+wait 1500
+press opt+l
+wait 3000
+press g0
+wait 800
+down g0
+wait 600
+mic 2000 speech
+up g0
+wait 900
+shot result  a memo from the card: √ 已存 0:02 for 2 s
+wait 600000
+down g0
+wait 2000
+shot held  10 min later, the habit: a hold from the dark, 没有在录
+up g0
+wait 300
+shot released  released: still 没有在录, Mando awake (never the old √ 已存 / 存好了)
+wait 1500
+shot dark  the card went dark
+press g0
+wait 400
+shot tapped  the tap the card asked for: the clock, Mando dozing (the old result is gone)
+wait 3500
+down g0
+wait 5000
+shot pocket-5s  G0 held 5 s in a pocket: the card lit, 没有在录
+wait 10000
+shot pocket-15s  15 s: dark (the card stays lit 10 s past its 3 s at most)
+up g0
+wait 500
+shot pocket-up  released: still dark, nothing recorded

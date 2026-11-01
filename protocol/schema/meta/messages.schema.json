@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/meta/messages.schema.json",
+  "title": "message vector file",
+  "description": "Format of vectors/v0/messages/<type>.json. See protocol/README.md.",
+  "type": "object",
+  "required": ["type", "valid", "invalid"],
+  "additionalProperties": false,
+  "properties": {
+    "$comment": {"type": "string"},
+    "type": {"type": "string"},
+    "valid": {"type": "array", "items": {"$ref": "#/$defs/valid"}},
+    "invalid": {"type": "array", "items": {"$ref": "#/$defs/invalid"}}
+  },
+  "$defs": {
+    "name": {"type": "string", "minLength": 1},
+    "dir": {"enum": ["h2d", "d2h"]},
+    "lineB64": {"type": "string", "minLength": 4, "pattern": "^[A-Za-z0-9+/]+={0,2}$"},
+    "valid": {
+      "description": "msg is the decoded message. With line_b64, decoding those exact bytes must yield msg.",
+      "type": "object",
+      "required": ["name", "dir", "msg"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"$ref": "#/$defs/name"},
+        "dir": {"$ref": "#/$defs/dir"},
+        "msg": {"type": "object"},
+        "line_b64": {"$ref": "#/$defs/lineB64"},
+        "note": {"type": "string"}
+      }
+    },
+    "invalid": {
+      "description": "Exactly one of msg / line_b64. code is the receiver's verdict; field is required for E_BAD_FIELD.",
+      "type": "object",
+      "required": ["name", "dir", "code"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"$ref": "#/$defs/name"},
+        "dir": {"$ref": "#/$defs/dir"},
+        "msg": {"type": "object"},
+        "line_b64": {"$ref": "#/$defs/lineB64"},
+        "code": {"enum": ["E_PARSE", "E_TOO_LARGE", "E_VERSION", "E_UNKNOWN_TYPE", "E_BAD_FIELD"]},
+        "field": {"type": "string", "minLength": 1},
+        "note": {"type": "string"}
+      },
+      "oneOf": [{"required": ["msg"]}, {"required": ["line_b64"]}],
+      "if": {"properties": {"code": {"const": "E_BAD_FIELD"}}},
+      "then": {"required": ["field"]}
+    }
+  }
+}

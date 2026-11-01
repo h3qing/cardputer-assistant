@@ -1,0 +1,58 @@
+[project]
+name = "cpad"
+version = "0.5.1"
+description = "Mac daemon (cpad) and CLI (cpa) for Cardputer Assistant"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12,<3.13"
+dependencies = ["pyserial==3.5"]
+
+[project.scripts]
+cpa = "cpad.cli.main:main"
+cpa-stt = "cpa_stt.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9,<10",
+    "pytest-asyncio>=1,<2",
+    "pytest-cov>=7,<8",
+    "hypothesis>=6,<7",
+    "ruff>=0.17,<0.18",
+    "jsonschema>=4.23,<5",
+    "lizard>=1.24,<2",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = ["cpad", "cpa_stt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = ["slow: real protocol timings (seconds)"]
+
+[tool.coverage.run]
+source = ["cpad", "cpa_stt"]
+branch = false
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "C901", "PLR0915", "S", "SIM"]
+ignore = ["S101", "S603", "S607", "S108", "SIM105"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "PLR0915"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10

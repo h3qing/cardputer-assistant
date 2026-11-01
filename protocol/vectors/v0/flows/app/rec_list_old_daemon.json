@@ -1,0 +1,144 @@
+{
+  "name": "rec_list_old_daemon",
+  "spec": "docs/13-assistant-v2-plan.md §12.2",
+  "description": "A cpad without rec.* answers rec.list with E_UNKNOWN_TYPE. The device checks caps.recs before it asks, so this only happens when an older cpad replaces a newer one while the device is plugged in: the request crosses the old cpad's start, and its hello (without caps.recs) stops further rec.*.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking"},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7f3a9c1e5b2d4a60",
+        "host_label": "Studio Mac"
+      }
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.4.1",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {"t": 2000, "from": "device", "msg": {"v": 0, "t": "rec.list", "id": "d2", "filter": "all", "max": 6}},
+    {
+      "t": 2030,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h2",
+        "re": "d2",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792447120000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          }
+        ]
+      }
+    },
+    {
+      "t": 3000,
+      "event": "daemon_restart",
+      "note": "cpad 0.4.0 replaces 0.4.1; USB stays up, so the device still holds caps.recs from h1"
+    },
+    {
+      "t": 3005,
+      "from": "device",
+      "msg": {"v": 0, "t": "rec.list", "id": "d3", "filter": "starred", "max": 6},
+      "note": "the user switches to the ★ tab"
+    },
+    {
+      "t": 3010,
+      "from": "host",
+      "msg": {"v": 0, "t": "error", "id": "h1", "re": "d3", "code": "E_UNKNOWN_TYPE"},
+      "note": "the old cpad does not know rec.list (wire.py step 6) and answers the line it read before its hello went out; the device shows that cpad needs an upgrade"
+    },
+    {
+      "t": 3100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h2",
+        "role": "host",
+        "app": "cpad/0.4.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "no caps.recs: from now on the device sends no rec.*"
+    },
+    {
+      "t": 3115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d4",
+        "re": "h2",
+        "role": "device",
+        "fw": "cpa-fw/0.4.1",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 56211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 3115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {"t": 8100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h3"}},
+    {
+      "t": 8115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d5",
+        "re": "h3",
+        "up_ms": 61211,
+        "pending": 0,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "files": {"n": 0, "rev": 9, "live": false}
+      },
+      "note": "opening the recordings app now sends nothing and shows that cpad needs an upgrade"
+    },
+    {"t": 8115, "expect": {"host.credit_used": 0, "host.reboot_detected": false}}
+  ]
+}

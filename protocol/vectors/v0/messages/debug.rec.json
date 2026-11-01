@@ -1,0 +1,58 @@
+{
+  "$comment": "Vectors for debug.rec (v0.3, docs/11-m3-design.md §5); format in protocol/README.md.",
+  "type": "debug.rec",
+  "valid": [
+    {
+      "name": "30 s segments for HIL rec_meeting",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": 30000}
+    },
+    {
+      "name": "shortest segment",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": 10000}
+    },
+    {
+      "name": "longest segment",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": 600000}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "seg_ms below seg_ms_min",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": 9999},
+      "code": "E_BAD_FIELD",
+      "field": "seg_ms"
+    },
+    {
+      "name": "seg_ms above seg_ms_max",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": 600001},
+      "code": "E_BAD_FIELD",
+      "field": "seg_ms"
+    },
+    {
+      "name": "seg_ms missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80"},
+      "code": "E_BAD_FIELD",
+      "field": "seg_ms"
+    },
+    {
+      "name": "seg_ms as a string",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": "30000"},
+      "code": "E_BAD_FIELD",
+      "field": "seg_ms"
+    },
+    {
+      "name": "debug.rec carrying re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.rec", "id": "h80", "seg_ms": 30000, "re": "d1"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

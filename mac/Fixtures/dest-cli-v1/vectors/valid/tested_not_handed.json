@@ -1,0 +1,13 @@
+{
+  "doc": "tested",
+  "name": "the app is gone",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "dest": "url.grok",
+    "marker": "4821",
+    "handed": false,
+    "via": null,
+    "code": "E_DEST_MISSING"
+  }
+}

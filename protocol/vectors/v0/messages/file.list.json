@@ -1,0 +1,63 @@
+{
+  "$comment": "Vectors for file.list (v0.3, docs/11-m3-design.md §5); format in protocol/README.md.",
+  "type": "file.list",
+  "valid": [
+    {
+      "name": "first page (docs/11 §5.6)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "max": 4}
+    },
+    {
+      "name": "next page after the last listed id",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "after": "3QZK1M7-00042-0A1D", "max": 4}
+    },
+    {
+      "name": "max omitted: device uses file_list_max",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41"}
+    },
+    {
+      "name": "after and max null mean absent",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "after": null, "max": null}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "max above file_list_max",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "max": 5},
+      "code": "E_BAD_FIELD",
+      "field": "max"
+    },
+    {
+      "name": "max 0",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "max": 0},
+      "code": "E_BAD_FIELD",
+      "field": "max"
+    },
+    {
+      "name": "max as a string",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "max": "4"},
+      "code": "E_BAD_FIELD",
+      "field": "max"
+    },
+    {
+      "name": "after is not a MonoId (lower case)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "after": "3qzk1m7-00042-0a1d"},
+      "code": "E_BAD_FIELD",
+      "field": "after"
+    },
+    {
+      "name": "file.list carrying re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "file.list", "id": "h41", "max": 4, "re": "d40"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "name": "old_daemon_ignores_dest",
+  "spec": "docs/13-assistant-v2-plan.md §9.3, §12.2",
+  "description": "A v0.4.1 device sends a note with dest todo to a v0.3 cpad. The old cpad ignores dest and stores the note as a plain daily note, which is the safe downgrade: an unknown dest never turns into a paste or an execution.",
+  "initial": {"device.link": "Attached", "host.link": "handshaking", "device.outbox_pending": 1},
+  "steps": [
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.3.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "no caps.todo"
+    },
+    {
+      "t": 115,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.4.1",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 120000,
+        "rst": "poweron",
+        "time": true,
+        "pending": 1,
+        "bat_mv": 4120,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 9, "live": false}
+      }
+    },
+    {"t": 115, "expect": {"device.link": "Ready", "host.link": "ready"}},
+    {
+      "t": 130,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": "todo"}
+      },
+      "note": "saved offline with Opt+T; at save time the device warned that an old cpad stores it as a plain note"
+    },
+    {
+      "t": 150,
+      "from": "host",
+      "msg": {"v": 0, "t": "outbox.ack", "id": "h2", "re": "3QZK1M7-0000C-0005", "status": "stored"},
+      "note": "the v0.3 cpad ignores dest (unknown fields are ignored) and writes a plain daily-note line: nothing is lost"
+    },
+    {
+      "t": 150,
+      "expect": {"host.items_stored": 1, "device.outbox_inflight": 0, "device.outbox_pending": 0, "host.credit_used": 0}
+    }
+  ]
+}

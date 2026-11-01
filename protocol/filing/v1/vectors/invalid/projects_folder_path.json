@@ -1,0 +1,21 @@
+{
+  "doc": "projects",
+  "name": "folder given as a path",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "projects[0].folder"
+  },
+  "data": {
+    "v": 1,
+    "projects": [
+      {
+        "key": "web",
+        "name": "Web site",
+        "slot": 1,
+        "ok": true,
+        "linked": true,
+        "folder": "/Users/someone/my-repo"
+      }
+    ]
+  }
+}

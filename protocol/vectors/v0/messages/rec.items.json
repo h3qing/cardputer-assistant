@@ -1,0 +1,318 @@
+{
+  "$comment": "Vectors for rec.items (v0.4.1, docs/13-assistant-v2-plan.md §12.2); format in protocol/README.md.",
+  "type": "rec.items",
+  "valid": [
+    {
+      "name": "one row (docs/13 §12.2)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "next": "t1792440000000-a1",
+        "items": [
+          {
+            "rec": "3QZK1M7-00009-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792440000000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "full page across two MonoId epochs, newest first by wall time (docs/13 §8.1)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "next": "t1792300000000-a6",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0004",
+            "mode": "memo",
+            "st": "done",
+            "wall_ms": 1792447320000,
+            "dur_ms": 12000,
+            "title": "买牛奶和鸡蛋",
+            "todo_n": 1
+          },
+          {
+            "rec": "2B7XW4R-00003-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792447120000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          },
+          {
+            "rec": "2B7XW4R-00002-0001",
+            "mode": "meeting",
+            "st": "processing",
+            "wall_ms": 1792437020000,
+            "dur_ms": 1080000,
+            "project": "cpa"
+          },
+          {"rec": "3QZK1M7-00009-0007", "mode": "memo", "st": "failed", "wall_ms": 1792401000000, "dur_ms": 64000},
+          {
+            "rec": "3QZK1M7-00009-0003",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792323120000,
+            "dur_ms": 3300000,
+            "title": "周会",
+            "todo_n": 0
+          },
+          {"rec": "3QZK1M7-00009-0001", "mode": "memo", "st": "on_device", "wall_ms": 1792300000000, "dur_ms": 4000}
+        ]
+      }
+    },
+    {
+      "name": "last page: no next",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3QZK1M7-00008-0001", "mode": "memo", "st": "transcript"}]
+      }
+    },
+    {
+      "name": "nothing to list",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "rec.items", "id": "h24", "re": "d23", "items": []}
+    },
+    {
+      "name": "row with every optional field null",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "next": null,
+        "items": [
+          {
+            "rec": "3QZK1M7-00009-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": null,
+            "dur_ms": null,
+            "project": null,
+            "starred": null,
+            "marks": null,
+            "title": null,
+            "todo_n": null
+          }
+        ]
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "7 items (rec_list_max is 6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [
+          {
+            "rec": "2B7XW4R-00003-0004",
+            "mode": "memo",
+            "st": "done",
+            "wall_ms": 1792447320000,
+            "dur_ms": 12000,
+            "title": "买牛奶和鸡蛋",
+            "todo_n": 1
+          },
+          {
+            "rec": "2B7XW4R-00003-0001",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792447120000,
+            "dur_ms": 2530000,
+            "project": "cpa",
+            "starred": true,
+            "marks": 2,
+            "title": "客户同步：定价和交付",
+            "todo_n": 3
+          },
+          {
+            "rec": "2B7XW4R-00002-0001",
+            "mode": "meeting",
+            "st": "processing",
+            "wall_ms": 1792437020000,
+            "dur_ms": 1080000,
+            "project": "cpa"
+          },
+          {"rec": "3QZK1M7-00009-0007", "mode": "memo", "st": "failed", "wall_ms": 1792401000000, "dur_ms": 64000},
+          {
+            "rec": "3QZK1M7-00009-0003",
+            "mode": "meeting",
+            "st": "done",
+            "wall_ms": 1792323120000,
+            "dur_ms": 3300000,
+            "title": "周会",
+            "todo_n": 0
+          },
+          {"rec": "3QZK1M7-00009-0001", "mode": "memo", "st": "on_device", "wall_ms": 1792300000000, "dur_ms": 4000},
+          {"rec": "3QZK1M7-00008-0001", "mode": "meeting", "st": "done"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items"
+    },
+    {
+      "name": "49-byte title",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done", "title": "录录录录录录录录录录录录录录录录a"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].title"
+    },
+    {
+      "name": "title with a line break",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done", "title": "周会\n纪要"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].title"
+    },
+    {
+      "name": "33-character next",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "next": "t1792440000000-3QZK1M7-00009-0001",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "next"
+    },
+    {
+      "name": "next containing '/'",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "next": "t1792440000000/a1",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "next"
+    },
+    {
+      "name": "the same session twice",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [
+          {"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done"},
+          {"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done"}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[1].rec"
+    },
+    {
+      "name": "unknown state 'deleted'",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "deleted"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].st"
+    },
+    {
+      "name": "row without st",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].st"
+    },
+    {
+      "name": "rec not a MonoId",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3qzk1m7-00009-0001", "mode": "meeting", "st": "done"}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].rec"
+    },
+    {
+      "name": "marks above 65535",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "rec.items",
+        "id": "h24",
+        "re": "d23",
+        "items": [{"rec": "3QZK1M7-00009-0001", "mode": "meeting", "st": "done", "marks": 65536}]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "items[0].marks"
+    },
+    {
+      "name": "items missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "rec.items", "id": "h24", "re": "d23"},
+      "code": "E_BAD_FIELD",
+      "field": "items"
+    },
+    {
+      "name": "rec.items without re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "rec.items", "id": "h24", "items": []},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

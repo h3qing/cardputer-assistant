@@ -1,0 +1,137 @@
+{
+  "$comment": "Vectors for error; format in protocol/README.md.",
+  "type": "error",
+  "valid": [
+    {
+      "name": "device rejects a snapshot field (05 §6.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "d12",
+        "re": "h12",
+        "code": "E_BAD_FIELD",
+        "field": "sessions[3].name"
+      }
+    },
+    {
+      "name": "host: unknown queue item, short English msg",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "h9",
+        "re": "d9",
+        "code": "E_UNKNOWN_ITEM",
+        "msg": "no such queue item"
+      }
+    },
+    {
+      "name": "device: unknown message type",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "error", "id": "d13", "re": "h61", "code": "E_UNKNOWN_TYPE"}
+    },
+    {
+      "name": "device: not ready before the handshake",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "error", "id": "d1", "re": "h12", "code": "E_NOT_READY"}
+    },
+    {
+      "name": "optional field and msg as null",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "h10",
+        "re": "d10",
+        "code": "E_BUSY",
+        "field": null,
+        "msg": null
+      }
+    },
+    {
+      "name": "rec.act on a session cpad does not know (docs/13 §12.2)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "error", "id": "h8", "re": "d8", "code": "E_UNKNOWN_ITEM"}
+    },
+    {
+      "name": "an older cpad does not know rec.list",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "error", "id": "h1", "re": "d3", "code": "E_UNKNOWN_TYPE"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "code not in §6.8",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "d12",
+        "re": "h12",
+        "code": "E_OOPS",
+        "field": "sessions[3].name"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "code"
+    },
+    {
+      "name": "code missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "error", "id": "d12", "re": "h12", "field": "sessions[3].name"},
+      "code": "E_BAD_FIELD",
+      "field": "code"
+    },
+    {
+      "name": "error without re",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "error", "id": "d12", "code": "E_BAD_FIELD", "field": "sessions[3].name"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "msg is not plain ASCII",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "h12",
+        "re": "d12",
+        "code": "E_BAD_FIELD",
+        "field": "sessions[3].name",
+        "msg": "参数错误"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "msg"
+    },
+    {
+      "name": "msg longer than 80 characters",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "h12",
+        "re": "d12",
+        "code": "E_BAD_FIELD",
+        "field": "sessions[3].name",
+        "msg": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "msg"
+    },
+    {
+      "name": "field path with a space",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "d12",
+        "re": "h12",
+        "code": "E_BAD_FIELD",
+        "field": "sessions 3"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "field"
+    }
+  ]
+}

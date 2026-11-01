@@ -1,0 +1,18 @@
+{
+  "doc": "usual",
+  "name": "a project key with upper case",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "usual[0].project"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "usual": [
+      {
+        "project": "Cpa",
+        "dest": "clip"
+      }
+    ]
+  }
+}

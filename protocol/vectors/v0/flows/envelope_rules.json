@@ -1,0 +1,97 @@
+{
+  "name": "envelope_rules",
+  "spec": "05 §6.1, §6.2, §6.8",
+  "description": "Receiver rules for unknown fields, unknown types, parse errors, other versions, noise, CRLF and bad fields.",
+  "initial": {"device.link": "Ready", "host.link": "ready"},
+  "steps": [
+    {
+      "t": 0,
+      "from": "host",
+      "msg": {"v": 0, "t": "ping", "id": "h60", "x_future": {"a": 1}},
+      "note": "unknown fields are ignored"
+    },
+    {
+      "t": 10,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d60",
+        "re": "h60",
+        "up_ms": 1000,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9}
+      }
+    },
+    {
+      "t": 100,
+      "from": "host",
+      "msg": {"v": 0, "t": "foo.bar", "id": "h61"},
+      "outcome": "E_UNKNOWN_TYPE"
+    },
+    {
+      "t": 110,
+      "from": "device",
+      "msg": {"v": 0, "t": "error", "id": "d61", "re": "h61", "code": "E_UNKNOWN_TYPE"}
+    },
+    {
+      "t": 200,
+      "from": "host",
+      "msg": {"v": 0, "t": "foo.bar", "id": "h62", "re": "d60"},
+      "outcome": "ignored",
+      "note": "an unknown type that is a reply is ignored and never answered"
+    },
+    {
+      "t": 300,
+      "from": "host",
+      "line_b64": "eyJ2IjowLCJ0IjoicGluZyIsImlkIjoiaDYzIgo=",
+      "outcome": "E_PARSE",
+      "note": "no id can be recovered: counted, not answered"
+    },
+    {"t": 400, "from": "host", "msg": {"v": 1, "t": "ping", "id": "h64"}, "outcome": "E_VERSION"},
+    {
+      "t": 410,
+      "from": "device",
+      "msg": {"v": 0, "t": "error", "id": "d62", "re": "h64", "code": "E_VERSION"}
+    },
+    {"t": 500, "from": "device", "line_b64": "RSAoMTIzNCkgYm9vdDogbG9nIGxpbmUK", "outcome": "noise"},
+    {
+      "t": 600,
+      "from": "host",
+      "line_b64": "eyJ2IjowLCJ0IjoicGluZyIsImlkIjoiaDY1In0NCg==",
+      "note": "\\r is ignored"
+    },
+    {
+      "t": 610,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d63",
+        "re": "h65",
+        "up_ms": 1600,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9}
+      }
+    },
+    {
+      "t": 700,
+      "from": "host",
+      "msg": {"v": 0, "t": "time.set", "id": "h66", "epoch_ms": 1792440000000, "tz_min": 900},
+      "outcome": "E_BAD_FIELD"
+    },
+    {
+      "t": 710,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "error",
+        "id": "d64",
+        "re": "h66",
+        "code": "E_BAD_FIELD",
+        "field": "tz_min"
+      }
+    },
+    {"t": 710, "expect": {"host.credit_used": 0}}
+  ]
+}

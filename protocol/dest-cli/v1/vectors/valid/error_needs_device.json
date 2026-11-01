@@ -1,0 +1,10 @@
+{
+  "doc": "error",
+  "name": "a link not tested on this Mac may act: confirm on the device",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_NEEDS_DEVICE",
+    "field": "dest"
+  }
+}

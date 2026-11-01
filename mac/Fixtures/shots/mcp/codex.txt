@@ -1,0 +1,6 @@
+# Codex CLI: paste into ~/.codex/config.toml (your personal config, not a project's .codex/)
+[mcp_servers.cardputer]
+command = "/Users/you/.local/bin/cpa"
+args = ["mcp", "serve"]
+startup_timeout_sec = 10
+tool_timeout_sec = 30

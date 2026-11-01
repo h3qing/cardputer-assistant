@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/file.del.schema.json",
+  "title": "file.del",
+  "description": "v0.3 (docs/11 §5.4): host deletes a segment it has fully received and verified. The device deletes only when size (and sha256, when it recorded one) match, else E_BAD_FIELD size|sha256; a missing file is acked, so a resend is idempotent. Reply: ack or error.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["fid", "size"],
+  "properties": {
+    "t": {"const": "file.del"},
+    "fid": {"$ref": "common.schema.json#/$defs/monoId"},
+    "size": {"$ref": "common.schema.json#/$defs/fileSize"},
+    "sha256": {"anyOf": [{"$ref": "common.schema.json#/$defs/sha256"}, {"type": "null"}]}
+  }
+}

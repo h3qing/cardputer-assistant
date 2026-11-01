@@ -1,0 +1,38 @@
+# docs/20 D5, D6 regression (U9, U10; from the review's fm16_back_loop, refute_back2 and
+# s01_spawn_cancel). Before the fix ` typed a backtick in the editor (` then Enter saved a
+# note "`"), Fn+` toggled the discard prompt, and ` on the spawn confirm dropped a 77-character
+# task. Now ` leaves the editor (asking first with text), Fn+` types the backtick, and ` on the
+# confirm goes back to the editor with the text.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 2600
+press g0
+press `
+shot empty-back  ` on an empty editor: closed
+press g0
+type buy milk
+press `
+shot ask  ` with text: "放弃已输入的内容？"
+press `
+shot back-to-edit  ` again: editing, the text kept
+press esc
+shot fn-grave  Fn+`: a backtick typed
+press `
+wait 450
+press enter
+press opt+1
+press opt+s
+type fix the refund webhook retry and add an e2e test for the 3 failure modes
+press enter
+wait 500
+shot confirm  the spawn confirm
+press `
+shot confirm-back  `: back to the editor, the task kept (D6)
+press enter
+wait 500
+press esc
+shot confirm-fn-back  Fn+` on the confirm: the editor again
+press `
+wait 450
+press enter
+shot discarded  ` then Enter after 400 ms: the draft dropped

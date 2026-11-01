@@ -1,0 +1,6 @@
+# One memo of about 3 s: G0 held, a voice, let go (included by the kept scripts).
+down g0
+wait 600
+mic 3000 speech
+up g0
+wait 3000

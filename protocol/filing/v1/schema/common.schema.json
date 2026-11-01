@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/common.schema.json",
+  "title": "common",
+  "description": "Shared definitions of the filing contract v1, the JSON of `cpa filing ... --json` and `cpa project ls --json` (docs/23-mac-inbox.md §3.2, §3.3). Unknown fields are always allowed; pattern follows ECMA-262 ($ matches only at the end). Only keywords the WhisperWoof validator knows are used (check_filing.KEYWORDS).",
+  "$defs": {
+    "version": { "const": 1 },
+    "monoId": {
+      "description": "A recording session id: EEEEEEE-BBBBB-SSSS in upper-case Crockford base32 (protocol v0 common#/$defs/monoId). Commands accept it in any case.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{7}-[0-9A-HJKMNP-TV-Z]{5}-[0-9A-HJKMNP-TV-Z]{4}$"
+    },
+    "projectKey": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,11}$" },
+    "filing": {
+      "description": "The filing state (docs/23 §2.2). Not called `state`: MCP list_recordings uses state for the transcription.",
+      "enum": ["new", "filed", "handed", "done", "hidden"]
+    },
+    "count": { "type": "integer", "minimum": 0 },
+    "deviceId": {
+      "description": "HMAC-SHA256(id_key, \"dev|\" + dev), first 6 bytes in hex. Never the device's own id (its factory MAC address); one key per Mac, so two Macs' ids cannot be joined.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{12}$"
+    },
+    "safeText": {
+      "description": "Passed through display_safe(): no C0, DEL, C1 (U+0080-009F), U+2028 / U+2029, bidirectional controls (U+202A-202E, U+2066-2069) or a lone surrogate (U+D800-DFFF: half an emoji; a reader matching with the u flag sees a pair as one code point).",
+      "type": "string",
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "excerpt": {
+      "description": "At most 280 characters (code points).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "memoText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "queueText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "actionText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "short": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "name": {
+      "description": "A project or Mac name: 1-24 UTF-8 bytes where it is stored, so at most 24 characters here.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 24,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "fw": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\u202a-\\u202e\\u2066-\\u2069\\ud800-\\udfff]*$"
+    },
+    "seconds": { "type": "number", "minimum": 0 },
+    "queueItem": {
+      "description": "A queue item made from a recording by `cpa filing hand` (docs/23 §3.4), or null. intent todo or spawn (to be started as a session from the device board, always in plan mode); open until it is spawned or done.",
+      "type": ["object", "null"],
+      "required": ["qid", "intent", "open"],
+      "properties": {
+        "qid": { "type": "string", "pattern": "^q[0-9]{1,10}$" },
+        "intent": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,15}$", "x-knownValues": ["todo", "spawn"] },
+        "open": { "type": "boolean" }
+      }
+    }
+  }
+}

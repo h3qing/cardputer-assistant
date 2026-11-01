@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/rec.items.schema.json",
+  "title": "rec.items",
+  "description": "v0.4.1 (docs/13 §8.1, §12.2): reply to rec.list with at most max rows, hidden sessions left out. next is present when another page follows. The one host reply allowed above host_reply_max (bounded by line_max; see protocol/README).",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+  "required": ["items"],
+  "properties": {
+    "t": {"const": "rec.items"},
+    "items": {
+      "type": "array",
+      "maxItems": 6,
+      "x-uniqueBy": "rec",
+      "items": {"$ref": "common.schema.json#/$defs/recRow"}
+    },
+    "next": {"anyOf": [{"$ref": "common.schema.json#/$defs/recCursor"}, {"type": "null"}]}
+  }
+}

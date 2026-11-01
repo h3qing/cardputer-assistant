@@ -1,0 +1,613 @@
+{
+  "$comment": "Vectors for debug.state; format in protocol/README.md.",
+  "type": "debug.state",
+  "valid": [
+    {
+      "name": "host asks for the state summary",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.state", "id": "h71"}
+    },
+    {
+      "name": "device summary with timestamps",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "compose",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 1, "inflight": 1, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      }
+    },
+    {
+      "name": "no overlay, no key yet",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "overlay_ms": null,
+        "key_ms": null,
+        "outbox": {"pending": 1, "inflight": 1, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      }
+    },
+    {
+      "name": "v0.3 summary while a meeting records segment 2",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": true, "mode": "meeting", "seg": 2, "files_n": 2, "files_rev": 19}
+      }
+    },
+    {
+      "name": "v0.3 summary while idle",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": false, "mode": null, "seg": null, "files_n": 0, "files_rev": 21}
+      }
+    },
+    {
+      "name": "v0.3 summary with the recording health counters while a meeting records",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {
+          "live": true, "mode": "meeting", "seg": 2, "files_n": 2, "files_rev": 19,
+          "ring_high": 2, "mic_missing": 0, "rot_ms_max": 214, "heap_free": 171520, "heap_block": 155648
+        }
+      }
+    },
+    {
+      "name": "v0.4.0 summary with the Tab menu open over compose (overlay reports the layer under the menu)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "compose",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": false, "mode": null, "seg": null, "files_n": 0, "files_rev": 21},
+        "ui": {"menu": true, "locked": false}
+      }
+    },
+    {
+      "name": "v0.4.0 summary while locked and a memo records",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "key_ms": 97990,
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": true, "mode": "memo", "seg": 0, "files_n": 0, "files_rev": 21},
+        "ui": {"menu": false, "locked": true}
+      }
+    },
+    {
+      "name": "v0.4.0 summary with ui null (the same as absent: a build before v0.4.0)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "ui": null
+      }
+    },
+    {
+      "name": "debug.state.diag (gh #21) after a meeting: the last recording's health counters and the device's",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {
+          "live": false, "mode": null, "seg": null, "files_n": 2, "files_rev": 19,
+          "ring_high": 1, "mic_missing": 0, "rot_ms_max": 214, "heap_free": 171520, "heap_block": 155648
+        },
+        "ui": {"menu": false, "locked": false},
+        "diag": {
+          "heap_free": 183028, "heap_min": 171520, "heap_block": 163828, "stack_left": 5100, "audio_stack_left": 2192,
+          "loop_n": 52448550, "loop_max_us": 107993, "loop_win_max_us": 49535, "gap_max_us": 108007,
+          "gap_win_max_us": 49550, "loop_over_20": 6711, "loop_over_50": 2, "loop_over_100": 1, "loop_over_500": 0,
+          "ghost_n": 0, "kb_reinit_n": 0
+        }
+      }
+    },
+    {
+      "name": "debug.state.diag null (the same as absent: a build without it)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "diag": null
+      }
+    },
+    {
+      "name": "v0.4.3 ui.lang: the settings page in English (docs/21 §7)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "system",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "ui": {"menu": false, "locked": false, "lang": "en"}
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "summary without up_ms",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "compose",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 1, "inflight": 1, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "up_ms"
+    },
+    {
+      "name": "unknown overlay",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "menu",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 1, "inflight": 1, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "overlay"
+    },
+    {
+      "name": "unknown link state",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Online",
+        "mod": "board",
+        "overlay": "compose",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 1, "inflight": 1, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "link"
+    },
+    {
+      "name": "module id in upper case",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "Board",
+        "overlay": "compose",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 1, "inflight": 1, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "mod"
+    },
+    {
+      "name": "outbox.bad missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "compose",
+        "overlay_ms": 98010,
+        "key_ms": 97990,
+        "outbox": {"pending": 1, "inflight": 1},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 1,
+        "projects": [
+          {"slot": 1, "run": 1, "need": 1, "queued": 2},
+          {"slot": 2, "run": 0, "need": 0, "queued": 0}
+        ]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "outbox.bad"
+    },
+    {
+      "name": "rec.mode unknown",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": true, "mode": "call", "seg": 0, "files_n": 0, "files_rev": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "rec.mode"
+    },
+    {
+      "name": "rec.files_n above file_pending_max",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": false, "mode": null, "seg": null, "files_n": 257, "files_rev": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "rec.files_n"
+    },
+    {
+      "name": "rec.live missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"mode": null, "seg": null, "files_n": 0, "files_rev": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "rec.live"
+    },
+    {
+      "name": "rec.mic_missing negative",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": false, "mode": null, "seg": null, "files_n": 0, "files_rev": 21, "mic_missing": -1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "rec.mic_missing"
+    },
+    {
+      "name": "rec.heap_block above uint32",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "board",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "rec": {"live": false, "mode": null, "seg": null, "files_n": 0, "files_rev": 21, "heap_block": 4294967296}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "rec.heap_block"
+    },
+    {
+      "name": "ui.menu not a boolean",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "ui": {"menu": 1, "locked": false}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "ui.menu"
+    },
+    {
+      "name": "ui.locked missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "ui": {"menu": false}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "ui.locked"
+    },
+    {
+      "name": "diag.loop_n missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "diag": {
+          "heap_free": 183028, "heap_min": 171520, "heap_block": 163828, "stack_left": 5100, "audio_stack_left": 2192,
+          "loop_max_us": 107993, "loop_win_max_us": 49535, "gap_max_us": 108007,
+          "gap_win_max_us": 49550, "loop_over_20": 6711, "loop_over_50": 2, "loop_over_100": 1, "loop_over_500": 0,
+          "ghost_n": 0, "kb_reinit_n": 0
+        }
+      },
+      "code": "E_BAD_FIELD",
+      "field": "diag.loop_n"
+    },
+    {
+      "name": "diag.ghost_n above count",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "diag": {
+          "heap_free": 183028, "heap_min": 171520, "heap_block": 163828, "stack_left": 5100, "audio_stack_left": 2192,
+          "loop_n": 52448550, "loop_max_us": 107993, "loop_win_max_us": 49535, "gap_max_us": 108007,
+          "gap_win_max_us": 49550, "loop_over_20": 6711, "loop_over_50": 2, "loop_over_100": 1, "loop_over_500": 0,
+          "ghost_n": 65536, "kb_reinit_n": 0
+        }
+      },
+      "code": "E_BAD_FIELD",
+      "field": "diag.ghost_n"
+    },
+    {
+      "name": "diag not an object",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "home",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "diag": [183028]
+      },
+      "code": "E_BAD_FIELD",
+      "field": "diag"
+    },
+    {
+      "name": "ui.lang a language the device does not have",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "debug.state",
+        "id": "d71",
+        "re": "h71",
+        "up_ms": 98123,
+        "link": "Ready",
+        "mod": "system",
+        "overlay": "none",
+        "outbox": {"pending": 0, "inflight": 0, "bad": 0},
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "need": 0,
+        "projects": [],
+        "ui": {"menu": false, "locked": false, "lang": "fr"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "ui.lang"
+    }
+  ]
+}

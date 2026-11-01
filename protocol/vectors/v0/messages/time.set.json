@@ -1,0 +1,58 @@
+{
+  "$comment": "Vectors for time.set; format in protocol/README.md.",
+  "type": "time.set",
+  "valid": [
+    {
+      "name": "time.set (05 §6.6)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000, "tz_min": -420}
+    },
+    {
+      "name": "earliest accepted epoch, tz -840",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1735689600000, "tz_min": -840}
+    },
+    {
+      "name": "tz +840",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000, "tz_min": 840}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "epoch before 2025-01-01",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1735689599999, "tz_min": -420},
+      "code": "E_BAD_FIELD",
+      "field": "epoch_ms"
+    },
+    {
+      "name": "fractional epoch_ms",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000.5, "tz_min": -420},
+      "code": "E_BAD_FIELD",
+      "field": "epoch_ms"
+    },
+    {
+      "name": "epoch_ms as a string",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": "1792440000000", "tz_min": -420},
+      "code": "E_BAD_FIELD",
+      "field": "epoch_ms"
+    },
+    {
+      "name": "tz_min above 840",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000, "tz_min": 841},
+      "code": "E_BAD_FIELD",
+      "field": "tz_min"
+    },
+    {
+      "name": "tz_min missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "time.set", "id": "h2", "epoch_ms": 1792440000000},
+      "code": "E_BAD_FIELD",
+      "field": "tz_min"
+    }
+  ]
+}

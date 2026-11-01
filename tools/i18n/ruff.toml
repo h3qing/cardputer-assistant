@@ -1,0 +1,10 @@
+# Lint and format settings for the i18n tools: the repo job's WP1 rules (.github/workflows/ci.yml).
+line-length = 120
+src = ["."]
+target-version = "py39"
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "C901", "PLR0915"]
+
+[lint.isort]
+known-first-party = ["cppscan", "check_texts", "texts"]

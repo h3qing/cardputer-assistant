@@ -1,0 +1,19 @@
+{
+  "doc": "projects",
+  "name": "project key with upper case",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "projects[0].key"
+  },
+  "data": {
+    "v": 1,
+    "projects": [
+      {
+        "key": "CPA",
+        "name": "Acmeshop",
+        "slot": 1,
+        "ok": true
+      }
+    ]
+  }
+}

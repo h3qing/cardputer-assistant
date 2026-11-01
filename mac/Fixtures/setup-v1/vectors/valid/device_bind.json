@@ -1,0 +1,26 @@
+{
+  "doc": "row",
+  "name": "a board waiting to be confirmed (docs/27 O3)",
+  "data": {
+    "v": 1,
+    "id": "device",
+    "state": "act",
+    "required": true,
+    "blocked_by": [
+      "notes"
+    ],
+    "title": "插着一块 Cardputer，设备码 3F7A",
+    "detail": "连上以后，设备上还没传的笔记和录音会存到这台 Mac。",
+    "fix": [
+      {
+        "op": "device.bind",
+        "cand": "c7f3a9e01b"
+      },
+      {
+        "op": "device.bind",
+        "cand": "c7f3a9e01b",
+        "charge": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "app_modules",
+  "version": "0.0.0",
+  "description": "The device's module list (firmware/app/src/module_list.cpp), unchanged",
+  "build": {
+    "srcDir": "../../../app/src",
+    "includeDir": "../../../app/src",
+    "srcFilter": ["-<*>", "+<module_list.cpp>"]
+  }
+}

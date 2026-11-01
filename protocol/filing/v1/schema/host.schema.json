@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/filing/v1/host.schema.json",
+  "title": "host",
+  "description": "`cpa host name --json` (docs/23 §4.2, D10): this Mac's name, null when it has none (the default). Reading prints it; setting (`cpa host name --json -- 公司`) or clearing (`--clear`) prints the name after. It is config.json's host_label: 1-24 UTF-8 bytes, never starting with '-', no character display_safe() strips; shown on the device and stamped on new recordings. A refused name is the error document: E_BAD_ARG, field name, exit 2.",
+  "type": "object",
+  "required": ["v", "host"],
+  "properties": {
+    "v": { "$ref": "common.schema.json#/$defs/version" },
+    "host": { "anyOf": [{ "$ref": "common.schema.json#/$defs/name" }, { "type": "null" }] }
+  }
+}

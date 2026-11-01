@@ -1,0 +1,19 @@
+backups/
+.DS_Store
+*.bin
+firmware/hwtest/captures/
+.pio/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.gcda
+*.gcno
+*.gcov
+*.map
+# scripts/release-local.sh output
+/dist/

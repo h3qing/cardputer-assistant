@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/dests.snapshot.schema.json",
+  "title": "dests.snapshot",
+  "description": "v0.5 (docs/14 §7.2): capture destinations the device may offer, sorted by slot. The device caches the last one (/cfg/dests.json) and reports its rev in revs.dests; it only displays rows and resolves letters, cpad decides every delivery again. Sent only to firmware whose revs carry dests.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["rev", "dests"],
+  "properties": {
+    "t": {"const": "dests.snapshot"},
+    "rev": {
+      "$ref": "common.schema.json#/$defs/uint32",
+      "description": "content hash: CRC-32 of the rows' canonical JSON, 1 when that is 0; equal revs mean equal rows, also across a cpad restart"
+    },
+    "dests": {
+      "description": "only usable destinations (enabled, with an executor in this cpad, opted in when they leave the Mac)",
+      "type": "array",
+      "maxItems": 12,
+      "x-uniqueBy": "slot",
+      "items": {
+        "type": "object",
+        "required": ["id", "slot", "label", "kind"],
+        "properties": {
+          "id": {"$ref": "#/$defs/destId"},
+          "slot": {"type": "integer", "minimum": 1, "maximum": 12, "description": "display order and picker number"},
+          "label": {"$ref": "#/$defs/label"},
+          "kind": {
+            "description": "the part of id before the dot; a pattern, not an enum: the device shows a kind it does not know and acts on fl only (docs/25 §4.6)",
+            "type": "string",
+            "pattern": "^[a-z]{3,7}$"
+          },
+          "key": {
+            "description": "bound letter; the device binds only its own letter table (docs/14 §3.1) and takes the first row when a letter repeats",
+            "anyOf": [{"type": "string", "pattern": "^[a-z]$"}, {"type": "null"}]
+          },
+          "fl": {
+            "description": "docs/25 §2.2 flags, letters in this order: l live (only while you are there; offline captures wait in 等你), c the text leaves this Mac, p needs a project, k each capture is confirmed on the device after reading it all. cpad always sends it, \"\" included; the device ignores letters it does not know and reads a row without fl (or with null) as \"lck\"",
+            "anyOf": [{"type": "string", "pattern": "^[a-z]{0,8}$"}, {"type": "null"}]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "destId": {
+      "description": "built-in id or <kind>.<name>, the name at most 12 characters (docs/25 §2.2): always inside limits.json dest_pattern",
+      "type": "string",
+      "pattern": "^[a-z]{3,7}(\\.[a-z0-9][a-z0-9-]{0,11})?$"
+    },
+    "label": {
+      "description": "1..24 UTF-8 bytes without control characters, '\"' or '\\\\', so it never needs escaping on the wire",
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 24,
+      "pattern": "^[^\\u0000-\\u001f\\u007f\"\\\\]*$"
+    }
+  }
+}

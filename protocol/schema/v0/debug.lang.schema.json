@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/debug.lang.schema.json",
+  "title": "debug.lang",
+  "description": "TEST FIRMWARE ONLY (protocol README item 25, docs/21 §7). Shows the device's UI in lang from now on, through the same switch as Enter on the settings page's language row: redrawn at once and stored in NVS (after the recording, while one runs). HIL sets the language it needs and puts the user's back at the end. Reply: ack or error.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["lang"],
+  "properties": {
+    "t": {"const": "debug.lang"},
+    "lang": {"enum": ["zh", "en"]}
+  }
+}

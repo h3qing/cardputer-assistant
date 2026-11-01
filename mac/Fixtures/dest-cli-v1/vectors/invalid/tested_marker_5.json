@@ -1,0 +1,17 @@
+{
+  "doc": "tested",
+  "name": "a five-digit marker",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "marker"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "dest": "url.grok",
+    "marker": "48210",
+    "handed": true,
+    "via": "url",
+    "code": null
+  }
+}

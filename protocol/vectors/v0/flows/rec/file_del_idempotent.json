@@ -1,0 +1,150 @@
+{
+  "name": "file_del_idempotent",
+  "spec": "docs/11-m3-design.md §5.4, §6.2.9",
+  "description": "The host deletes a segment only after receiving and verifying every byte. The ack to file.del is lost, so the host resends it; the device acks again because a missing file is not an error.",
+  "initial": {"device.link": "Ready", "host.link": "ready"},
+  "steps": [
+    {"t": 0, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h20"}},
+    {
+      "t": 10,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d20",
+        "re": "h20",
+        "up_ms": 905000,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 1, "rev": 9, "live": false}
+      }
+    },
+    {"t": 20, "from": "host", "msg": {"v": 0, "t": "file.list", "id": "h21", "max": 4}},
+    {
+      "t": 30,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.items",
+        "id": "d21",
+        "re": "h21",
+        "items": [
+          {
+            "id": "3QZK1M7-00042-0A22",
+            "kind": "rec",
+            "size": 1424,
+            "sha256": "aae6c2013b5cefbbeb5a1b02f32ae385cfe8b09e018c52c506d8989eccbfe47a",
+            "rec": "3QZK1M7-00042-0A1C",
+            "seg": 2,
+            "last": true,
+            "mode": "meeting",
+            "dur_ms": 43,
+            "at": {"up_ms": 1335000, "wall_ms": null},
+            "project": "cpa"
+          }
+        ],
+        "more": false
+      },
+      "note": "the last, short segment of a meeting whose segments 0 and 1 were pulled earlier"
+    },
+    {
+      "t": 40,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.get", "id": "h22", "fid": "3QZK1M7-00042-0A22", "off": 0, "len": 1380}
+    },
+    {
+      "t": 40,
+      "from": "host",
+      "msg": {"v": 0, "t": "file.get", "id": "h23", "fid": "3QZK1M7-00042-0A22", "off": 1380, "len": 1380}
+    },
+    {
+      "t": 50,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d22",
+        "re": "h22",
+        "fid": "3QZK1M7-00042-0A22",
+        "off": 0,
+        "n": 1380,
+        "size": 1424,
+        "crc": 1609698328,
+        "b64": "UklGRogFAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YWQFAADOBXgH6QgWCvYKggu3C5MLFgtECiUJvwcfBlAEYAJeAFr+YfyF+tL4Vvcc9i31kfRM9GD0zfSP9aH2+/eR+Vn7RP1E/0kBRAMnBeMGagixCa4KWQuuC6oLTQuaCpYJSQi9Bv0EFwMaARX/Fv0u+2r52feF9nr1wPRb9E70m/Q/9TX2dvf3+K/6jvyJ/o0AjgJ8BEcG4wdCCVsKJQuaC7YLeQvlCv0JyghTB6UFywPVAdH/zv3c+wn6ZPj59tP1+vR19Ej0dfT69NP1+fZk+An63PvO/dH/1QHLA6UFUwfKCP0J5Qp5C7YLmgslC1sKQgnjB0cGfASOAo0Aif6O/K/69/h29zX2P/Wb9E70W/TA9Hr1hfbZ92r5LvsW/RX/GgEXA/0EvQZJCJYJmgpNC6oLrgtZC64KsQlqCOMGJwVEA0kBRP9E/Vn7kfn796H2j/XN9GD0TPSR9C31HPZW99L4hfph/Fr+XgBgAlAEHwa/ByUJRAoWC5MLtwuCC/YKFgrpCHgHzgX4AwMCAAD9/Qj8MvqI+Bf36vUK9X70SfRt9Or0vPXb9kH44fmw+6D9ov+mAZ8DewUuB6oI5AnTCm8LtAugCzMLcQpfCQUIbwanBLwCvAC3/rz82fod+Zb3T/ZS9af0UvRW9LP0ZvVq9rf3Q/kD++n85v7rAOoC0gSWBicIewmGCkALpQuyC2ULwQrLCYoICQdRBXIDdwFz/3L9hPu5+R34vval9dv0ZvRK9If0G/UD9jb3rfhb+jX8K/4vADICJAT3BZwHBwktCgYLiwu4C4sLBgstCgcJnAf3BSQEMgIvACv+Nfxb+q34NvcD9hv1h/RK9Gb02/Sl9b72Hfi5+YT7cv1z/3cBcgNRBQkHigjLCcEKZQuyC6ULQAuGCnsJJwiWBtIE6gLrAOb+6fwD+0P5t/dq9mb1s/RW9FL0p/RS9U/2lvcd+dn6vPy3/rwAvAKnBG8GBQhfCXEKMwugC7QLbwvTCuQJqgguB3sFnwOmAaL/oP2w++H5Qfjb9rz16vRt9En0fvQK9er1F/eI+DL6CPz9/QAAAwL4A84FeAfpCBYK9gqCC7cLkwsWC0QKJQm/Bx8GUARgAl4AWv5h/IX60vhW9xz2LfWR9Ez0YPTN9I/1ofb795H5WftE/UT/SQFEAycF4wZqCLEJrgpZC64LqgtNC5oKlglJCL0G/QQXAxoBFf8W/S77avnZ94X2evXA9Fv0TvSb9D/1NfZ29/f4r/qO/In+jQCOAnwERwbjB0IJWwolC5oLtgt5C+UK/QnKCFMHpQXLA9UB0f/O/dz7Cfpk+Pn20/X69HX0SPR19Pr00/X59mT4Cfrc+8790f/VAcsDpQVTB8oI/QnlCnkLtguaCyULWwpCCeMHRwZ8BI4CjQCJ/o78r/r3+Hb3NfY/9Zv0TvRb9MD0evWF9tn3avku+xb9Ff8aARcD/QS9BkkIlgmaCk0LqguuC1kLrgqxCWoI4wYnBUQDSQFE/0T9WfuR+fv3ofaP9c30YPRM9JH0LfUc9lb30viF+mH8Wv5eAGACUAQfBr8HJQlEChYLkwu3C4IL9goWCukIeAfOBfgDAwIAAP39CPwy+oj4F/fq9Qr1fvRJ9G306vS89dv2Qfjh+bD7oP2i/6YBnwN7BS4HqgjkCdMKbwu0C6ALMwtxCl8JBQhvBqcEvAK8ALf+vPzZ+h35lvdP9lL1p/RS9Fb0s/Rm9Wr2t/dD+QP76fzm/usA6gLSBJYGJwh7CYYKQAulC7ILZQvBCssJiggJB1EF"
+      }
+    },
+    {
+      "t": 51,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "file.data",
+        "id": "d23",
+        "re": "h23",
+        "fid": "3QZK1M7-00042-0A22",
+        "off": 1380,
+        "n": 44,
+        "size": 1424,
+        "crc": 3198850192,
+        "b64": "cgN3AXP/cv2E+7n5Hfi+9qX12/Rm9Er0h/Qb9QP2Nvet+Fv6Nfwr/i8AMgI="
+      },
+      "note": "n 44 < len: the end of the file"
+    },
+    {
+      "t": 60,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h24",
+        "fid": "3QZK1M7-00042-0A22",
+        "size": 1424,
+        "sha256": "aae6c2013b5cefbbeb5a1b02f32ae385cfe8b09e018c52c506d8989eccbfe47a"
+      },
+      "note": "all 1424 B received; size, header and sha256 of data[44:] verified; landed; rec.seg.stored appended"
+    },
+    {
+      "t": 70,
+      "from": "device",
+      "msg": {"v": 0, "t": "ack", "id": "d24", "re": "h24"},
+      "lost": true,
+      "note": "the device deleted .W then .M; the ack is lost on the wire"
+    },
+    {
+      "t": 5060,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "file.del",
+        "id": "h25",
+        "fid": "3QZK1M7-00042-0A22",
+        "size": 1424,
+        "sha256": "aae6c2013b5cefbbeb5a1b02f32ae385cfe8b09e018c52c506d8989eccbfe47a"
+      },
+      "note": "no reply within 5 s: resend with a new id"
+    },
+    {
+      "t": 5070,
+      "from": "device",
+      "msg": {"v": 0, "t": "ack", "id": "d25", "re": "h25"},
+      "note": "the file is already gone: a missing file is acked, so the resend is idempotent"
+    },
+    {"t": 5100, "from": "host", "msg": {"v": 0, "t": "ping", "id": "h26"}},
+    {
+      "t": 5110,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "pong",
+        "id": "d26",
+        "re": "h26",
+        "up_ms": 910100,
+        "pending": 0,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9},
+        "files": {"n": 0, "rev": 10, "live": false}
+      },
+      "note": "one delete, one rev step: rev 9 -> 10"
+    },
+    {"t": 5110, "expect": {"host.credit_used": 0}}
+  ]
+}

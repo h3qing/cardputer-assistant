@@ -1,0 +1,16 @@
+{
+  "doc": "status",
+  "name": "by is not a lower-case program name",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "by"
+  },
+  "data": {
+    "v": 1,
+    "session": "3QZK1M7-00042-0A1C",
+    "attempt": 1,
+    "state": "transcribing",
+    "by": "CPA STT",
+    "at": "2026-10-21T14:45:12.000+08:00"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "doc": "row",
+  "name": "terminal escape in title",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "title"
+  },
+  "data": {
+    "v": 1,
+    "id": "service",
+    "state": "ok",
+    "required": true,
+    "blocked_by": [],
+    "title": "a\u001b[2Jb",
+    "detail": "",
+    "fix": []
+  }
+}

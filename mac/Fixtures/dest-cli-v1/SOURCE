@@ -1,0 +1,4 @@
+protocol/dest-cli/v1 (schema/, vectors/, VECTORS.sha256), copied unchanged from
+branch feat/route-r1 (docs/25 R1, the review fixes: E_ALREADY, E_DRAFT_BUSY in tested) at commit
+8eddf6a6272c3b7d2b370d7023f6414677727311.
+Re-copy when the contract changes; CardputerCoreTests checks every copied file against VECTORS.sha256.

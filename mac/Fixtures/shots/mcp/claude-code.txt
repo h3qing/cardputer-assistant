@@ -1,0 +1,3 @@
+# Claude Code, user scope (~/.claude.json): keep tool approvals on
+claude mcp add --scope user cardputer -- /Users/you/.local/bin/cpa mcp serve
+claude mcp list

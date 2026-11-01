@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/file.items.schema.json",
+  "title": "file.items",
+  "description": "v0.3 (docs/11 §5.3): reply to file.list. Only committed segments are listed. more is true when further items follow (also when fewer than max fit in one line).",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/reply"}],
+  "required": ["items", "more"],
+  "properties": {
+    "t": {"const": "file.items"},
+    "items": {"type": "array", "maxItems": 4, "items": {"$ref": "common.schema.json#/$defs/fileItem"}},
+    "more": {"type": "boolean"}
+  }
+}

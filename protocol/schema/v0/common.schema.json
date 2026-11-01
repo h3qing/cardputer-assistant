@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/common.schema.json",
+  "title": "common",
+  "description": "Shared definitions for protocol v0 (docs/05-architecture.md §6). Values marked in limits.json are checked against it. x-maxBytes counts UTF-8 bytes; x-uniqueBy / x-maxPerKey apply to arrays of objects. Unknown fields are always allowed (§6.2).",
+  "$defs": {
+    "request": {
+      "description": "Envelope of a message that is not a reply: host-initiated messages and device requests. It must not carry re.",
+      "type": "object",
+      "required": ["v", "t", "id"],
+      "properties": {
+        "v": { "$ref": "#/$defs/version" },
+        "t": { "$ref": "#/$defs/type" },
+        "id": { "$ref": "#/$defs/id" },
+        "re": { "not": {}, "description": "must be absent" }
+      }
+    },
+    "reply": {
+      "description": "Envelope of a reply: re is the id of the message being answered.",
+      "type": "object",
+      "required": ["v", "t", "id", "re"],
+      "properties": {
+        "v": { "$ref": "#/$defs/version" },
+        "t": { "$ref": "#/$defs/type" },
+        "id": { "$ref": "#/$defs/id" },
+        "re": { "$ref": "#/$defs/id" }
+      }
+    },
+    "version": { "const": 0 },
+    "type": { "type": "string", "pattern": "^[a-z][a-z0-9_.]{1,31}$" },
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9-]{1,24}$" },
+    "monoId": {
+      "description": "EEEEEEE-BBBBB-SSSS in upper-case Crockford base32 (epoch 32 bit, boot 25 bit, seq 20 bit).",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{7}-[0-9A-HJKMNP-TV-Z]{5}-[0-9A-HJKMNP-TV-Z]{4}$"
+    },
+    "bootId": {
+      "description": "EEEEEEE-BBBBB: the first two MonoId segments.",
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{7}-[0-9A-HJKMNP-TV-Z]{5}$"
+    },
+    "uint32": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+    "count": { "type": "integer", "minimum": 0, "maximum": 65535 },
+    "slot": { "type": "integer", "minimum": 1, "maximum": 9 },
+    "projectKey": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,11}$" },
+    "projectName": {
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 24,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "sessionName": {
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 32,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "queueText": {
+      "description": "Queue item summary shown on the device; the daemon keeps the full text.",
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 80,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "userText": {
+      "description": "User body (note, queue, spawn, reply): 1..500 UTF-8 bytes, one line, no control characters.",
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 500,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "agentText": {
+      "description": "Body of agent.spawn / agent.reply: userText that, once trimmed, does not start with '-'.",
+      "allOf": [{ "$ref": "#/$defs/userText" }, { "pattern": "^(?!\\s*-)" }]
+    },
+    "sid": { "type": "string", "pattern": "^[0-9a-f]{8}$" },
+    "short": { "type": "string", "maxLength": 16, "pattern": "^[!-~]+$" },
+    "qid": { "type": "string", "pattern": "^q[0-9]{1,10}$" },
+    "epochMs": { "type": "integer", "minimum": 1735689600000, "maximum": 9007199254740991 },
+    "tzMin": { "type": "integer", "minimum": -840, "maximum": 840 },
+    "revs": {
+      "type": "object",
+      "required": ["projects", "sessions", "queue"],
+      "properties": {
+        "projects": { "$ref": "#/$defs/uint32" },
+        "sessions": { "$ref": "#/$defs/uint32" },
+        "queue": { "$ref": "#/$defs/uint32" }
+      }
+    },
+    "errorCode": {
+      "enum": [
+        "E_PARSE", "E_TOO_LARGE", "E_VERSION", "E_UNKNOWN_TYPE", "E_BAD_FIELD",
+        "E_NOT_READY", "E_STORAGE", "E_UNKNOWN_PROJECT", "E_UNKNOWN_SESSION", "E_UNKNOWN_ITEM",
+        "E_NO_AGENT", "E_SPAWN", "E_NOT_REPLYABLE", "E_REPLY_FORKED", "E_BUSY", "E_INTERNAL"
+      ]
+    },
+    "agentStatus": { "enum": ["ok", "missing", "error"] },
+    "linkState": { "enum": ["Detached", "Attached", "Ready"] },
+    "sessionKind": { "enum": ["tty", "bg"] },
+    "sessionState": { "enum": ["busy", "shell", "idle", "waiting", "unknown"] },
+    "intent": { "enum": ["todo", "spawn", "feedback"] },
+    "moduleId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,15}$" },
+    "sha256": {
+      "description": "v0.3: SHA-256 as 64 lower-case hex digits.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "recMode": { "description": "v0.3: recording mode.", "enum": ["memo", "meeting"] },
+    "segIndex": { "description": "v0.3: segment index within a recording session.", "type": "integer", "minimum": 0, "maximum": 9999 },
+    "filesN": { "description": "v0.3: committed, not yet deleted segments on the card.", "type": "integer", "minimum": 0, "maximum": 256 },
+    "fileSize": {
+      "description": "v0.3: segment file size incl. the 44 B WAV header; at most one seg_ms_max segment (16 kHz, 16 bit, mono = 32 B/ms).",
+      "type": "integer",
+      "minimum": 44,
+      "maximum": 19200044
+    },
+    "files": {
+      "description": "v0.3 (docs/11 §5.2): recording-transfer status on device hello/pong. Absent or null: the device cannot serve file.* (v0.2 or nosd).",
+      "type": ["object", "null"],
+      "required": ["n", "rev", "live"],
+      "properties": {
+        "n": { "$ref": "#/$defs/filesN" },
+        "rev": { "$ref": "#/$defs/uint32", "description": "0 = boot recovery scan not finished; +1 on every commit, delete and recovery" },
+        "live": { "type": "boolean", "description": "the recording state machine is not Idle (cue and finishing included)" }
+      }
+    },
+    "fileItem": {
+      "description": "v0.3 (docs/11 §5.3): one committed recording segment as listed by file.items.",
+      "type": "object",
+      "required": ["id", "kind", "size", "rec", "seg", "last", "mode", "dur_ms", "at"],
+      "properties": {
+        "id": { "$ref": "#/$defs/monoId" },
+        "kind": { "const": "rec" },
+        "size": { "$ref": "#/$defs/fileSize" },
+        "sha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }], "description": "of the data after the header; absent for recovered segments" },
+        "rec": { "$ref": "#/$defs/monoId", "description": "session id = id of segment 0" },
+        "seg": { "$ref": "#/$defs/segIndex" },
+        "last": { "type": "boolean" },
+        "mode": { "$ref": "#/$defs/recMode" },
+        "dur_ms": { "type": "integer", "minimum": 0, "maximum": 600000 },
+        "at": {
+          "description": "device time of the first sample; null when unknown (recovered segment without a predecessor)",
+          "type": ["object", "null"],
+          "required": ["up_ms"],
+          "properties": {
+            "up_ms": { "$ref": "#/$defs/uint32" },
+            "wall_ms": { "anyOf": [{ "$ref": "#/$defs/epochMs" }, { "type": "null" }] }
+          }
+        },
+        "project": { "anyOf": [{ "$ref": "#/$defs/projectKey" }, { "type": "null" }] },
+        "slot": { "anyOf": [{ "$ref": "#/$defs/slot" }, { "type": "null" }] },
+        "stars": {
+          "description": "star marks as ms offsets within this segment",
+          "type": ["array", "null"],
+          "maxItems": 16,
+          "items": { "type": "integer", "minimum": 0, "exclusiveMaximum": 600000 }
+        },
+        "lead_ms": { "anyOf": [{ "type": "integer", "minimum": 0, "maximum": 2000 }, { "type": "null" }], "description": "segment 0 only" },
+        "consent": { "anyOf": [{ "const": "ack" }, { "type": "null" }], "description": "meeting segment 0 only: the user pressed Enter on the consent confirm" },
+        "rcv": { "type": ["boolean", "null"], "description": "true: recovered at boot" },
+        "dest": {
+          "anyOf": [{ "$ref": "#/$defs/destId" }, { "type": "null" }],
+          "description": "v0.4.1 (docs/13 §9.3): memo segment 0 only, where the user sent the memo; absent = the daily note"
+        }
+      }
+    },
+    "destId": {
+      "description": "v0.4.1 (docs/13 §9.2): capture destination id such as todo, clip or ww.plugin.todoist; at most 24 bytes. A receiver delivers an id it does not know to the daily note, never to a paste or an execution.",
+      "type": "string",
+      "x-maxBytes": 24,
+      "pattern": "^[a-z][a-z0-9-]{0,11}(\\.[a-z0-9-]{1,12}){0,2}$"
+    },
+    "hostId": {
+      "description": "v0.4.1 (docs/13 §11.1, #19): random id cpad creates once per Mac; reserved, the device does not act on it before v0.8.",
+      "type": "string",
+      "pattern": "^[a-z0-9-]{8,32}$"
+    },
+    "hostLabel": {
+      "description": "v0.4.1: name of the Mac shown on the device's control page.",
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 24,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "recFilter": { "description": "v0.4.1: tab of the recordings app.", "enum": ["all", "starred", "memo", "meeting"] },
+    "recOp": { "description": "v0.4.1: hide only hides (docs/13 §8.4); there is no delete.", "enum": ["star", "unstar", "tag", "hide"] },
+    "recState": {
+      "description": "v0.4.1: cpad's sessions.state_of value for one recording session.",
+      "enum": ["on_device", "pulling", "archived", "processing", "blocked", "done", "transcript", "failed", "stale"]
+    },
+    "recCursor": {
+      "description": "v0.4.1 (docs/13 §8.1): opaque paging cursor made by cpad; the device sends it back unchanged.",
+      "type": "string",
+      "maxLength": 32,
+      "pattern": "^[A-Za-z0-9_-]{1,32}$"
+    },
+    "recTitle": {
+      "type": "string",
+      "minLength": 1,
+      "x-maxBytes": 48,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "recRow": {
+      "description": "v0.4.1 (docs/13 §8.2): one recording session as the recordings app lists it. Optional fields absent or null: unknown, not starred, no project.",
+      "type": "object",
+      "required": ["rec", "mode", "st"],
+      "properties": {
+        "rec": { "$ref": "#/$defs/monoId", "description": "session id = id of segment 0" },
+        "mode": { "$ref": "#/$defs/recMode" },
+        "st": { "$ref": "#/$defs/recState" },
+        "wall_ms": { "anyOf": [{ "$ref": "#/$defs/epochMs" }, { "type": "null" }], "description": "start time; cpad falls back to the archive time" },
+        "dur_ms": { "anyOf": [{ "$ref": "#/$defs/uint32" }, { "type": "null" }] },
+        "project": { "anyOf": [{ "$ref": "#/$defs/projectKey" }, { "type": "null" }] },
+        "starred": { "type": ["boolean", "null"] },
+        "marks": { "anyOf": [{ "$ref": "#/$defs/count" }, { "type": "null" }], "description": "star marks set while recording" },
+        "title": { "anyOf": [{ "$ref": "#/$defs/recTitle" }, { "type": "null" }] },
+        "todo_n": { "anyOf": [{ "$ref": "#/$defs/count" }, { "type": "null" }], "description": "unchecked boxes in summary.md" }
+      }
+    },
+    "keyName": {
+      "description": "Cardputer key labels (4x14 layout as in firmware/hwtest) plus g0.",
+      "enum": [
+        "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "bksp",
+        "tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\",
+        "fn", "shift", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter",
+        "ctrl", "opt", "alt", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "space",
+        "g0"
+      ]
+    }
+  }
+}

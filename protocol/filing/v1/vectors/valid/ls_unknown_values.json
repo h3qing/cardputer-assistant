@@ -1,0 +1,60 @@
+{
+  "doc": "ls",
+  "name": "a later cpad: unknown fields and unknown values of the extensible enums",
+  "data": {
+    "v": 1,
+    "counts": {
+      "new": 16,
+      "other_mac": 0,
+      "clips_waiting": 0,
+      "on_device": 0
+    },
+    "next_cursor": null,
+    "rows": [
+      {
+        "id": "3QZK1M7-00042-0A1F",
+        "kind": "capture",
+        "filing": "new",
+        "why": [
+          "unfiled",
+          "later"
+        ],
+        "asked": null,
+        "at": {
+          "wall_ms": 1792639380000,
+          "tz_min": 480,
+          "uncertain": false
+        },
+        "dur_ms": 24000,
+        "device": "5c0e9a7b3d21",
+        "env": {
+          "host": null,
+          "link": "other",
+          "net": {
+            "id": "0a1b2c3d4e5f"
+          }
+        },
+        "prof": "work",
+        "project": null,
+        "starred": false,
+        "tx": "queued_remote",
+        "title": null,
+        "text": null,
+        "intent": null,
+        "clips": [
+          {
+            "id": "3QZK1M7-00042-0A1F",
+            "tx": "waiting"
+          }
+        ],
+        "queue": null,
+        "x_future": {
+          "a": [
+            1
+          ]
+        }
+      }
+    ],
+    "x_new": true
+  }
+}

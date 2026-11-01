@@ -1,0 +1,84 @@
+{
+  "$comment": "Vectors for debug.mic (v0.3.1, docs/releases/v0.3.1.md); format in protocol/README.md.",
+  "type": "debug.mic",
+  "valid": [
+    {
+      "name": "PGA +30 dB, 0 dB ADC volume, unity magnification",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 191, "mag": 2}
+    },
+    {
+      "name": "v0.3.0 gain (M5Unified defaults)",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 0, "vol": 191, "mag": 16}
+    },
+    {
+      "name": "lowest values",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 0, "vol": 0, "mag": 1}
+    },
+    {
+      "name": "highest values",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 255, "mag": 64}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "pga 11",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 11, "vol": 191, "mag": 2},
+      "code": "E_BAD_FIELD",
+      "field": "pga"
+    },
+    {
+      "name": "pga negative",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": -1, "vol": 191, "mag": 2},
+      "code": "E_BAD_FIELD",
+      "field": "pga"
+    },
+    {
+      "name": "vol 256",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 256, "mag": 2},
+      "code": "E_BAD_FIELD",
+      "field": "vol"
+    },
+    {
+      "name": "mag 0",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 191, "mag": 0},
+      "code": "E_BAD_FIELD",
+      "field": "mag"
+    },
+    {
+      "name": "mag 65",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 191, "mag": 65},
+      "code": "E_BAD_FIELD",
+      "field": "mag"
+    },
+    {
+      "name": "mag missing",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 191},
+      "code": "E_BAD_FIELD",
+      "field": "mag"
+    },
+    {
+      "name": "vol as a string",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": "191", "mag": 2},
+      "code": "E_BAD_FIELD",
+      "field": "vol"
+    },
+    {
+      "name": "debug.mic carrying re",
+      "dir": "h2d",
+      "msg": {"v": 0, "t": "debug.mic", "id": "h81", "pga": 10, "vol": 191, "mag": 2, "re": "d1"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

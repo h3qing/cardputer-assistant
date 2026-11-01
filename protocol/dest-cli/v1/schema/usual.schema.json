@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/usual.schema.json",
+  "title": "usual",
+  "description": "`cpa dest usual [PROJECT [DEST|-]] --json`: every project's usual destination after the call (D21): only preselected in pending, never sent by itself.",
+  "type": "object",
+  "required": [
+    "ok",
+    "v",
+    "usual"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "v": {
+      "$ref": "common.schema.json#/$defs/version"
+    },
+    "usual": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "project",
+          "dest"
+        ],
+        "properties": {
+          "project": {
+            "$ref": "common.schema.json#/$defs/projectKey"
+          },
+          "dest": {
+            "$ref": "common.schema.json#/$defs/destId"
+          }
+        }
+      }
+    }
+  }
+}

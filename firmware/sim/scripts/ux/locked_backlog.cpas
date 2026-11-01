@@ -1,0 +1,42 @@
+# docs/20 U20 after the U6 hold (review): three memos end while locked, then the user
+# unlocks and writes a note. Toasts wait while the screen is not seen; before this fix they
+# all played after the unlock, 2.5 s each, and the note's "已保存" came 5-7 s late.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+usb off
+wait 200
+press opt+l
+wait 1000
+# memo 1: saved
+press g0
+down g0
+wait 520
+mic 4000 2500
+up g0
+wait 5000
+# memo 2: too short
+press g0
+down g0
+wait 700
+up g0
+wait 5000
+# memo 3: saved
+press g0
+down g0
+wait 520
+mic 3000 2500
+up g0
+wait 60000
+press opt+l
+wait 300
+press enter
+wait 300
+shot unlocked  unlocked: only the latest held result ("录音已保存 · 0:03"), not the backlog
+press g0
+type buy milk
+press enter
+wait 200
+shot saved-0s  0.2 s after Enter: "已保存 · 待传 ↑1" at once
+wait 2500
+shot saved-2s  2.7 s: the held result follows; "录音太短" never comes back

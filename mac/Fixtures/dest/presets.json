@@ -1,0 +1,8 @@
+{"presets": [
+ {"preset": "grok-bot", "label": "Grok", "kind": "url", "id": "url.grok", "key_hint": "x", "leaves_mac": true, "effect": "unknown", "may_be_draft": true, "shipped": true, "installed": true, "version": "0.75.0", "takes_map": true,
+  "note": "Fills a draft in a Grok Bot chat and brings it forward. Nothing is sent until you press Return in Grok Bot; then the text goes to Grok Bot's cloud computer."},
+ {"preset": "cursor", "label": "Cursor", "kind": "url", "id": "url.cursor", "key_hint": "u", "leaves_mac": true, "effect": "unknown", "may_be_draft": true, "shipped": true, "installed": true, "version": "1.7.2",
+  "note": "Fills a new chat in Cursor. Nothing is sent until you press Return there."},
+ {"preset": "claude", "label": "Claude", "kind": "url", "id": "url.claude", "key_hint": "k", "leaves_mac": true, "effect": "unknown", "may_be_draft": true, "shipped": true, "installed": true, "version": "1.0.3",
+  "note": "Fills a new chat in the Claude app. Nothing is sent until you press Return there."}
+], "problems": []}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/error.schema.json",
+  "title": "error",
+  "description": "Any of these commands with --json that was refused; nothing was written. The codes (an extensible enum: show an unknown one as it is) and their field: E_BAD_ARG (id, ref, dest, project, argv: argparse refused the arguments; a meeting sent anywhere but the daily note, todo or a local file: id), E_UNKNOWN_ID (id, ref), E_UNKNOWN_PROJECT (project), E_UNKNOWN_DEST (dest), E_DEST_OFF (dest: off, not opted in, or no executor in this version), E_OTHER_PROFILE (dest), E_NO_TEXT (text: no memo text), E_TOO_LONG (text), E_NEEDS_DEVICE (dest: it may act by itself; only the device's confirmation counts, or a one-time test proves it fills a draft), E_BUSY (ref: a send of it is running), E_ALREADY (dest: already handed or delivered there; --again sends it once more), E_UNAVAILABLE (dests: destinations.json cannot be used; none: config or events). field never echoes a value. Exit code 2 for E_BAD_ARG, E_UNKNOWN_DEST and E_UNKNOWN_PROJECT, 1 for the others. The same shape as protocol/filing/v1 error.",
+  "type": "object",
+  "required": [
+    "ok",
+    "v",
+    "error"
+  ],
+  "properties": {
+    "ok": {
+      "const": false
+    },
+    "v": {
+      "$ref": "common.schema.json#/$defs/version"
+    },
+    "error": {
+      "type": "string",
+      "pattern": "^E_[A-Z_]{1,30}$",
+      "x-knownValues": [
+        "E_BAD_ARG",
+        "E_UNKNOWN_ID",
+        "E_UNKNOWN_PROJECT",
+        "E_UNKNOWN_DEST",
+        "E_DEST_OFF",
+        "E_OTHER_PROFILE",
+        "E_NO_TEXT",
+        "E_TOO_LONG",
+        "E_NEEDS_DEVICE",
+        "E_BUSY",
+        "E_ALREADY",
+        "E_UNAVAILABLE"
+      ]
+    },
+    "field": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,15}$"
+    }
+  }
+}

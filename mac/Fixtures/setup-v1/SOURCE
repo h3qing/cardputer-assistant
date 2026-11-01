@@ -1,0 +1,3 @@
+protocol/setup/v1 (schema/, vectors/, VECTORS.sha256), copied unchanged from branch feat/installer
+(docs/27 §2.6, cpa setup check --json) for the first-run page (docs/27 O6), which reads it.
+Re-copy when the contract changes.

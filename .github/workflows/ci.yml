@@ -1,0 +1,326 @@
+# CI for Cardputer Assistant (docs/05-architecture.md §9.4). HIL never runs here.
+# hashFiles() is not allowed in a job-level `if`, so the `detect` job checks which
+# packages exist and the firmware / daemon jobs run only when theirs is present. The mac job
+# (a macOS runner) also needs a change under mac/ or a file its build reads.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  UV_VERSION: "0.11.16"
+  JSONSCHEMA: "jsonschema>=4.23,<5"
+  LIZARD: "lizard==1.24.1"
+  RUFF: "ruff==0.17.1"
+
+jobs:
+  repo:
+    name: sizes, lizard, protocol contract
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - name: File sizes (warn > 400, fail > 800)
+        run: python3 tools/repo/check_sizes.py --warn 400 --fail 800 protocol tools
+      - name: Function size and complexity
+        run: uvx "$LIZARD" -L 50 -w protocol/tools tools/repo tools/theme
+      - name: Lint WP1 Python
+        run: |
+          uvx "$RUFF" check --line-length 120 --select E,F,W,I,B,UP,C901,PLR0915 protocol/tools tools/repo
+          uvx "$RUFF" format --check --line-length 120 protocol/tools tools/repo
+          (cd tools/theme && uvx "$RUFF" check . && uvx "$RUFF" format --check .)
+      - name: Tool tests
+        run: |
+          uv run --with pytest --with "$JSONSCHEMA" pytest protocol/tools -q
+          uv run --with pytest pytest tools/repo -q
+          uv run --with pytest pytest tools/theme -q
+      - name: Protocol vectors
+        run: uv run --with "$JSONSCHEMA" python protocol/tools/check_vectors.py
+      # docs/19 §5.2: the palette headers match tokens.py and the committed Mando colours
+      # (WhisperWoof itself is never needed here).
+      - name: Theme palette is current
+        run: python3 tools/theme/gen_all.py --check --palette-only
+      - name: Recording contract v1 (tests, vectors, digests)
+        run: |
+          uv run --with pytest --with "$JSONSCHEMA" pytest protocol/recording -q
+          uv run --with "$JSONSCHEMA" python protocol/recording/tools/check_recording.py
+          uvx "$LIZARD" -L 50 -w protocol/recording/tools
+      - name: Filing contract v1 (tests, vectors, digests; docs/23 §3.2)
+        run: |
+          uv run --with pytest --with "$JSONSCHEMA" pytest protocol/filing -q
+          uv run --with "$JSONSCHEMA" python protocol/filing/tools/check_filing.py
+          uvx "$LIZARD" -L 50 -w protocol/filing/tools
+          uvx "$RUFF" check --line-length 120 --select E,F,W,I,B,UP,C901,PLR0915 protocol/filing/tools
+          uvx "$RUFF" format --check --line-length 120 protocol/filing/tools
+      - name: Dest CLI contract v1 (tests, vectors, digests; docs/25 §5.5)
+        run: |
+          uv run --with pytest --with "$JSONSCHEMA" pytest protocol/dest-cli -q
+          uv run --with "$JSONSCHEMA" python protocol/dest-cli/tools/check_dest_cli.py
+          uvx "$LIZARD" -L 50 -w protocol/dest-cli/tools
+          uvx "$RUFF" check --line-length 120 --select E,F,W,I,B,UP,C901,PLR0915 protocol/dest-cli/tools
+          uvx "$RUFF" format --check --line-length 120 protocol/dest-cli/tools
+
+      - name: Setup contract v1 (tests, vectors, digests; docs/27 §2.6)
+        run: |
+          uv run --with pytest --with "$JSONSCHEMA" pytest protocol/setup -q
+          uv run --with "$JSONSCHEMA" python protocol/setup/tools/check_setup.py
+          uvx "$LIZARD" -L 50 -w protocol/setup/tools
+          uvx "$RUFF" check --line-length 120 --select E,F,W,I,B,UP,C901,PLR0915 protocol/setup/tools
+          uvx "$RUFF" format --check --line-length 120 protocol/setup/tools
+
+  detect:
+    name: detect packages
+    runs-on: ubuntu-24.04
+    outputs:
+      firmware: ${{ steps.present.outputs.firmware }}
+      daemon: ${{ steps.present.outputs.daemon }}
+      mac: ${{ steps.present.outputs.mac }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      # mac: the package exists and this push / PR touches it, the theme files or sprites it reads
+      # (tools/theme, the firmware's theme/gen) or this file. No usable base (a new branch) runs it.
+      - id: present
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          echo "firmware=${{ hashFiles('firmware/app/platformio.ini') != '' }}" >> "$GITHUB_OUTPUT"
+          echo "daemon=${{ hashFiles('daemon/pyproject.toml') != '' }}" >> "$GITHUB_OUTPUT"
+          mac=${{ hashFiles('mac/Package.swift') != '' }}
+          if [ "$mac" = true ] && git cat-file -e "${BASE:-0000000}^{commit}" 2>/dev/null \
+              && git diff --quiet "$BASE" HEAD -- mac tools/theme firmware/app/lib/theme/gen .github/workflows/ci.yml; then
+            mac=false
+          fi
+          echo "mac=$mac" >> "$GITHUB_OUTPUT"
+
+  firmware:
+    name: firmware (native tests, coverage, build)
+    needs: detect
+    if: needs.detect.outputs.firmware == 'true'
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: firmware/app
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.platformio
+          key: pio-${{ runner.os }}-${{ hashFiles('firmware/app/platformio.ini') }}
+      - name: Install PlatformIO
+        run: uv tool install platformio==6.2.0
+      - name: Pure code never includes Arduino / M5 / esp_ headers
+        run: |
+          dirs=$(ls -d lib/core lib/eggs lib/i18n lib/protocol lib/link lib/outbox lib/input lib/storage lib/shell lib/help lib/module_api lib/theme modules 2>/dev/null || true)
+          if [ -n "$dirs" ] && grep -rEn '#include\s*[<"](Arduino([^J]|$)|M5|esp_)' $dirs; then exit 1; fi
+          # storage and outbox reach the card only through FatPort / FileStore (docs/09 §3.3)
+          if grep -rEn '#include\s*[<"](SD\.h|sd_diskio|FS\.h|LittleFS)' lib/storage lib/outbox; then exit 1; fi
+          # docs/19 §3.2: a colour is a token; only lib/theme turns a number into a Color
+          # (an RGB565 constant cast to Color would draw as some other token)
+          if grep -rEn 'static_cast<\s*(cpa::)?Color\s*>|\(\s*(cpa::)?Color\s*\)\s*[A-Za-z0-9_(]|(cpa::)?\bColor\s*\{' \
+              lib modules src | grep -v '^lib/theme/'; then exit 1; fi
+      - name: Native tests and coverage (>= 80 %, hal/usb_transport excluded)
+        run: |
+          pio test -e native
+          uvx gcovr -r . --filter 'lib/|modules/' --exclude 'lib/(hal|usb_transport)/' --fail-under-line 80
+      - name: Device build, budget, partition table, no test hooks in release
+        run: |
+          pio run -e cardputer-adv
+          python3 scripts/check_budget.py .pio/build/cardputer-adv
+          python3 scripts/check_partitions.py .pio/build/cardputer-adv/partitions.bin
+          if grep -a -q -E 'debug\.(key|state|reboot|rec|mic|codec|lang)' .pio/build/cardputer-adv/firmware.bin; then exit 1; fi
+      - name: Release images build (as release.yml does)
+        run: python3 scripts/make_image.py --env cardputer-adv --tag v0.0.0-ci --out "$RUNNER_TEMP/dist"
+      - name: Sizes and function length
+        run: |
+          python3 ../../tools/repo/check_sizes.py --warn 400 --fail 800 lib test $(ls -d modules src 2>/dev/null)
+          uvx "$LIZARD" -l cpp -L 50 -w lib $(ls -d modules src 2>/dev/null)
+      - name: Build-gate script tests (stack gate, budgets)
+        run: uv run --no-project --with pytest pytest scripts test/core/support -q
+      # docs/21 §9.1: every Txt rule has a case that must not compile (and ok.cpp must).
+      - name: Strings that must not build (i18n compile-fail cases)
+        run: uv run --no-project --with pytest pytest test/compile_fail -q
+      # docs/21 §9.3: Chinese only inside constexpr Txt constants (so every screen has its
+      # English), no Txt built inline; and the width report of every pair.
+      - name: Every Chinese string is a checked zh/en pair (tools/i18n)
+        working-directory: tools/i18n
+        run: |
+          uvx "$RUFF" check . && uvx "$RUFF" format --check .
+          uvx "$LIZARD" -L 50 -w .
+          uv run --no-project --with pytest pytest -q
+          python3 check_texts.py ../../firmware/app
+          python3 texts.py ../../firmware/app
+      # gh #32: the firmware's runtime on the host. After the device build, which installs
+      # the M5GFX whose efontCN_12 the simulator copies (firmware/sim/lib/efont_cn12).
+      - name: Host simulator (tests, build, sizes, function length)
+        run: |
+          pio test -d ../sim
+          pio run -d ../sim
+          python3 ../../tools/repo/check_sizes.py --warn 400 --fail 800 ../sim
+          uvx "$LIZARD" -l cpp -L 50 -w ../sim/lib ../sim/src ../sim/oracle
+      - name: Simulator tools, and cpad on the virtual device (no Cardputer)
+        working-directory: .
+        env:
+          CPA_SIM_REQUIRED: "1"
+        run: |
+          (cd tools/sim && uvx "$RUFF" check . && uvx "$RUFF" format --check .)
+          uv run --project daemon pytest tools/sim -q
+
+  # docs/24 §7-§8: Command Line Tools only (no Xcode project). The shots are drawn from fixture data and
+  # uploaded for a person to look at; nothing here installs the app or runs the real cpa.
+  mac:
+    name: mac app (build, tests, shots, .app)
+    needs: detect
+    if: needs.detect.outputs.mac == 'true'
+    runs-on: macos-26
+    defaults:
+      run:
+        working-directory: mac
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # build-app.sh takes the version from the newest v* tag
+      - name: Toolchain
+        run: |
+          sw_vers
+          swift --version
+      - name: Build
+        run: swift build
+      - name: Core tests (the in-house runner; non-zero exit on a failure)
+        run: swift run CardputerCoreTests
+      - name: Draw every screen from fixture data
+        run: swift run CardputerShots --out "$RUNNER_TEMP/shots"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() }}
+        with:
+          name: mac-shots
+          path: ${{ runner.temp }}/shots
+          if-no-files-found: ignore
+      - name: Build-path gate tests (the release binary must not name the build machine)
+        run: scripts/test_check_build_paths.sh
+      - name: App bundle (release, icon, ad-hoc signature, verified, no build paths)
+        run: scripts/build-app.sh
+
+  # scripts/install.sh and uninstall.sh end to end in a sandbox (temp HOME, stub launchctl / open; a file:// release
+  # built from this checkout by scripts/release-local.sh). Needs macOS (codesign, ditto, osascript).
+  installer:
+    name: installer (sandbox, macOS)
+    needs: detect
+    if: needs.detect.outputs.daemon == 'true'
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - name: Python 3.12 for the tool environment
+        run: uv python install 3.12
+      - name: Sandbox tests
+        run: scripts/tests/test_install.sh
+
+  daemon:
+    name: daemon (lint, tests, coverage)
+    needs: detect
+    if: needs.detect.outputs.daemon == 'true'
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: daemon
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - name: Lint
+        run: uv run ruff check . && uv run ruff format --check .
+      - name: Tests and coverage (>= 80 %)
+        run: uv run pytest --cov=cpad --cov=cpa_stt --cov-fail-under=80
+      # gh #57: the wheel alone, in a venv outside the repo, with no CPA_PROTOCOL_DIR. cpad.__main__ runs
+      # the CLI when imported, so it is covered by `python -m cpad --help` instead of the import loop.
+      # `uv build` makes the wheel from the sdist; `uv tool install` (the documented install) from the tree.
+      - name: Built wheel runs outside the checkout
+        env:
+          OUT: ${{ runner.temp }}/wheel-check
+        run: |
+          uv build --out-dir "$OUT/dist"
+          uv venv --python 3.12 "$OUT/venv"
+          uv pip install --python "$OUT/venv/bin/python" "$OUT"/dist/cpad-*.whl
+          UV_TOOL_DIR="$OUT/tools" UV_TOOL_BIN_DIR="$OUT/bin" uv tool install --python 3.12 .
+          cd "$OUT"
+          unset CPA_PROTOCOL_DIR
+          export HOME="$OUT/home" CPA_HOME="$OUT/cpa-home"
+          venv/bin/cpa --help
+          venv/bin/python -I -m cpad --help > /dev/null
+          venv/bin/python -I -c '
+          import sys
+          from importlib import resources
+          packaged = resources.files("cpad.protocol").joinpath("limits.json").read_bytes()
+          with open(sys.argv[1], "rb") as fh:
+              sys.exit(None if packaged == fh.read() else "the wheel carries a different limits.json")' \
+            "$GITHUB_WORKSPACE/protocol/limits.json"
+          venv/bin/python -I -c '
+          import importlib, pkgutil, cpad
+          assert "/venv/" in cpad.__file__, cpad.__file__
+          names = [m.name for m in pkgutil.walk_packages(cpad.__path__, "cpad.") if m.name != "cpad.__main__"]
+          for name in names:
+              importlib.import_module(name)
+          print(f"imported {len(names)} modules from {cpad.__path__[0]}")'
+          venv/bin/cpa-stt --help > /dev/null
+          venv/bin/python -I -m cpa_stt --help > /dev/null
+          venv/bin/python -I -c '
+          import importlib, json, pkgutil, cpa_stt
+          from importlib import resources
+          assert "/venv/" in cpa_stt.__file__, cpa_stt.__file__
+          skip = "cpa_stt.__main__"
+          names = [m.name for m in pkgutil.walk_packages(cpa_stt.__path__, "cpa_stt.") if m.name != skip]
+          for name in names:
+              importlib.import_module(name)
+          json.loads(resources.files("cpa_stt").joinpath("examples/whisper-cpp.json").read_text("utf-8"))
+          print(f"imported {len(names)} modules and the example from {cpa_stt.__path__[0]}")'
+          for cpa in venv/bin/cpa bin/cpa; do
+            "$cpa" status > status.txt
+            cat status.txt
+            grep -q '^cpad .*: not running$' status.txt
+          done
+          for stt in venv/bin/cpa-stt bin/cpa-stt; do
+            "$stt" status > stt.txt
+            cat stt.txt
+            grep -q '^cpa-stt: off$' stt.txt
+          done
+      - name: HIL harness unit tests (no device in CI)
+        working-directory: .
+        run: uv run --project daemon pytest tools/hil/tests -q
+      - name: Sizes and function length
+        run: |
+          python3 ../tools/repo/check_sizes.py --warn 400 --fail 800 src tests
+          uvx "$LIZARD" -l python -L 50 -w src
+
+  launcher:
+    name: launcher tool (lint, tests, coverage)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - name: Lint (the daemon's rules, via tools/launcher/ruff.toml)
+        working-directory: tools/launcher
+        run: |
+          uvx "$RUFF" check .
+          uvx "$RUFF" format --check .
+      - name: Tests and coverage (>= 80 %, no device)
+        run: |
+          uv run --no-project --python 3.12 --with pytest --with pytest-cov --with pyserial==3.5 \
+            pytest tools/launcher -q --cov=tools/launcher/cpalauncher --cov=cpa_launcher --cov-fail-under=80
+      - name: Function size and complexity (sizes run in the repo job)
+        run: uvx "$LIZARD" -l python -L 50 -C 10 -w tools/launcher

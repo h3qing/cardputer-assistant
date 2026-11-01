@@ -1,0 +1,15 @@
+{
+  "doc": "ls",
+  "name": "nothing to file",
+  "data": {
+    "v": 1,
+    "counts": {
+      "new": 0,
+      "other_mac": 0,
+      "clips_waiting": 0,
+      "on_device": 3
+    },
+    "next_cursor": null,
+    "rows": []
+  }
+}

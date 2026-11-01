@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/agent.reply.schema.json",
+  "title": "agent.reply",
+  "description": "Online request to send text to an idle background session (only when caps.reply).",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["sid", "text"],
+  "properties": {
+    "t": {"const": "agent.reply"},
+    "sid": {"$ref": "common.schema.json#/$defs/sid"},
+    "text": {"$ref": "common.schema.json#/$defs/agentText"}
+  }
+}

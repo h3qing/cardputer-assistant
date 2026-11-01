@@ -1,0 +1,10 @@
+{
+  "doc": "error",
+  "name": "hand while a cpad older than this cpa runs (it would not start the item in plan mode)",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_UNAVAILABLE",
+    "field": "cpad"
+  }
+}

@@ -1,0 +1,28 @@
+# docs/28 §3.3, §5 (S1a): kept copies are plain on the card. 设置 → 存储 → 清掉留底 opens a
+# box with the cursor on 取消 (Enter alone never clears); / then Enter clears. The lock card
+# shows 留N while some are kept.
+boot store=sd usb=on bat=4100
+include home_mac.cpas
+include memo.cpas
+include memo.cpas
+include memo.cpas
+pull
+press opt+l
+wait 300
+press enter
+shot lock  the lock card: √ 已同步 and 留3 (kept copies are on the card)
+press opt+l
+press enter
+wait 300
+press opt+m
+press ,
+press .
+press .
+shot clear-row  the cursor on 清掉留底 3 段
+press enter
+shot box  Enter: 清掉 3 段留底？ the cursor on 取消
+press /
+shot box-yes  / : the cursor on 清掉
+press enter
+wait 300
+shot cleared  Enter: 已清掉留底; 清掉留底 没有

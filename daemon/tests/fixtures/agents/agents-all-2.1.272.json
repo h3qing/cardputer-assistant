@@ -1,0 +1,8 @@
+[
+  {"cwd": "/Users/user/Repos/Cardputer Assistant", "kind": "interactive", "name": "设置页面和字体修复", "pid": 41001,
+   "sessionId": "8d3e7a19-4c2b-4a6e-9f10-2b7c5d8e3a61", "startedAt": 1792455000000, "status": "busy"},
+  {"id": "2a9c4f17", "cwd": "/Users/user/docs", "kind": "background", "startedAt": 1792455500000,
+   "sessionId": "2a9c4f17-d3b8-4e21-a6f5-7c0e9b1d2f38", "name": "docs/写一份周报", "state": "stopped"},
+  {"id": "7a3f5c21", "cwd": "/private/tmp/x", "kind": "background", "startedAt": 1792455900000,
+   "sessionId": "7a3f5c21-0000-4000-8000-000000000007", "name": "cpa-gate/g8-nodash", "state": "failed"}
+]

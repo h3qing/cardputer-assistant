@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/debug.mic.schema.json",
+  "title": "debug.mic",
+  "description": "TEST FIRMWARE ONLY (v0.3.1). Sets the microphone gain for the next recordings; a recording already running keeps its own. pga: ES8311 REG14 PGA in 3 dB steps (0-10 = 0..+30 dB); vol: ES8311 REG17 ADC volume in 0.5 dB steps (191 = 0 dB); mag: M5Unified magnification with over_sampling 1 (2 = unity). Reply: ack or error.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["pga", "vol", "mag"],
+  "properties": {
+    "t": {"const": "debug.mic"},
+    "pga": {"type": "integer", "minimum": 0, "maximum": 10},
+    "vol": {"type": "integer", "minimum": 0, "maximum": 255},
+    "mag": {"type": "integer", "minimum": 1, "maximum": 64}
+  }
+}

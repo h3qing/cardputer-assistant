@@ -1,0 +1,16 @@
+{
+  "doc": "result",
+  "name": "done; undo reopens it",
+  "data": {
+    "ok": true,
+    "v": 1,
+    "id": "3QZK1M7-00042-0A1F",
+    "filing": "done",
+    "changed": true,
+    "undo": {
+      "op": "reopen",
+      "id": "3QZK1M7-00042-0A1F",
+      "args": {}
+    }
+  }
+}

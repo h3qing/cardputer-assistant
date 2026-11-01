@@ -1,0 +1,41 @@
+{
+  "$comment": "Vectors for inbox.dismiss; format in protocol/README.md.",
+  "type": "inbox.dismiss",
+  "valid": [
+    {
+      "name": "inbox.dismiss (05 §6.6)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "inbox.dismiss", "id": "d10", "sid": "8d3e7a19"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "sid of 7 characters",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "inbox.dismiss", "id": "d10", "sid": "83122a3"},
+      "code": "E_BAD_FIELD",
+      "field": "sid"
+    },
+    {
+      "name": "sid with a non-hex letter",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "inbox.dismiss", "id": "d10", "sid": "83122a3g"},
+      "code": "E_BAD_FIELD",
+      "field": "sid"
+    },
+    {
+      "name": "sid in upper case",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "inbox.dismiss", "id": "d10", "sid": "8D3E7A19"},
+      "code": "E_BAD_FIELD",
+      "field": "sid"
+    },
+    {
+      "name": "sid missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "inbox.dismiss", "id": "d10"},
+      "code": "E_BAD_FIELD",
+      "field": "sid"
+    }
+  ]
+}

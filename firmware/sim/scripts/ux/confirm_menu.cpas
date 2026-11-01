@@ -1,0 +1,49 @@
+# Review regression (U22, B6). Before: the Tab menu over a confirm box said "Enter 确认 /
+# ` 取消" while the box said "Enter 开始 · ` 返回修改" (D6: ` goes back to the editor), two
+# names for one key; the meeting start box's menu said "Enter 确认" under "Enter 开始".
+# Now: the rows say what the box says: Enter 开始 / 存为排队 / 关闭, ` 返回修改 with the draft
+# behind the box, else 取消 (a queue item's, opened from the board); the start box Enter 开始,
+# ` 取消, Opt+L 取消并锁屏.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+press opt+1
+press opt+s
+type fix the refund webhook
+press enter
+wait 500
+shot spawn  the spawn confirm: Enter 开始 · ` 返回修改
+press tab
+wait 400
+shot spawn-menu  its Tab menu: Enter 开始, ` 返回修改, Fn+` 返回修改
+press down
+wait 200
+press enter
+wait 400
+shot back  the ` row: back in the editor, the text kept
+press `
+wait 500
+press enter
+wait 300
+press opt+h
+wait 300
+press opt+r
+wait 200
+press tab
+wait 400
+shot start-menu  the meeting start box's menu: Enter 开始, ` 取消, Opt+L 取消并锁屏
+press tab
+wait 300
+press `
+wait 300
+usb off
+wait 1500
+press opt+1
+press opt+s
+type tidy the logs
+press enter
+wait 500
+shot queued  offline: 离线：只存到 Mac 队列, Enter 存为排队 · ` 返回修改
+press tab
+wait 400
+shot queued-menu  its Tab menu: Enter 存为排队, ` 返回修改, Fn+` 返回修改

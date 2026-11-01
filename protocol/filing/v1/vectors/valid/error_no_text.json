@@ -1,0 +1,10 @@
+{
+  "doc": "error",
+  "name": "hand of a memo without usable text yet",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_NO_TEXT",
+    "field": "text"
+  }
+}

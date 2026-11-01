@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/sessions.snapshot.schema.json",
+  "title": "sessions.snapshot",
+  "description": "Sessions of registered projects (need first, then busy, then the rest); total is the real count.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["rev", "total", "sessions"],
+  "properties": {
+    "t": {"const": "sessions.snapshot"},
+    "rev": {"$ref": "common.schema.json#/$defs/uint32"},
+    "total": {"$ref": "common.schema.json#/$defs/count"},
+    "sessions": {
+      "type": "array",
+      "maxItems": 10,
+      "x-uniqueBy": "sid",
+      "items": {
+        "type": "object",
+        "required": ["sid", "slot", "name", "kind", "st", "need", "age_s"],
+        "properties": {
+          "sid": {"$ref": "common.schema.json#/$defs/sid"},
+          "slot": {"$ref": "common.schema.json#/$defs/slot"},
+          "name": {"$ref": "common.schema.json#/$defs/sessionName"},
+          "kind": {"$ref": "common.schema.json#/$defs/sessionKind"},
+          "st": {"$ref": "common.schema.json#/$defs/sessionState"},
+          "need": {"type": "boolean"},
+          "age_s": {"$ref": "common.schema.json#/$defs/uint32"},
+          "short": {"anyOf": [{"$ref": "common.schema.json#/$defs/short"}, {"type": "null"}]}
+        }
+      }
+    }
+  }
+}

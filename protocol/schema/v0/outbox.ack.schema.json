@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/outbox.ack.schema.json",
+  "title": "outbox.ack",
+  "description": "Host verdict on one outbox.item; stored means fsynced to events.jsonl.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [
+    {"$ref": "common.schema.json#/$defs/reply"},
+    {
+      "if": {"required": ["status"], "properties": {"status": {"const": "rejected"}}},
+      "then": {
+        "required": ["code"],
+        "properties": {"code": {"$ref": "common.schema.json#/$defs/errorCode"}}
+      }
+    }
+  ],
+  "required": ["status"],
+  "properties": {
+    "t": {"const": "outbox.ack"},
+    "re": {"$ref": "common.schema.json#/$defs/monoId"},
+    "status": {"enum": ["stored", "duplicate", "rejected"]},
+    "code": {"anyOf": [{"$ref": "common.schema.json#/$defs/errorCode"}, {"type": "null"}]}
+  }
+}

@@ -1,0 +1,65 @@
+# docs/20 D4 regression (U4; from the review's stab/scripts/st02_g0_hold_overlays). Before the
+# fix holding G0 recorded nothing while the editor, a confirm box or the Tab menu over them was
+# open (0 of 367 holds in the fuzz runs) and said nothing; now it records a memo and the draft
+# or the box stays. On the meeting's start box it says the box comes first. Let go, the memo
+# records on through its 0.6 s grace (gh #51) before it is saved.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 2600
+# 1. the note editor (a G0 tap opened it; the user decides to speak instead)
+press g0
+type call the vet
+down g0
+wait 600
+mic 2000 2500
+shot note-hold  editor with a draft, G0 held: ● memo
+up g0
+wait 1200
+shot note-after  released: the memo saved, the draft still there
+press `
+wait 450
+press enter
+wait 2600
+# 2. the spawn confirm box
+press opt+s
+press opt+1
+type write the refund tests
+press enter
+wait 500
+down g0
+wait 600
+mic 2000 2500
+shot confirm-hold  spawn confirm, G0 held: ● memo
+up g0
+wait 1200
+shot confirm-after  released: the confirm box is back
+press `
+shot confirm-back  ` on it: back to the editor, the text kept (D6)
+press `
+wait 450
+press enter
+wait 2600
+# 3. the Tab menu over the editor
+press g0
+type x
+press tab
+down g0
+wait 600
+mic 2000 2500
+shot menu-hold  Tab menu over the editor, G0 held: the menu closes, ● memo
+up g0
+wait 1200
+press `
+wait 450
+press enter
+wait 2600
+# 4. the meeting's start box
+press opt+r
+wait 500
+down g0
+wait 600
+shot consent-hold  start box, G0 held: "先处理确认框", nothing records
+up g0
+press `
+wait 2600
+shot end  home

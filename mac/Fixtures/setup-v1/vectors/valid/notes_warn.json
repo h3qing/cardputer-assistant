@@ -1,0 +1,14 @@
+{
+  "doc": "row",
+  "name": "notes in iCloud",
+  "data": {
+    "v": 1,
+    "id": "notes",
+    "state": "warn",
+    "required": true,
+    "blocked_by": [],
+    "title": "笔记目录在网盘里：~/Documents/Notes",
+    "detail": "网盘会把笔记明文传上去；后台服务也可能写不进 文稿。",
+    "fix": []
+  }
+}

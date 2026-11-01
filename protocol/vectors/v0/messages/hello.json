@@ -1,0 +1,763 @@
+{
+  "$comment": "Vectors for hello; format in protocol/README.md.",
+  "type": "hello",
+  "valid": [
+    {
+      "name": "host hello (05 §6.6)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      }
+    },
+    {
+      "name": "device hello reply (05 §6.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      }
+    },
+    {
+      "name": "host hello: Claude Code missing, nothing enabled",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "missing",
+        "caps": {"spawn": false, "reply": false}
+      }
+    },
+    {
+      "name": "device hello: unknown future field is ignored",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "x_future": {"a": 1}
+      }
+    },
+    {
+      "name": "device hello with CRLF ending (receiver drops \\r)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "line_b64": "eyJ2IjowLCJ0IjoiaGVsbG8iLCJpZCI6ImQxIiwicmUiOiJoMSIsInJvbGUiOiJkZXZpY2UiLCJmdyI6ImNwYS1mdy8wLjEuMCIsImRldiI6IjAyMDAwMDAwMDAwMSIsImJvb3QiOiIzUVpLMU03LTAwMDBDIiwidXBfbXMiOjUzMjExLCJyc3QiOiJwb3dlcm9uIiwidGltZSI6ZmFsc2UsInBlbmRpbmciOjMsImJhdF9tdiI6NDE1MCwicmV2cyI6eyJwcm9qZWN0cyI6MCwic2Vzc2lvbnMiOjAsInF1ZXVlIjowfX0NCg=="
+    },
+    {
+      "name": "device hello v0.2: SD card store under the Launcher (09 §6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true
+      }
+    },
+    {
+      "name": "device hello v0.2: internal store, flashed directly",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "int",
+        "launcher": false
+      }
+    },
+    {
+      "name": "device hello v0.2: no usable store",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "none",
+        "launcher": false
+      }
+    },
+    {
+      "name": "device hello: store and launcher null mean absent",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": null,
+        "launcher": null
+      }
+    },
+    {
+      "name": "device hello v0.3: two segments waiting (docs/11 §5.2)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 2, "rev": 17, "live": false}
+      }
+    },
+    {
+      "name": "device hello v0.3: boot recovery scan still running",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 0, "rev": 0, "live": false}
+      }
+    },
+    {
+      "name": "device hello v0.3: files null means no recording transfer",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": null
+      }
+    },
+    {
+      "name": "v0.4.1 host hello: caps.recs, caps.todo, host_id, host_label (docs/13 §11.1)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7f3a9c1e5b2d4a60",
+        "host_label": "Studio Mac"
+      }
+    },
+    {
+      "name": "v0.4.1 host hello: the new fields null",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": null, "todo": null},
+        "host_id": null,
+        "host_label": null
+      }
+    },
+    {
+      "name": "v0.4.1 host hello: 32-character host_id, 24-byte label",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "0123456789abcdef-0123456789abcde",
+        "host_label": "八个汉字的主机名"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "host hello from another major version",
+      "dir": "h2d",
+      "msg": {
+        "v": 1,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "code": "E_VERSION"
+    },
+    {
+      "name": "unknown agent status",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "maybe",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "agent"
+    },
+    {
+      "name": "caps.reply missing",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "caps.reply"
+    },
+    {
+      "name": "role is neither host nor device",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "admin",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "role"
+    },
+    {
+      "name": "host hello carrying re",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false},
+        "re": "d1"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "device hello without re",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "foreign firmware prefix",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "esp-at/3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "fw"
+    },
+    {
+      "name": "boot id in lower case",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3qzk1m7-0000c",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "boot"
+    },
+    {
+      "name": "dev is not 12 lower-case hex digits",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "02:00:00:00:00:01",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "dev"
+    },
+    {
+      "name": "revs.queue missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "revs.queue"
+    },
+    {
+      "name": "store is not one of sd / int / none",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "fat",
+        "launcher": false
+      },
+      "code": "E_BAD_FIELD",
+      "field": "store"
+    },
+    {
+      "name": "launcher is not a boolean",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.2.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 3,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": "yes"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "launcher"
+    },
+    {
+      "name": "files.n above file_pending_max",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 257, "rev": 17, "live": false}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "files.n"
+    },
+    {
+      "name": "files.live is not a boolean",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 2, "rev": 17, "live": "no"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "files.live"
+    },
+    {
+      "name": "files.rev missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d1",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.3.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 53211,
+        "rst": "software",
+        "time": false,
+        "pending": 0,
+        "bat_mv": 4150,
+        "revs": {"projects": 0, "sessions": 0, "queue": 0},
+        "store": "sd",
+        "launcher": true,
+        "files": {"n": 2, "live": false}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "files.rev"
+    },
+    {
+      "name": "upper-case host_id",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7F3A9C1E5B2D4A60"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_id"
+    },
+    {
+      "name": "host_id of 7 characters",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "abc1234"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_id"
+    },
+    {
+      "name": "host_id of 33 characters",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_id"
+    },
+    {
+      "name": "host_id with an underscore",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_id": "7f3a_9c1e5b2d"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_id"
+    },
+    {
+      "name": "host_label of 25 bytes",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_label": "aaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_label"
+    },
+    {
+      "name": "host_label of 9 CJK characters (27 bytes)",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_label": "九个汉字的主机名称"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_label"
+    },
+    {
+      "name": "empty host_label",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_label": ""
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_label"
+    },
+    {
+      "name": "host_label with a tab",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": true, "todo": true},
+        "host_label": "Studio\tMac"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "host_label"
+    },
+    {
+      "name": "caps.recs not a boolean",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "recs": "yes"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "caps.recs"
+    },
+    {
+      "name": "caps.todo not a boolean",
+      "dir": "h2d",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.4.1",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false, "todo": 1}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "caps.todo"
+    }
+  ]
+}

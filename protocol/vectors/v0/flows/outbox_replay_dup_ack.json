@@ -1,0 +1,149 @@
+{
+  "name": "outbox_replay_dup_ack",
+  "spec": "05 §5.9, §6.3 rule 4, §7.3",
+  "description": "A lost ack makes the device resend the same item after 3 s; a daemon crash after fsync makes it replay after the next handshake. The daemon dedupes by (dev, id) and answers duplicate: 0 loss, 0 duplicates.",
+  "initial": {"device.link": "Ready", "host.link": "ready", "device.outbox_pending": 1},
+  "steps": [
+    {
+      "t": 0,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 60000, "wall_ms": null},
+        "body": {"text": "call the dentist"}
+      }
+    },
+    {
+      "t": 20,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h20",
+        "re": "3QZK1M7-0000C-0005",
+        "status": "stored"
+      },
+      "lost": true,
+      "note": "ack lost; the item is already fsynced in events.jsonl"
+    },
+    {"t": 2999, "expect": {"device.outbox_inflight": 1, "host.items_stored": 1}},
+    {
+      "t": 3000,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 60000, "wall_ms": null},
+        "body": {"text": "call the dentist"}
+      },
+      "note": "first retry after 3 s, byte-identical"
+    },
+    {
+      "t": 3020,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h21",
+        "re": "3QZK1M7-0000C-0005",
+        "status": "duplicate"
+      },
+      "note": "dedupe hit: no second event"
+    },
+    {
+      "t": 3020,
+      "expect": {"device.outbox_inflight": 0, "device.outbox_pending": 0, "host.items_stored": 1}
+    },
+    {
+      "t": 4000,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0006",
+        "kind": "queue",
+        "at": {"up_ms": 64000, "wall_ms": null},
+        "body": {"text": "rename cpa status fields", "project": "cpa", "intent": "todo"}
+      }
+    },
+    {
+      "t": 4010,
+      "event": "daemon_restart",
+      "note": "daemon dies after appending + fsync, before the ack"
+    },
+    {"t": 4010, "expect": {"host.link": "offline", "device.outbox_inflight": 1}},
+    {
+      "t": 6000,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "h1",
+        "role": "host",
+        "app": "cpad/0.1.0",
+        "agent": "ok",
+        "caps": {"spawn": true, "reply": false}
+      },
+      "note": "new daemon process: host ids restart"
+    },
+    {
+      "t": 6000,
+      "expect": {"device.outbox_inflight": 0, "device.outbox_pending": 1},
+      "note": "re-handshake: in-flight items go back to pending"
+    },
+    {
+      "t": 6015,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "hello",
+        "id": "d7",
+        "re": "h1",
+        "role": "device",
+        "fw": "cpa-fw/0.1.0",
+        "dev": "020000000001",
+        "boot": "3QZK1M7-0000C",
+        "up_ms": 59211,
+        "rst": "poweron",
+        "time": false,
+        "pending": 1,
+        "bat_mv": 4150,
+        "revs": {"projects": 42, "sessions": 17, "queue": 9}
+      }
+    },
+    {
+      "t": 6030,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0006",
+        "kind": "queue",
+        "at": {"up_ms": 64000, "wall_ms": null},
+        "body": {"text": "rename cpa status fields", "project": "cpa", "intent": "todo"}
+      },
+      "note": "replayed in id order (time.set and snapshots omitted, see handshake)"
+    },
+    {
+      "t": 6050,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h2",
+        "re": "3QZK1M7-0000C-0006",
+        "status": "duplicate"
+      },
+      "note": "dedupe index rebuilt from events.jsonl at start-up"
+    },
+    {
+      "t": 6050,
+      "expect": {"device.outbox_pending": 0, "host.items_stored": 2, "host.queue_added": 1}
+    }
+  ]
+}

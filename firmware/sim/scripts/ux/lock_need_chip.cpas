@@ -1,0 +1,27 @@
+# Review regression (U19: unknown is not zero). Before: booted away from the Mac and locked,
+# the card said "等你 0" while home said "还没连上 Mac"; long offline it said the cached
+# "等你 1" with no mark, where home says "离线 · N 分钟前的情况".
+# Now: no 等你 chip without session data; from a picture kept since the Mac went away, the
+# card's head says "已锁屏 · 离线" and the chip is not mustard.
+boot store=sd usb=off bat=4100
+wait 1500
+press opt+l
+wait 300
+shot no-data  booted away from the Mac, locked: no 等你 chip
+wait 3000
+press opt+l
+press enter
+usb on
+include ../common/demo_state.cpas
+wait 600
+press opt+l
+wait 300
+shot live  on USB with the Mac: 等你 1
+wait 3000
+press opt+l
+press enter
+usb off
+wait 20000
+press opt+l
+wait 300
+shot offline  away from the Mac: 已锁屏 · 离线, 等你 1 not mustard

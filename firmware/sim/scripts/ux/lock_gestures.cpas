@@ -1,0 +1,35 @@
+# docs/20 U3 regression (from the review's s17_locked_two_presses and stab/scripts/
+# st03_lock_card_race). Before the fix a first pocket hold lit the card and a second one
+# inside its 3 s recorded; a hold that started in the card's last 0.5 s was swallowed; and
+# the card went dark under a held G0. Now only a tap arms the card, the press decides, and
+# the card stays lit while G0 is held.
+boot store=sd usb=off bat=4000
+include ../common/demo_state.cpas
+wait 1500
+press opt+l
+wait 2500
+shot locked  locked, dark (the card said "已锁屏" for 2 s)
+# two pocket holds: nothing records
+down g0
+wait 1500
+up g0
+wait 800
+down g0
+wait 4000
+shot second-hold  a second hold 0.8 s later, held 4 s: no ●, the card still lit
+up g0
+wait 500
+shot after-holds  released: nothing recorded
+wait 3500
+# tap, read the card 2.7 s, hold: the card was lit at the press, so it records
+press g0
+wait 2700
+down g0
+wait 600
+mic 2000 2500
+shot late-hold  tap, hold 2.7 s later: ● memo (the press counts)
+up g0
+wait 1200
+shot result  released: the card shows the result 2 s (docs/20 D7)
+wait 2500
+shot dark-again  dark and locked again

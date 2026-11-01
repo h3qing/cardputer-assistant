@@ -1,0 +1,43 @@
+# docs/20 B3 regression (U6, U16, U21). Before: ↑0 always; ※k stayed yellow until the
+# reboot; the battery was white down to 10 % although recording stops at 17 %; no SD card
+# showed nothing until a recording failed; a long meeting's bar overlapped. Now: no count at
+# zero; ※k 10 s; the battery yellow under 30 %, red from 17 %; ※SD; the left group gets what
+# the right one leaves (the weekday goes first, then 录N, ↑N, ※k, ※SD); the Tab menu's
+# 控制 explains the bar and says √ 已同步 once nothing waits.
+boot store=sd usb=on bat=4100
+include ../common/demo_state.cpas
+wait 1500
+shot online  online: no ↑0
+press tab
+press right right
+shot control  控制: √ 已同步：都传到 Mac 了
+press tab
+press `+2+tab+w
+wait 300
+shot ghost  a ghost frame: ※k1
+wait 10500
+shot ghost-gone  10 s later: gone
+usb off
+bat 3500
+wait 3000
+shot battery-yellow  23%: yellow
+bat 3440
+wait 1500
+shot battery-red  16%: red, under the stop line
+bat 3700
+press g0
+type buy milk
+press enter
+wait 3000
+press opt+r
+wait 600
+press enter
+mic 7500000 1500
+press `+2+tab+w
+wait 300
+shot crowded  125 min meeting, offline, ↑1, !1, ※k2: the weekday and 录N give way, nothing overlaps
+boot store=internal usb=off bat=3700
+include ../common/demo_state.cpas
+usb off
+wait 1500
+shot no-sd  booted without a card: ※SD

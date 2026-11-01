@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/time.set.schema.json",
+  "title": "time.set",
+  "description": "Wall clock for the device: Unix epoch ms and local offset in minutes.",
+  "x-dir": ["h2d"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["epoch_ms", "tz_min"],
+  "properties": {
+    "t": {"const": "time.set"},
+    "epoch_ms": {"$ref": "common.schema.json#/$defs/epochMs"},
+    "tz_min": {"$ref": "common.schema.json#/$defs/tzMin"}
+  }
+}

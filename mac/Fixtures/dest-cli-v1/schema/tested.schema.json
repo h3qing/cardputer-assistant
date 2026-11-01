@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/dest-cli/v1/tested.schema.json",
+  "title": "tested",
+  "description": "`cpa dest test ID --send --json` (docs/25 §3.1, D12): one marked test text (\"测试 <marker>\") was handed to the app, or not (handed false: code; E_DRAFT_BUSY: a capture's draft still waits in that app within 30 min, so the test would be dropped: send or clear it first). It asks nothing: the caller asks \"did 测试 <marker> appear?\" and \"was it sent by itself?\", then runs `cpa dest verify ID --draft` (appeared, not sent) or `--act`, and for a bot that did not get it `cpa dest map ID '*=LINK'` and tests again.",
+  "type": "object",
+  "required": [
+    "ok",
+    "v",
+    "dest",
+    "marker",
+    "handed",
+    "via",
+    "code"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "v": {
+      "$ref": "common.schema.json#/$defs/version"
+    },
+    "dest": {
+      "$ref": "common.schema.json#/$defs/destId"
+    },
+    "marker": {
+      "type": "string",
+      "pattern": "^[0-9]{4}$"
+    },
+    "handed": {
+      "type": "boolean"
+    },
+    "via": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/via"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "code": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/code"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "handed"
+        ],
+        "properties": {
+          "handed": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "code": {
+            "$ref": "common.schema.json#/$defs/code"
+          },
+          "via": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "handed"
+        ],
+        "properties": {
+          "handed": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "via": {
+            "$ref": "common.schema.json#/$defs/via"
+          },
+          "code": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

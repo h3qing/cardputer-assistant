@@ -1,0 +1,3 @@
+# The daemon's handshake after the cable is plugged in. After hello the simulated
+# daemon pings every 5 s, as cpad does.
+host hello {"role":"host","app":"cpad/0.3.1","agent":"ok","caps":{"spawn":true,"reply":true}}

@@ -1,0 +1,86 @@
+{
+  "name": "agent_result_unknown",
+  "spec": "05 §5.6, §5.8",
+  "description": "An online agent.spawn gets no agent.result within 30 s: the device shows 'result unknown' and saves the text as queue(intent=spawn, uncertain=true). A late result for the abandoned request is ignored.",
+  "initial": {"device.link": "Ready", "host.link": "ready", "device.outbox_pending": 0},
+  "steps": [
+    {
+      "t": 0,
+      "event": "user_spawn",
+      "args": {"project": "cpa", "text": "Write native tests for the chord detector"},
+      "note": "Confirm pressed while Ready and agent=ok"
+    },
+    {
+      "t": 0,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "agent.spawn",
+        "id": "d50",
+        "project": "cpa",
+        "text": "Write native tests for the chord detector"
+      },
+      "note": "online request: not stored, never retried"
+    },
+    {"t": 0, "expect": {"device.agent_inflight": 1}},
+    {"t": 29999, "expect": {"device.agent_inflight": 1}},
+    {
+      "t": 30000,
+      "expect": {"device.agent_inflight": 0, "device.outbox_pending": 1},
+      "note": "timeout: toast 'result unknown', text saved as an uncertain queue item"
+    },
+    {
+      "t": 30000,
+      "from": "device",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0008",
+        "kind": "queue",
+        "at": {"up_ms": 90000, "wall_ms": null},
+        "body": {
+          "text": "Write native tests for the chord detector",
+          "project": "cpa",
+          "intent": "spawn",
+          "uncertain": true
+        }
+      }
+    },
+    {
+      "t": 30020,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "outbox.ack",
+        "id": "h51",
+        "re": "3QZK1M7-0000C-0008",
+        "status": "stored"
+      }
+    },
+    {
+      "t": 31000,
+      "from": "host",
+      "msg": {
+        "v": 0,
+        "t": "agent.result",
+        "id": "h52",
+        "re": "d50",
+        "ok": true,
+        "name": "cpa/write-native-tests",
+        "short": "a1b2c3"
+      },
+      "note": "late: the device no longer tracks d50 and ignores it"
+    },
+    {
+      "t": 31000,
+      "expect": {
+        "device.agent_inflight": 0,
+        "device.outbox_pending": 0,
+        "host.items_stored": 1,
+        "host.queue_added": 1,
+        "host.spawn_calls": 1
+      },
+      "note": "the session did start; 'uncertain' tells the user to check before re-spawning"
+    }
+  ]
+}

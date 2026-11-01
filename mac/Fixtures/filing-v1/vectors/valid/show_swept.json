@@ -1,0 +1,40 @@
+{
+  "doc": "show",
+  "name": "an old meeting: no transcript file, audio swept, no device stamp",
+  "data": {
+    "v": 1,
+    "row": {
+      "id": "3QZK1M7-00040-0000",
+      "kind": "meeting",
+      "filing": "hidden",
+      "why": [],
+      "asked": null,
+      "at": {
+        "wall_ms": 1792639380000,
+        "tz_min": 480,
+        "uncertain": false
+      },
+      "dur_ms": 24000,
+      "device": "5c0e9a7b3d21",
+      "env": {
+        "host": "公司",
+        "link": "unknown"
+      },
+      "prof": null,
+      "project": null,
+      "starred": false,
+      "tx": "transcript",
+      "title": null,
+      "text": "旧会议只有转写。",
+      "intent": null,
+      "clips": null,
+      "queue": null
+    },
+    "text": null,
+    "sentences": null,
+    "todos": [],
+    "audio": [],
+    "fw": null,
+    "queue_text": null
+  }
+}

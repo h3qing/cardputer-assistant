@@ -1,0 +1,40 @@
+{
+  "v": 1,
+  "kind": "cardputer.recording",
+  "session": "3QZK1M7-00042-0010",
+  "attempt": 1,
+  "mode": "memo",
+  "project": null,
+  "started": {
+    "wall_ms": 1789505617433,
+    "tz_min": 480,
+    "uncertain": false
+  },
+  "duration_ms": 33408,
+  "lead_ms": 200,
+  "audio": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16
+  },
+  "segments": [
+    {
+      "i": 0,
+      "file": "seg-000.wav",
+      "id": "3QZK1M7-00042-0010",
+      "t0_ms": 0,
+      "samples": 160,
+      "bytes": 364,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "recovered": false,
+      "repaired": false
+    }
+  ],
+  "gaps": [],
+  "marks": [],
+  "device": {
+    "dev": "02005e100001",
+    "fw": "cpa-fw/0.4.0"
+  },
+  "written_at": "2026-09-16T05:50:00.000+08:00"
+}

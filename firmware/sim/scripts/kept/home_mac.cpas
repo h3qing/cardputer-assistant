@@ -1,0 +1,4 @@
+# The Mac at home (docs/28): its hello carries its host_id, which the device hashes.
+host hello {"role":"host","app":"cpad/0.5.0","agent":"ok","caps":{"spawn":true,"reply":true},"host_id":"mac-home-0001","host_label":"家里 iMac"}
+host time.set {"epoch_ms":1792546860000,"tz_min":480}
+wait 600

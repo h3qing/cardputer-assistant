@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cardputer-assistant.invalid/protocol/v0/rec.list.schema.json",
+  "title": "rec.list",
+  "description": "v0.4.1 (docs/13 §8.1, §12.2): the recordings app asks cpad for one page of sessions, newest first by wall time. Sent only when the latest host hello carried caps.recs:true. cursor is the next of the previous page, sent back unchanged; absent = first page. Reply: rec.items, or error (E_BAD_FIELD, E_INTERNAL; E_UNKNOWN_TYPE from an older cpad).",
+  "x-dir": ["d2h"],
+  "type": "object",
+  "allOf": [{"$ref": "common.schema.json#/$defs/request"}],
+  "required": ["filter", "max"],
+  "properties": {
+    "t": {"const": "rec.list"},
+    "filter": {"$ref": "common.schema.json#/$defs/recFilter"},
+    "max": {"type": "integer", "minimum": 1, "maximum": 6},
+    "cursor": {"anyOf": [{"$ref": "common.schema.json#/$defs/recCursor"}, {"type": "null"}]}
+  }
+}

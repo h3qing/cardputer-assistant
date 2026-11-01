@@ -1,0 +1,10 @@
+{
+  "doc": "error",
+  "name": "argparse refused the arguments",
+  "data": {
+    "ok": false,
+    "v": 1,
+    "error": "E_BAD_ARG",
+    "field": "argv"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "doc": "result",
+  "name": "changed false with an undo",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "undo"
+  },
+  "data": {
+    "ok": true,
+    "v": 1,
+    "id": "3QZK1M7-00042-0A1F",
+    "filing": "filed",
+    "changed": false,
+    "undo": {
+      "op": "file",
+      "id": "3QZK1M7-00042-0A1F",
+      "args": {
+        "project": null
+      }
+    }
+  }
+}

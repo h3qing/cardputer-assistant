@@ -1,0 +1,18 @@
+{
+  "on": true,
+  "recordings": "/Users/someone/CardputerNotes/recordings",
+  "recordings_exists": true,
+  "command": "/opt/homebrew/bin/whisper-cli",
+  "missing": [],
+  "sandbox": true,
+  "sandbox_path": "/usr/bin/sandbox-exec",
+  "claim": {"app": "cpa-stt", "pid": 4242, "beat_age_s": 12},
+  "selftest_ok": true,
+  "selftest_at": "2026-09-16T05:00:00+08:00",
+  "blocked": null,
+  "retrying": 0,
+  "recent": [{"session": "3QZK1M7-00042-0033", "dur_ms": 6400, "took_ms": 1830, "exit": 0}],
+  "foreign": [],
+  "busy_by": null,
+  "service": true
+}

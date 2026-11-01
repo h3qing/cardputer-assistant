@@ -1,0 +1,594 @@
+{
+  "$comment": "Vectors for outbox.item; format in protocol/README.md.",
+  "type": "outbox.item",
+  "valid": [
+    {
+      "name": "note (05 §6.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      }
+    },
+    {
+      "name": "queue with intent=spawn (05 §6.6)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {
+          "text": "write native tests for chord detector",
+          "project": "cpa",
+          "intent": "spawn"
+        }
+      }
+    },
+    {
+      "name": "unassigned note: no project, wall_ms omitted",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000},
+        "body": {"text": "buy milk"}
+      }
+    },
+    {
+      "name": "unassigned note: project null",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": null}
+      }
+    },
+    {
+      "name": "queue todo",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {
+          "text": "write native tests for chord detector",
+          "project": "cpa",
+          "intent": "todo"
+        }
+      }
+    },
+    {
+      "name": "queue feedback for a session",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {
+          "text": "looks good, add a test plan",
+          "project": "cpa",
+          "intent": "feedback",
+          "sid": "5c2e8a14"
+        }
+      }
+    },
+    {
+      "name": "queue spawn saved after an unknown agent result",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {
+          "text": "write native tests for chord detector",
+          "project": "cpa",
+          "intent": "spawn",
+          "uncertain": true
+        }
+      }
+    },
+    {
+      "name": "note of exactly 500 bytes",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {
+          "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "project": "cpa"
+        }
+      }
+    },
+    {
+      "name": "note of 500 UTF-8 bytes (166 CJK + 2 ASCII)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {
+          "text": "中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中ab",
+          "project": "cpa"
+        }
+      }
+    },
+    {
+      "name": "a note may start with '-' (the dash rule is for spawn/reply only)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "- buy milk", "project": "cpa"}
+      }
+    },
+    {
+      "name": "shell syntax is just text",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "$(rm -rf ~); ls", "project": "cpa"}
+      }
+    },
+    {
+      "name": "sent with CRLF ending",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "line_b64": "eyJ2IjowLCJ0Ijoib3V0Ym94Lml0ZW0iLCJpZCI6IjNRWksxTTctMDAwMEMtMDAwMyIsImtpbmQiOiJub3RlIiwiYXQiOnsidXBfbXMiOjQxMDAwLCJ3YWxsX21zIjpudWxsfSwiYm9keSI6eyJ0ZXh0IjoiaWRlYTogZGVkdXBlIGJ5IHNpZCIsInByb2plY3QiOiJjcGEifX0NCg=="
+    },
+    {
+      "name": "note with dest todo (docs/13 §12.2)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": "todo"}
+      }
+    },
+    {
+      "name": "note with dest null: the daily note",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": null}
+      }
+    },
+    {
+      "name": "note with a dest this cpad may not know: stored as a plain note (docs/13 §9.2)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": "ww.plugin.todoist"}
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "execution kind: spawn",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "spawn",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "kind"
+    },
+    {
+      "name": "execution kind: reply",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "reply",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "kind"
+    },
+    {
+      "name": "execution kind: feedback",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "feedback",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "kind"
+    },
+    {
+      "name": "execution kind: agent.spawn",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "agent.spawn",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "kind"
+    },
+    {
+      "name": "execution kind: agent.reply",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "agent.reply",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "kind"
+    },
+    {
+      "name": "id is not a MonoId",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "d7",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "id"
+    },
+    {
+      "name": "MonoId in lower case",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3qzk1m7-0000c-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "id"
+    },
+    {
+      "name": "MonoId with excluded letter I",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1I7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "id"
+    },
+    {
+      "name": "text of 501 bytes",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {
+          "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "project": "cpa"
+        }
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.text"
+    },
+    {
+      "name": "text of 501 UTF-8 bytes (167 CJK)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {
+          "text": "中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中中",
+          "project": "cpa"
+        }
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.text"
+    },
+    {
+      "name": "empty text",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.text"
+    },
+    {
+      "name": "text with a newline",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "line1\nline2", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.text"
+    },
+    {
+      "name": "text with NUL",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "\u0000", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.text"
+    },
+    {
+      "name": "project in upper case",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "CPA"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.project"
+    },
+    {
+      "name": "queue without project",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "write native tests for chord detector", "intent": "spawn"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.project"
+    },
+    {
+      "name": "unknown queue intent",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "write native tests for chord detector", "project": "cpa", "intent": "run"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.intent"
+    },
+    {
+      "name": "feedback without sid",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0004",
+        "kind": "queue",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {
+          "text": "write native tests for chord detector",
+          "project": "cpa",
+          "intent": "feedback"
+        }
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.sid"
+    },
+    {
+      "name": "at missing",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "at"
+    },
+    {
+      "name": "wall_ms as a string",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": "now"},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "at.wall_ms"
+    },
+    {
+      "name": "wall_ms before 2025",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": 1000},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "at.wall_ms"
+    },
+    {
+      "name": "outbox.item carrying re",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0003",
+        "kind": "note",
+        "at": {"up_ms": 41000, "wall_ms": null},
+        "body": {"text": "idea: dedupe by sid", "project": "cpa"},
+        "re": "h1"
+      },
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    },
+    {
+      "name": "invalid UTF-8 byte in text",
+      "dir": "d2h",
+      "line_b64": "eyJ2IjowLCJ0Ijoib3V0Ym94Lml0ZW0iLCJpZCI6IjNRWksxTTctMDAwMEMtMDAwMyIsImtpbmQiOiJub3RlIiwiYXQiOnsidXBfbXMiOjF9LCJib2R5Ijp7InRleHQiOiJiYWQgwyggYnl0ZSJ9fQo=",
+      "code": "E_BAD_FIELD",
+      "field": "body.text"
+    },
+    {
+      "name": "dest 'Todo' (upper case)",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": "Todo"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.dest"
+    },
+    {
+      "name": "empty dest",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": ""}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.dest"
+    },
+    {
+      "name": "dest with four segments",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": "a.b.c.d"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.dest"
+    },
+    {
+      "name": "dest of 25 bytes",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": "zzzzzzzzzzzz.yyyyyyyyyyyy"}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.dest"
+    },
+    {
+      "name": "dest not a string",
+      "dir": "d2h",
+      "msg": {
+        "v": 0,
+        "t": "outbox.item",
+        "id": "3QZK1M7-0000C-0005",
+        "kind": "note",
+        "at": {"up_ms": 98000, "wall_ms": 1792440045000},
+        "body": {"text": "call the plumber", "project": "cpa", "dest": 7}
+      },
+      "code": "E_BAD_FIELD",
+      "field": "body.dest"
+    }
+  ]
+}

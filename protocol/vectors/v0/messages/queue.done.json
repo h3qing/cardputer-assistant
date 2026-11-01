@@ -1,0 +1,53 @@
+{
+  "$comment": "Vectors for queue.done; format in protocol/README.md.",
+  "type": "queue.done",
+  "valid": [
+    {
+      "name": "queue.done (05 §6.6)",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9", "qid": "q17"}
+    },
+    {
+      "name": "qid with 10 digits",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9", "qid": "q1234567890"}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "qid without digits",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9", "qid": "q"},
+      "code": "E_BAD_FIELD",
+      "field": "qid"
+    },
+    {
+      "name": "qid with 11 digits",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9", "qid": "q12345678901"},
+      "code": "E_BAD_FIELD",
+      "field": "qid"
+    },
+    {
+      "name": "qid without q",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9", "qid": "17"},
+      "code": "E_BAD_FIELD",
+      "field": "qid"
+    },
+    {
+      "name": "qid missing",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9"},
+      "code": "E_BAD_FIELD",
+      "field": "qid"
+    },
+    {
+      "name": "queue.done carrying re",
+      "dir": "d2h",
+      "msg": {"v": 0, "t": "queue.done", "id": "d9", "qid": "q17", "re": "h9"},
+      "code": "E_BAD_FIELD",
+      "field": "re"
+    }
+  ]
+}

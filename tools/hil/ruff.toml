@@ -1,0 +1,6 @@
+# Lint and format settings for the HIL harness: the daemon's rules; tools/hil's packages are first-party.
+extend = "../../daemon/pyproject.toml"
+src = ["."]
+
+[lint.isort]
+known-first-party = ["harness", "scenarios"]

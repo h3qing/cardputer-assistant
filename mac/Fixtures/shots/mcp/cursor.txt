@@ -1,0 +1,13 @@
+Add to ~/.cursor/mcp.json (global, not a project's .cursor/):
+{
+  "mcpServers": {
+    "cardputer": {
+      "type": "stdio",
+      "command": "/Users/you/.local/bin/cpa",
+      "args": [
+        "mcp",
+        "serve"
+      ]
+    }
+  }
+}

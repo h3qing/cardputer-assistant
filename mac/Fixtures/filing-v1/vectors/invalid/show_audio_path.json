@@ -1,0 +1,68 @@
+{
+  "doc": "show",
+  "name": "audio given as a path",
+  "reason": {
+    "code": "E_INVALID",
+    "field": "audio[0]"
+  },
+  "data": {
+    "v": 1,
+    "row": {
+      "id": "3QZK1M7-00042-0A1F",
+      "kind": "memo",
+      "filing": "handed",
+      "why": [],
+      "asked": null,
+      "at": {
+        "wall_ms": 1792639380000,
+        "tz_min": 480,
+        "uncertain": false
+      },
+      "dur_ms": 24000,
+      "device": "5c0e9a7b3d21",
+      "env": {
+        "host": "公司",
+        "link": "unknown"
+      },
+      "prof": null,
+      "project": "cpa",
+      "starred": false,
+      "tx": "done",
+      "title": "报价",
+      "text": "周五前给 Alice 发报价单。",
+      "intent": "todo",
+      "clips": null,
+      "queue": {
+        "qid": "q12",
+        "intent": "spawn",
+        "open": true
+      }
+    },
+    "text": "周五前给 Alice 发报价单。",
+    "sentences": [
+      {
+        "t_s": 0,
+        "text": "待办：周五前给 Alice 发报价单。"
+      },
+      {
+        "t_s": null,
+        "text": "OK."
+      }
+    ],
+    "todos": [
+      {
+        "n": 1,
+        "text": "给 Alice 发报价单",
+        "owner": "我",
+        "due": "周五",
+        "t_s": 361.0,
+        "confident": true
+      }
+    ],
+    "audio": [
+      "recordings/2026-10-21/1405-3qzk1m7-00042-0a1f/seg-000.wav"
+    ],
+    "fw": "cpa-fw/0.4.0",
+    "queue_text": "周五前给 Alice 发报价单。"
+  }
+}

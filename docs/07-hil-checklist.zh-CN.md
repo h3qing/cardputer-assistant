@@ -1174,4 +1174,11 @@ uv run --project daemon python tools/hil/run_e2e.py --scenarios handshake,nav,me
 ### 12.2 跑完以后
 
 - [x] HIL 留下的留底在测试版上用设备自己的键清掉：Opt+M、`,`（存储）、`.` `.`（「清掉留底」）、Enter、`/`、Enter；语言没变。（`debug.state` 没有留底数：👤 锁屏卡上应该不再显示「留N」。）
-- [ ] 刷 v0.5.2 正式版，`cpa pause 1`，`cpa status` link ready、`cpa-fw/0.5.2`（§12.3）。
+- [x] 从 tag 的树刷 v0.5.2 正式版（`pio run -e cardputer-adv -t upload`）：app 分区和发布的 `cpa-v0.5.2-app.bin` 一个字节都不差；`cpa pause 1`，`cpa status`：link ready，`cpa-fw/0.5.2`，开机号 `1833562-00085`，等着的 0。这台 Mac 用公开的那一行升级（`… | bash -s -- --yes`）：`cpa` / `cpa-stt` / app 都是 0.5.2，cpad 和 cpa-stt 在跑，没有 "Broken pipe"。
+
+### 12.3 模拟一台新电脑（2026-11-01 23:02–23:26 PST，公开仓库）
+
+用临时目录里的一次性 HOME，从不碰真的那个。会碰到真实登录会话的东西都用桩代替：`launchctl` 和 `open` 只记日志，`pgrep` 说什么都没在跑，`osascript` 只跑安装脚本解析发布信息用的 JavaScript。
+- [x] **用户路线**：README 那一行，匿名（没有 gh、没有 token），`--yes --no-service --firmware`：9 秒，退出码 0；`cpa` 和 `cpa-stt` 0.5.2；app 签名有效、没有隔离标记、0.5.2；`~/Downloads` 里的 `cpa-v0.5.2.bin` 和发布的 SHA-256 一致；PATH 只加了一行。`cpa setup check`、`cpa status`（没起 daemon）、`cpa project add` / `ls`、`cpa lang`、`cpa-stt --help`、`cpa mcp --help` 都能用。那个 HOME 起的 `cpa daemon` 能连上设备：link ready，`cpa-fw/0.5.2`。`uninstall.sh --yes --home` 删掉 `cpa`、app 和 PATH 那一行，留着 `CPA_HOME`。
+- [x] **开发者路线**：在全新的 HOME 里照 README Quick start 做。uv 安装脚本、`uv tool install platformio==6.2.0`、匿名 `git clone`（main 在 `v0.5.2`）、`uv sync --project daemon`、`cpa --version` 0.5.2。`pio run -e cardputer-adv`（下载了工具链，173 秒）：和发布的 `cpa-v0.5.2-app.bin` 一样大，只差 64 个字节：app 描述里 ELF 的 SHA-256（0xb0–0xcf）、校验字节和镜像末尾的 SHA-256，所以设备上跑的东西完全一样。`pio test -e native` 1,219/1,219；daemon `pytest` 4,811 过（跳过 2 个）；协议工具、向量、repo 工具、文件大小；`swift build`。
+- [x] 顺路发现并修好的：`cpa setup check` 和 README 第 4 步还说没同步的录音会永久删掉（#100）；`uninstall.sh --home` 和别的 HOME 里跑的 `cpa service` 会动用户真的 LaunchAgent（#101；`uninstall.sh` 在 main 上已经修好，`cpa` / `cpa-stt` 跟下一版发）。用一个报告服务是从别的 HOME 加载的桩再跑一次：`uninstall.sh` 打出提示，没动它。

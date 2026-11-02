@@ -1,14 +1,14 @@
 # docs/20 U15 on battery (review of the U15 fix): memo_cap with the cable out. The G0 press
 # was 5 minutes ago, so before the fix the first tick after the cap turned the backlight
-# off and the held screen was never seen; it also lost "已保存" and the tip.
-boot store=sd usb=off bat=4100
+# off and the held screen was never seen; it also lost "saved" and the tip.
+boot store=sd usb=off bat=4100 lang=zh
 wait 1000
 down g0
 wait 600
 mic 240000 2500
-shot memo-4m  便条 4 分钟（电池：录音时屏幕变暗）
+shot memo-4m  Memo, 4 min (on battery the screen dims while recording)
 mic 61000 2500
-shot memo-5m01  5:01, G0 still held: lit (dimmed), "已到 5 分钟，已保存" / 松开 G0 / 要录更久：松开 G0，再按 Opt+R 开会
+shot memo-5m01  5:01, G0 still held: lit (dimmed), "5 min reached: saved" / Let go of [G0] / Longer? Let go, then Opt+R
 mic 10000 2500
 shot memo-5m11  5:11, still held: the same screen, not dark
 up g0

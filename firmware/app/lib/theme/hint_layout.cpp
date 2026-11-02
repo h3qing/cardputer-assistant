@@ -8,7 +8,8 @@ namespace {
 
 bool visible_ascii(char c) { return c >= '!' && c <= '~'; }
 
-// 退格 and 空格: Han key names (rule 5); the bytes they take at the start of w, or 0.
+// 退格 (Backspace) and 空格 (Space): Han key names (rule 5); the bytes they take at the
+// start of w, or 0.
 size_t han_key(const char* w, size_t len) {
   static const char* const kKeys[] = {"\xE9\x80\x80\xE6\xA0\xBC", "\xE7\xA9\xBA\xE6\xA0\xBC"};  // 退格 空格
   for (const char* k : kKeys) {

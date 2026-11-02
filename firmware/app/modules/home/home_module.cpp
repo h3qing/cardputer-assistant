@@ -23,7 +23,7 @@ constexpr int16_t kTileX[kHomeCols] = {4, 83, 161};
 constexpr int16_t kTileW[kHomeCols] = {75, 74, 75};
 
 // docs/21 §6.7: home's words. The greeting is three pieces, the count in mustard:
-// "下午好，2 件事在等你" / "Afternoon, 2 waiting for you", 192 px at most (x 44 to 236).
+// "Afternoon, 2 waiting for you", 192 px at most (x 44 to 236).
 constexpr Txt kHelloComma{"%s，", "%s, "};
 constexpr Txt kThings{"%u 件事", "%u"};
 constexpr Txt kWaitForYou{"在等你", " waiting for you"};
@@ -43,7 +43,7 @@ constexpr Txt kOlder{"+%u 更早", "+%u older"};
 // The board tile's count: in English the number alone ("Board 12"), the room "run" would take.
 constexpr Txt kRunningTile{"跑%lu", "%lu"};
 
-// 本页 rows of the Tab menu: the eight letter tiles (each replays its Opt chord, which
+// "Here" rows of the Tab menu: the eight letter tiles (each replays its Opt chord, which
 // is what the letter does here) and the digits as a range row, shown and not replayed.
 constexpr HelpRow kHelp[] = {
     kHomeTiles[0], kHomeTiles[1], kHomeTiles[2], kHomeTiles[3], kHomeTiles[4], kHomeTiles[5],
@@ -55,7 +55,7 @@ struct Badge {
   Color fg = Color::Ink3;
 };
 
-// "跑N" on P, "!N" on I; nothing for a zero count.
+// kRunningTile on P, "!N" on I; nothing for a zero count.
 Badge badge_of(uint8_t tile, const AppState& s) {
   Badge b;
   const uint32_t run = home_running(s);
@@ -152,8 +152,9 @@ void HomeModule::render(Canvas& c, const Rect& area) const {
   render_tiles(c, area);
 }
 
-// "早上好，1 件事在等你" (the count in mustard), or "早上好，都处理完了"; when home's picture
-// is not live (docs/20 U19), a word in Ink3 instead: 还没连上 Mac, 现在离线, 版本不兼容.
+// "Morning, 1 waiting for you" (the count in mustard), or "Morning, all done"; when home's
+// picture is not live (docs/20 U19), a word in Ink3 instead: "no Mac yet", "offline now",
+// "Mac version mismatch".
 void HomeModule::render_greeting(Canvas& c, const Rect& area) const {
   const AppState& s = ctx_->state();
   const int16_t y = static_cast<int16_t>(area.y + kGreetY);
@@ -187,7 +188,7 @@ void HomeModule::render_pat(Canvas& c, const Rect& area) const {
   c.text(cx, y, count.c_str(), Style{Color::Ink3, Color::Bg});
 }
 
-// docs/20 U16: R (开会) is greyed while the device cannot record; the hint says why.
+// docs/20 U16: R (Meet) is greyed while the device cannot record; the hint says why.
 void HomeModule::render_tiles(Canvas& c, const Rect& area) const {
   const AppState& s = ctx_->state();
   const bool no_rec = home_rec_block(s) != RecBlock::None;

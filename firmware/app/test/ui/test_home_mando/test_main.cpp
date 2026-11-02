@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "home_module.h"
 #include "support/fake_canvas.h"
@@ -18,7 +19,7 @@ using namespace cpa;
 using namespace cpa::theme;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {

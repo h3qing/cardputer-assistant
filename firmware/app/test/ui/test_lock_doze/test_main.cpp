@@ -6,6 +6,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "lock_screen.h"
 #include "support/fake_canvas.h"
 #include "support/fixtures.h"
@@ -14,7 +15,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {

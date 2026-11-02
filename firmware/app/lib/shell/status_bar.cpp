@@ -39,7 +39,7 @@ Color glyph_color(LinkGlyph g) {
 
 // The fixed left slot (docs/19 §6.1): while recording "● 12:31" in Rec on a RecBg capsule,
 // never dimmed or breathing, the clock 6 px after the ● (mockups 04-05); docs/20 D8: from
-// the press of a G0 that would record, "● 准备" in Warn on WarnBg. Empty: "".
+// the press of a G0 that would record, "● Wait" in Warn on WarnBg. Empty: "".
 FixedStr<24> rec_slot_text(const AppState& s, uint32_t now) {
   if (!rec_on_screen(s.rec.phase)) return FixedStr<24>::from(s.ui.memo_ready ? tr(txt::kMemoReady) : "");
   char buf[24];
@@ -142,7 +142,7 @@ FixedStr<8> battery_text(int pct) {
   return FixedStr<8>::from(buf);
 }
 
-// "↑3 [!2] 录5" after the link.
+// "↑3 [!2] R5" after the link.
 void draw_left(Canvas& c, int16_t x, const Parts& p) {
   if (p.w[kUp] > 0) c.text(x, 0, p.text[kUp].c_str(), Style{Color::Ink2, Color::Bg});
   x = static_cast<int16_t>(x + p.w[kUp]);
@@ -155,7 +155,7 @@ void draw_left(Canvas& c, int16_t x, const Parts& p) {
   if (p.w[kFiles] > 0) c.text(x, 0, p.text[kFiles].c_str(), Style{Color::Ink2, Color::Bg});
 }
 
-// "※SD ※k3 周三 13:42 83%" from the right edge, the parts that fit.
+// "※SD ※k3 Wed 13:42 83%" from the right edge, the parts that fit.
 void draw_right_side(Canvas& c, const AppState& s, uint32_t now, const Parts& p) {
   const int pct = battery_pct(s.device.bat_mv);
   int16_t x = draw_right(c, kRight, 0, battery_text(pct).c_str(), Style{battery_ink(pct), Color::Bg});

@@ -1,14 +1,15 @@
 // Project targets that do not exist (docs/20 U13, A7): a queue item or a new session for
-// an empty slot is refused like slot 0 ("Opt+数字：1 cpa · 2 blog"), never as a false
+// an empty slot is refused like slot 0 ("Opt+digit: 1 cpa · 2 blog"), never as a false
 // E_STORAGE, and the draft stays; with no project at all the hint names the Mac command
 // and Opt+N; a digit for an empty slot says so instead of opening an empty page; the
-// board's "其他" row says where those projects are. The refusal goes away once the target
+// board's "Other" row says where those projects are. The refusal goes away once the target
 // changes (U20).
 #include <unity.h>
 
 #include <string>
 
 #include "board_logic.h"
+#include "core/support/lang_pin.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
 #include "support/fake_port.h"
@@ -17,7 +18,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() { set_lang(Lang::Zh); }  // a failed English test skips its LangScope
 
 struct Rig {
@@ -127,7 +128,7 @@ static void test_reply_without_a_project_is_not_a_storage_error() {
 static void test_other_row_says_where_those_projects_are() {
   const AppState s = demo_state();
   BoardUi ui;
-  ui.cursor = 2;  // after cpa and blog: "其他"
+  ui.cursor = 2;  // after cpa and blog: "Other"
   const BoardStep st = board_next(ui, enter(), s);
   TEST_ASSERT_TRUE(st.handled && st.cmd == BoardCmd::OtherRow);
 }

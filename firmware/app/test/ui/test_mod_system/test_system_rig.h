@@ -1,4 +1,4 @@
-// Shared by the 设置 / Settings tests: a filled context, a tab drawn, and "every text is on
+// Shared by the Settings tests: a filled context, a tab drawn, and "every text is on
 // the screen" measured with efontCN_12's real widths (txt_rules.h).
 #pragma once
 
@@ -42,7 +42,7 @@ inline FakeCanvas render_tab(cpa::SystemModule& m, FakeContext& ctx, cpa::SysTab
   m.begin(ctx);
   m.onEnter(0);
   if (tab == cpa::SysTab::Device) m.onKey(chr('/'));
-  if (tab == cpa::SysTab::Storage) m.onKey(chr(','));  // docs/28: one `,` from 设置
+  if (tab == cpa::SysTab::Storage) m.onKey(chr(','));  // docs/28: one `,` from Settings
   FakeCanvas c;
   m.render(c, cpa::kContentRect);
   return c;

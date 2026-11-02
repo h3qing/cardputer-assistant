@@ -3,12 +3,12 @@
 # inside its 3 s recorded; a hold that started in the card's last 0.5 s was swallowed; and
 # the card went dark under a held G0. Now only a tap arms the card, the press decides, and
 # the card stays lit while G0 is held.
-boot store=sd usb=off bat=4000
+boot store=sd usb=off bat=4000 lang=zh
 include ../common/demo_state.cpas
 wait 1500
 press opt+l
 wait 2500
-shot locked  locked, dark (the card said "已锁屏" for 2 s)
+shot locked  locked, dark (the card said "Locked" for 2 s)
 # two pocket holds: nothing records
 down g0
 wait 1500

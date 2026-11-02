@@ -44,8 +44,8 @@ ConfirmText confirm_title(ConfirmKind k, const Decision& d, const char* target);
 ConfirmText confirm_queued_text(ConfirmKind k, const char* why);  // stored as a queue item instead
 ConfirmText confirm_unrun_text(QueueReason r);                    // a queue item that stayed put
 const char* confirm_note(const Decision& d);  // "" or a warning row under the title (docs/20 U25)
-// docs/20 U22, D6: the box's two keys, worded once for its card and its hint bar: Enter 开始,
-// 存为排队 or 关闭; ` 返回修改 when a draft is behind the box, else ` 取消.
+// docs/20 U22, D6: the box's two keys, worded once for its card and its hint bar: Enter start,
+// save as queued or close; ` edit when a draft is behind the box, else ` cancel.
 const char* confirm_keys(const Decision& d, bool draft);
 
 struct ConfirmState {

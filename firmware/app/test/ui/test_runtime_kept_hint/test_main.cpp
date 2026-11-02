@@ -5,13 +5,14 @@
 // card short of space is tidied while plugged in.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "runtime.h"
 #include "support/kept_rig.h"
 
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {

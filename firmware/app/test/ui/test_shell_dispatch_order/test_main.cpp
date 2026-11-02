@@ -5,6 +5,7 @@
 // table, before the v0.3 order.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
 #include "support/fake_port.h"
@@ -13,7 +14,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 struct Rig {

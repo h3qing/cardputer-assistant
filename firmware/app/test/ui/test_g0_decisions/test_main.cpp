@@ -8,8 +8,8 @@
 //   lock      D2 locks the dark screen on battery; the double tap from dark lights the card
 //             first. A card lit by itself (D7) is no look: no first tap there either. Locked,
 //             a press from dark on a hands-free memo only lights the card, so the card never
-//             says 没有在录 while a memo records (U3, B1). A hands-free memo never goes dark,
-//             so it never locks by itself; once it ended, the screen does (D2).
+//             says "Not recording" while a memo records (U3, B1). A hands-free memo never
+//             goes dark, so it never locks by itself; once it ended, the screen does (D2).
 //   menu      over a hands-free memo: Enter on the G0 row says how to end; Opt+L (D9) closes
 //             the menu and locks, the memo goes on; a G0 press ends it and closes the menu.
 //   card      the lock card's G0 line fits 240 px in every state.
@@ -17,6 +17,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "g0_gesture.h"
 #include "lock_screen.h"
 #include "rec_core.h"
@@ -30,7 +31,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::CmdKind;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -183,7 +184,7 @@ static void test_a_card_lit_by_itself_takes_no_first_tap() {
 }
 
 // U3 / B1 + hands free: locked, a hold from dark only lights the card. It is no swallowed
-// memo: never 没有在录 (a memo records), and the card says how to end it. A press on the lit
+// memo: never "Not recording" (a memo records), and the card says how to end it. A press on the lit
 // card ends it and the card shows the result (D7).
 static void test_a_hold_from_dark_on_a_locked_hands_free_memo() {
   RecRig x;

@@ -1,22 +1,22 @@
 # docs/20 U20 regression (from the review's st04): the user's own result is shown at once.
 # Before the fix toasts were first in, first out, 2.5 s each: a refusal waited behind the
-# previous "已保存" and a "X 等你" from the Mac delayed both.
-boot store=sd usb=on bat=4100
+# previous "Saved" and a "X needs you" from the Mac delayed both.
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 2600
 host sessions.snapshot {"rev":6,"total":2,"sessions":[{"sid":"aaaa0001","slot":1,"name":"one","kind":"bg","st":"waiting","need":true,"age_s":5,"short":"s1"},{"sid":"aaaa0002","slot":1,"name":"two","kind":"bg","st":"waiting","need":true,"age_s":9,"short":"s2"}]}
 wait 100
-shot notices  two "X 等你" from the Mac
+shot notices  two "X needs you" from the Mac
 press g0
 type milk
 press enter
 wait 100
-shot saved-at-once  已保存 at once: the 等你 notices give way (the status bar's !N keeps them)
+shot saved-at-once  Saved at once: the needs-you notices give way (the status bar's !N keeps them)
 press opt+q
 press opt+5
 type buy dog food
 press enter
 wait 200
-shot refusal  0.2 s: the refusal follows 已保存 (results keep their order)
+shot refusal  0.2 s: the refusal follows Saved (results keep their order)
 wait 2500
-shot refusal-shown  2.7 s: "Opt+数字：1 acmeshop · 2 cardputer"
+shot refusal-shown  2.7 s: "Opt+digit: 1 acmeshop · 2 cardputer"

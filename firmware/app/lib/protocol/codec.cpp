@@ -1,4 +1,4 @@
-// Receiver pipeline (protocol/README.md "接收端判定顺序", tools/wire.py):
+// Receiver pipeline (protocol/README.md "Receiver decision order", tools/wire.py):
 //   1 drop \r; > line_max bytes incl. \n -> E_TOO_LARGE   2 not '{' -> noise
 //   3 not a JSON object -> E_PARSE   4 v / t / id / re envelope   5 unknown t
 //   6 invalid UTF-8 anywhere -> E_BAD_FIELD <path>   7 type schema -> E_BAD_FIELD <path>

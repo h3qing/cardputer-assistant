@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "key_label.h"
 #include "keymap.h"
 #include "module.h"  // lib/help is built whole: its menu files need module.h's libraries
@@ -12,7 +13,7 @@
 
 using namespace cpa;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static KeyEvent chr(char c) { return KeyEvent{KeyEventKind::Char, c, 0, 0, Nav::None}; }
@@ -29,7 +30,7 @@ static void test_g0() {
   TEST_ASSERT_EQUAL_STRING("G0", key_label(kind(KeyEventKind::G0Tap)).c_str());
   TEST_ASSERT_EQUAL_STRING("按住G0", key_label(kind(KeyEventKind::G0Long)).c_str());
   TEST_ASSERT_EQUAL_STRING("松开G0", key_label(kind(KeyEventKind::G0LongUp)).c_str());
-  // gh #51: the user's own word, and as wide as 按住G0 (the menu's key column)
+  // gh #51: the user's own word (双击, double tap), and as wide as 按住G0 (the menu's key column)
   TEST_ASSERT_EQUAL_STRING("双击G0", key_label(kind(KeyEventKind::G0Double)).c_str());
 }
 

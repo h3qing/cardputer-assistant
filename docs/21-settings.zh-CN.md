@@ -601,9 +601,10 @@ virtual uint8_t hintKeys(const HintKey** keys) const { *keys = nullptr; return 0
 ### 6.8 语言存在哪，怎么马上生效
 
 - **存在哪**：NVS，沿用 `nvs_boot` 的命名空间 `cpa`，键 `lang`，一个字节（0 中文，1 英文）。值变了才写 [源 nvs_boot.cpp；设]。
-- **纯逻辑**：`lib/core/settings.h` 里 `struct Settings { Lang lang = Lang::Zh; }`。每个设置一个 NVS 键，不存成一整块，免得以后要做版本迁移。
+- **纯逻辑**：`lib/core/settings.h` 里 `struct Settings { Lang lang = Lang::En; }`（v0.5.2 以前是中文）。每个设置一个 NVS 键，不存成一整块，免得以后要做版本迁移。
 - **设备端**：`lib/hal/nvs_settings.{h,cpp}`（`Preferences`，写法和 `nvs_boot.cpp` 一样）；`Platform` 加 `loadSettings()`、`saveSettings()`；模拟器放在模拟设备的内存里，`debug.reboot` 后还在。
-- **开机**：在 `nvs_boot_ticket()` 之后、画第一帧之前读（包括"正在迁移到 SD 卡"那一屏），调 `set_lang()`。读不到或不认识就用中文。
+- **开机**：在 `nvs_boot_ticket()` 之后、画第一帧之前读（包括"正在迁移到 SD 卡"那一屏），调 `set_lang()`。没有这个键或读不到就用英文（v0.5.2 以前是中文）；0、1 以外的字节仍然算中文（`lang_from_nvs`）。
+- **英文优先（v0.5.2）**：什么都没存的设备用英文开机。以前是中文开机，所以跑过旧版 cpa-fw、从没切过语言的设备要继续用中文。`setup()` 里在 `nvs_boot_ticket()`（每次开机都写 `boot`）**之前**，`nvs_lang_migrate()` 在没有 `lang` 时写一次：`boot` 已经在（旧版 cpa-fw 开过机）就写 0（中文），不在（NVS 擦过）就写 1（英文）。新设备也要写英文：不写的话，第二次开机会看到有 `boot`、没有 `lang`，变成中文。已经存了的 `lang` 一律不动。纯逻辑 `settings.h` 的 `lang_to_store()`，主机测试 `test_settings`；设备上 `test_storage`。注意：在擦过的 NVS 上先跑设备测试也会写 `boot`，之后 app 就用中文开机；检查擦过 NVS 的情况要先刷 app。
 - **切换**（设置页 Enter → 外壳）：
   1. `set_lang(新语言)`；
   2. **什么都不清**。排队的 toast 存的是格式化好的文字 [源 toast.h:27、43]，切换后最多再用旧语言显示几秒（≤4.5 s）就消失，不丢；锁屏卡的录音结果本来就存成码和参数（`RecLast` 的 `saved`、`why`、`mode`、`ms`，app_state.h:74-81），画的时候用 `tr()` 写，切换后自动是新语言，也不会把你还没看到的结果清掉（docs/20 U6、B1）。`last_hint` 只用来去重，不显示，也不用清；
@@ -611,7 +612,7 @@ virtual uint8_t hintKeys(const HintKey** keys) const { *keys = nullptr; return 0
   4. 用新语言弹 §4.3 的那条提示；
   5. 没在录音就写 NVS；在录音就记一个"待写"，录音结束再写（写 flash 会停 cache，没必要和录音抢）[推]。
 - **为什么不用重启**：所有界面文字都在画的时候用 `tr()` 取，模块状态里只存数字和 id。今天已经是这样，唯一的例外是 toast 队列，它几秒就过去 [源]。这条以后写进 docs/16 的规矩（`feat/app-sdk` 合入以后，ST-8）：模块不要把格式化好的界面文字留到下一帧。
-- **Launcher**：和别的固件共用 NVS，`cpa` 命名空间不会撞车。整片刷写不擦 NVS（只有 `erase_flash` 或 `erase_region` 擦），擦了就回到中文 [源 launcher.md]。
+- **Launcher**：和别的固件共用 NVS，`cpa` 命名空间不会撞车。整片刷写不擦 NVS（只有 `erase_flash` 或 `erase_region` 擦），擦了就和新设备一样用英文开机（v0.5.2 以前是中文）[源 launcher.md]。
 
 ### 6.9 英文比中文宽：量了什么，怎么办
 

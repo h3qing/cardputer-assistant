@@ -1,10 +1,10 @@
 // gh #53 (docs/19 §6.6-§6.7, docs/20 U27), the user's memo: while you talk, the screen shows
 // what 1-9 are. The memo page (held, the grace, hands free) and the meeting page keep a
-// legend in the number row's order, 1 ... 9 then 0 不归属, the projects' keys after their
+// legend in the number row's order, 1 ... 9 then 0 "none", the projects' keys after their
 // digits' keycaps, the current choice lit; a chosen digit with no project reads "9 ?" on the
 // memo page, in a cell kept for it (the meeting's title says "#9").
 //   fit     one cut for every label, the roomiest the rows take, never under a minimum; cut
-//           between characters (CJK too), a cut label ending in two dots; 不归属 never cut;
+//           between characters (CJK too), a cut label ending in two dots; "none" never cut;
 //   memo    the fewest rows where no key is cut (one for the user's two projects, two for
 //           three long keys, three for five or six, the waveform then 2/3 as tall); else the
 //           fewest that keep six letters; else three;
@@ -19,6 +19,7 @@
 #include <initializer_list>
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
 #include "rec_legend.h"
 #include "rec_overlay.h"
@@ -32,7 +33,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() { set_lang(Lang::Zh); }  // a failed English test skips its LangScope
 
 namespace {
@@ -157,7 +158,7 @@ static void test_the_list_follows_the_number_row() {
   TEST_ASSERT_EQUAL_STRING("不归属", meeting.items[3].label.c_str());  // the list it came from is untouched
 }
 
-// 0 is 不归属, as the hint bar says; it is lit when nothing is chosen.
+// 0 is "none", as the hint bar says; it is lit when nothing is chosen.
 static void test_0_is_not_filed_and_lit_when_chosen() {
   FakeCanvas c;
   const LegendList l = legend_list(c, state(kTwo, 0).projects, 0);
@@ -200,7 +201,7 @@ static void test_long_keys_are_cut_evenly_without_an_ellipsis() {
                            labels(p).c_str());
   for (uint8_t i = 0; i < p.n; ++i) {
     TEST_ASSERT_TRUE(std::strstr(p.spots[i].label.c_str(), "…") == nullptr);
-    TEST_ASSERT_TRUE(p.spots[i].cut == (p.spots[i].slot != 0));  // 不归属 never
+    TEST_ASSERT_TRUE(p.spots[i].cut == (p.spots[i].slot != 0));  // "none" never
   }
   assert_tidy(c, p);
   // at four letters "run-" ends on '-': it is dropped
@@ -236,7 +237,7 @@ static void test_cjk_labels_are_cut_between_characters() {
   assert_tidy(c, p);
 }
 
-// 不归属 is never cut, and nothing fits under the minimum: cut 0.
+// "none" is never cut, and nothing fits under the minimum: cut 0.
 static void test_not_filed_is_never_cut_and_too_little_room_is_no_fit() {
   FakeCanvas c;
   const LegendList l = legend_list(c, state(kNine, 0).projects, 0);
@@ -331,7 +332,7 @@ static void test_nine_projects_take_three_rows() {
 }
 
 // Through the shell: the page draws the legend (keycaps and keys), the chosen one lit as the
-// live-words capsule; "存到" and "#key" are gone from the memo page.
+// live-words capsule; "Save to" and "#key" are gone from the memo page.
 static void test_the_memo_page_lights_the_chosen_project() {
   Rig r(kTwo, 2, RecMode::Memo);
   FakeCanvas c = r.page();
@@ -424,8 +425,8 @@ static void test_the_meeting_keeps_one_row_under_the_timer() {
   TEST_ASSERT_EQUAL_INT16(text_at(p, "cardputer", 59)->x, text_at(q, "cardputer", 59)->x);
 }
 
-// Five: the labels' row as well; 0:00 and 现在 give way. Nine long keys: 0 a bare [0] (the
-// title says 未归属), still lit when chosen; three letters each.
+// Five: the labels' row as well; 0:00 and "now" give way. Nine long keys: 0 a bare [0] (the
+// title says "No project"), still lit when chosen; three letters each.
 static void test_more_projects_take_the_labels_row() {
   FakeCanvas c;
   const PageLegend five = meeting_legend(c, state(kFive, 1, RecMode::Meeting));
@@ -489,7 +490,7 @@ static void test_a_memo_tick_leaves_the_legend_alone() {
 }
 
 // A meeting tick under two rows: after a merge it redraws the bars and the stars only (not
-// the labels' row, where the legend is), and never draws 0:00 or 现在.
+// the labels' row, where the legend is), and never draws 0:00 or "now".
 static void test_a_meeting_tick_leaves_the_legend_alone() {
   Rig r(kNine, 0, RecMode::Meeting);
   FakeCanvas first;
@@ -503,14 +504,14 @@ static void test_a_meeting_tick_leaves_the_legend_alone() {
   for (const auto& fl : t.fills) TEST_ASSERT_TRUE(fl.first.y + fl.first.h - 1 <= 106);
   TEST_ASSERT_FALSE(t.has("0:00") || t.has("现在"));
   r.shell.on_level(3000);
-  r.shell.on_level(3000);  // one more cell: the dot moves (现在 would have)
+  r.shell.on_level(3000);  // one more cell: the dot moves ("now" would have)
   FakeCanvas u;
   const AnimFrame g = r.tick(u);
   for (uint8_t i = 0; i < g.n; ++i) TEST_ASSERT_TRUE(g.rects[i].y + g.rects[i].h - 1 <= 106);
   TEST_ASSERT_FALSE(u.has("现在"));
 }
 
-// Two projects: the meeting tick is as before, 现在 moves with the dot.
+// Two projects: the meeting tick is as before, "now" moves with the dot.
 static void test_with_one_row_the_timeline_labels_still_move() {
   Rig r(kTwo, 0, RecMode::Meeting);
   for (int i = 0; i < 10; ++i) r.shell.on_level(3000);
@@ -569,7 +570,7 @@ void assert_same_place(const PageLegend& a, const PageLegend& b, const char* wha
 
 // The review's probe: six projects, 8 pressed, the legend went from two rows to three and the
 // meeting's keys from seven letters to five. Now, for 0-9 projects and every digit, a press
-// changes what is lit and nothing else: the rows (so the waveform and 0:00 / 现在), the cut
+// changes what is lit and nothing else: the rows (so the waveform and 0:00 / "now"), the cut
 // and every item's spot.
 static void test_a_press_never_moves_the_legend() {
   FakeCanvas c;
@@ -613,8 +614,8 @@ static void test_a_cut_label_ends_in_two_dots() {
   for (const auto& f : d.fills) TEST_ASSERT_FALSE(f.first.w == 1 && f.first.h == 1);
 }
 
-// The chosen key cut: the memo's title row says it whole, "存到 #key", in place of 语音便条;
-// the grace and hands free keep their banners there.
+// The chosen key cut: the memo's title row says it whole, "Save to #key", in place of
+// "Voice memo"; the grace and hands free keep their banners there.
 static void test_the_title_says_a_cut_choice_whole() {
   Rig r(kNine, 4, RecMode::Memo);
   FakeCanvas p = r.page();

@@ -1143,3 +1143,35 @@ uv run --project daemon python tools/hil/run_e2e.py --scenarios handshake,nav,me
 - [ ] `(cd firmware/app && pio run -e cardputer-adv -t upload)`，`debug.(key|state|reboot|rec|mic|codec|lang)` 0 次；`cpa pause 1`、`cpa status`：卡上的留底是 HIL 留下的测试录音，用存储页"清掉留底"清掉，`files.n=0`。
 
 **今晚之后才合并**：11.1–11.3 全过，或者有失败但说清楚是测试假设（11.2）。8 的真掉电是 docs/28 §8 S1a 那一道"硬件掉电闸"。
+
+
+## 12. v0.5.2「开机扫描的栈、暗屏少转、默认英文」：真机
+
+### 12.1 真机（2026-11-01 21:58–22:40 PST，agent 独占设备）
+
+设备和卡同 §6.0，一直插着 USB，串口 `/dev/cu.usbmodem101`，真正的 cpad 暂停着（`cpa pause`）。开始前 `cpa status --json`：link ready，`cpa-fw/0.5.0`，卡上 0 段。每个 PR 先在自己的 head 上测，测完再合并；#94 是把 main（#85、#87）合进去以后测的，所以它这几轮跑的就是 v0.5.2 的固件。
+
+**#85（开机扫描的栈、看门狗），head `fe27443`：**
+- [x] `device/test_rec_budget` **5/5**（3 分 9 秒）：`CPA_BOOT_SCAN waiting=100 indexed=102 audio_stack_left=1624`（闸 1,536；修之前 1,028）；`CPA_REC_LEDGER segs=200 recs=25 requeued=200 again_us=5730642 clear_cmds=4 clear_us=14184968 audio_stack_left=1624`：200 段再交一次、清掉，**没有任务看门狗中断**，串口一直在（2026-10-29 这个套件在看门狗上中断，设备掉了 USB）。
+- [x] HIL（测试版）：`rec_memo` 18/18（便条起录 507 ms）、`rec_meeting` 20/20（462 KB/s）、`rec_resume` 10/10、`rec_reboot` 18/18（段中重启丢 44 ms）。
+- [x] 复位折腾 (a)，拉取到一半 `debug.reboot`（临时场景：40 秒会议，一段约 1.3 MB，第一个 `file.get` 之后 0.4–2.6 s 重启）：**6 次真正在拉取中途的重启**，每次卡都挂上了，开机扫描把拉了一半的段重新索引，会议**只归档一次**、完整、设备 SHA 对得上、没有缺口，每段 stored 一次、deleted 一次，`files_n=0`。第 7 次重启时拉取已经结束，不算。
+
+**#87（暗屏少转，docs/29 P1），head `df6895e`，然后 `2bccd9e`：**
+- [x] `df6895e` 上的 `device/test_idle_yield`：一个断言失败，`dark_gap_max_us=24002 < 20000`。从不让出的亮屏循环本来就有 `lit_gap_max_us=20761`（一次整屏重画），所以这个绝对闸要的是固件从来没有过的东西。`2bccd9e` 改成检查让出加了多少（`dark ≤ lit + kIdleYieldMs + 2 ms`，docs/29 P1「按键采样最多晚 10 ms」）。
+- [x] `2bccd9e` 上跑两次：**都过**，`CPA_IDLE lit_hz=14385 lit_gap_max_us=20773 dark_hz=98 dark_yields=296 dark_gap_max_us=25002 host_hz=15189`。暗屏每秒 98 轮（原来约 14,400）；亮屏和插着 Mac 时从不让出。
+- [x] HIL（测试版，插着线，所以不让出）：`rec_memo` 18/18，便条起录 **507 ms**（没变）；`lock` 12/12。
+- [ ] 👤 用电池，手动：黑屏以后点一下再按住 G0 照样录，开头不缺；Opt+L、Enter 一次解锁。
+- 留给 P2 的发现：暗屏循环每 3 秒里有一轮约 15 ms，每次都一样：黑屏时还在做的活。
+
+**#94（默认英文），和 main 合并后是 `aa0387f`：**
+- [x] 先备份 NVS：`read_flash 0x9000 0x5000` 读两次，一样（从设备读的分区表确认 `nvs` 在 0x9000，大小 0x5000）。放在仓库外面。
+- [x] 用了很久的设备保持英文：测试版刷在原来的 NVS 上（`cpa/lang` = 1）；HIL `lang` **5/5**（开始是 `en`；Opt+M `.` Enter → `zh`，`debug.reboot` 后还在；切回 `en`，也还在），`handshake` 6/6。
+- [x] `device/test_storage` **11/11**：`CPA_NVS_LANG_MIGRATE wrote=1 zh=1:0 again=0 over_en=0 en=1`。
+- [x] 擦掉的 NVS：先刷 app 测试版，再 `erase_region 0x9000 0x5000` 加硬复位，这样擦完后第一次开机的是 app（测试套件的 `nvs_boot_ticket()` 会让它变成中文）。第一次开机 `en`，两次 `debug.reboot` 后还是 `en`；开机号 `34X70FS-00001/2/3`（擦掉后换了新的开机号前缀）。
+- [x] 新 NVS 上 HIL `--scenarios all`：**10/10**。
+- [x] NVS 放回去：备份 `write_flash 0x9000`，哈希校验过；读回来只差下一次开机写的那一条（29 字节，开机计数和它的位图）。开机号 `1833562-00082/3/4`，又是它自己的计数，英文。
+
+### 12.2 跑完以后
+
+- [x] HIL 留下的留底在测试版上用设备自己的键清掉：Opt+M、`,`（存储）、`.` `.`（「清掉留底」）、Enter、`/`、Enter；语言没变。（`debug.state` 没有留底数：👤 锁屏卡上应该不再显示「留N」。）
+- [ ] 刷 v0.5.2 正式版，`cpa pause 1`，`cpa status` link ready、`cpa-fw/0.5.2`（§12.3）。

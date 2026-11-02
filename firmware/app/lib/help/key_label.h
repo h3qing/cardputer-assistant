@@ -1,5 +1,5 @@
 // Key names for the Tab menu and the hint bar (docs/13 §6.3), as the hint bar writes
-// them: "Opt+H", "Tab", "G0", "按住G0", "双击G0", "Enter", "退格", "`", "空格", "Fn+`".
+// them: "Opt+H", "Tab", "G0", "Hold G0", "G0 x2", "Enter", "Del", "`", "Space", "Fn+`".
 // A run of digit bindings is one range label: "Opt+1-9", "0-9".
 #pragma once
 

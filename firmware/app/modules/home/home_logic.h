@@ -1,12 +1,12 @@
 // Home launcher logic (docs/13 §5.6, v0.4.0): a 3 x 3 grid of tiles, row-major
-//   P 项目    I 等你      R 开会
-//   N 记一条  Q 排队给 AI  S 开 session
-//   M 设置    L 锁屏      Tab 菜单
+//   P Board     I Inbox     R Meet
+//   N Note      Q AI queue  S Session
+//   M Settings  L Lock      Tab Menu
 // A tile never runs anything itself: it asks the shell to press a key for the user
 // (ModuleContext::press), so it does exactly what that key does (docs/13 §3.4).
 // Keys: a tile letter or Enter on the selected tile -> Opt+letter (the Tab tile -> Tab);
 // 1-9 -> Opt+1-9; ; . , / move up, down, left, right, wrapping within the row or column.
-// docs/20 D1 (U5): R and L (开会, 锁屏) need Opt; their letters alone, like any letter that
+// docs/20 D1 (U5): R and L (Meet, Lock) need Opt; their letters alone, like any letter that
 // is no tile, press nothing, and the first such letter of a visit hints how to write a note
 // (text typed on home by mistake: "remind me" no longer opens the meeting box). Their tiles
 // show the Opt key (B4).
@@ -62,7 +62,7 @@ struct HomeStep {
 
 HomeStep home_next(const HomeUi& ui, const KeyEvent& ev);
 
-// Sessions running in every project and in none ("跑N"); 0 while the board is only
+// Sessions running in every project and in none (kRunningTile); 0 while the board is only
 // the cached names (no counts yet).
 uint32_t home_running(const AppState& s);
 
@@ -71,7 +71,7 @@ uint32_t home_running(const AppState& s);
 // counts it). Ages as of data_as_of(s, now). -1: none.
 constexpr uint32_t kHomeOlderS = 24 * 3600;
 int home_urgent(const AppState& s, uint32_t now = 0);
-uint8_t home_older(const AppState& s, uint32_t now);  // "+N 个更早的"
+uint8_t home_older(const AppState& s, uint32_t now);  // "+N older sessions"
 
 // docs/20 U16: why G0 and Opt+R would be refused now (rec::rec_refusal, as far as AppState
 // tells it): the R tile is greyed and the hint says why, before a press fails.
@@ -90,12 +90,12 @@ struct HomeGrid {
 };
 HomeGrid home_grid(uint8_t tiles);
 
-// "10/21 周三", the local date; empty while the time is unknown.
+// "10/21 Wed", the local date; empty while the time is unknown.
 FixedStr<16> home_date(const TimeInfo& t, uint32_t now);
 
-// docs/19 §6.3: 早上好 from 5:00, 中午好 from 11:00, 下午好 from 13:00, 晚上好 from 18:00
-// (local time); 你好 while the time is unknown. v0.5.0 (mando_eggs.h): 夜深了 from 23:30 to
-// 5:00, 周末好 on Saturday and Sunday.
+// docs/19 §6.3: "Morning" from 5:00, "Hi" from 11:00, "Afternoon" from 13:00, "Evening" from
+// 18:00 (local time); "Hello" while the time is unknown. v0.5.0 (mando_eggs.h): "Late night"
+// from 23:30 to 5:00, "Weekend" on Saturday and Sunday.
 const char* home_greeting(const TimeInfo& t, uint32_t now);
 
 // docs/19 §7.2: what Mando does on home, the first that holds: v0.5.0, a pat (Opt+W) or the

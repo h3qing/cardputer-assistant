@@ -601,9 +601,10 @@ virtual uint8_t hintKeys(const HintKey** keys) const { *keys = nullptr; return 0
 ### 6.8 Where the language is stored and how it takes effect at once
 
 - **Where**: NVS, reusing `nvs_boot`'s namespace `cpa`, key `lang`, one byte (0 Chinese, 1 English). Written only when the value changes [src nvs_boot.cpp; asm].
-- **Pure logic**: `struct Settings { Lang lang = Lang::Zh; }` in `lib/core/settings.h`. One NVS key per setting rather than one blob, to avoid version migrations later.
+- **Pure logic**: `struct Settings { Lang lang = Lang::En; }` in `lib/core/settings.h` (Chinese until v0.5.2). One NVS key per setting rather than one blob, to avoid version migrations later.
 - **Device side**: `lib/hal/nvs_settings.{h,cpp}` (`Preferences`, written like `nvs_boot.cpp`); `Platform` gets `loadSettings()` and `saveSettings()`; the simulator keeps it in the simulated device's memory, surviving `debug.reboot`.
-- **Boot**: read after `nvs_boot_ticket()` and before the first frame is drawn (including the "migrating to SD card" screen), then call `set_lang()`. If it cannot be read or is unknown, use Chinese.
+- **Boot**: read after `nvs_boot_ticket()` and before the first frame is drawn (including the "migrating to SD card" screen), then call `set_lang()`. If the key is missing or cannot be read, use English (Chinese until v0.5.2); a byte other than 0 or 1 is still Chinese (`lang_from_nvs`).
+- **English first (v0.5.2)**: a device with nothing stored starts in English. Before, it started in Chinese, so a device that ran an earlier cpa-fw and was never switched must stay Chinese. In `setup()`, **before** `nvs_boot_ticket()` (which writes `boot` on every boot), `nvs_lang_migrate()` stores `lang` once when it is missing: 0 (Chinese) when `boot` is already there (an earlier cpa-fw booted this NVS), 1 (English) when it is not (an erased NVS). Storing English on a fresh device matters too: without it, its second boot would find `boot` and no `lang` and turn Chinese. A `lang` already stored is never touched. Pure part `lang_to_store()` in `settings.h`, host-tested in `test_settings`; on the device, `test_storage`. Caveat: a device test suite run on an erased NVS also writes `boot`, so after one the app starts in Chinese; an erased-NVS check flashes the app first.
 - **Switching** (Settings tab Enter → shell):
   1. `set_lang(new language)`;
   2. **Clear nothing**. Queued toasts hold formatted text [src toast.h:27, 43]; after a switch they show in the old language for at most a few more seconds (≤4.5 s) and then disappear, nothing lost. The lock card's recording result is already stored as codes and arguments (`RecLast`'s `saved`, `why`, `mode`, `ms`, app_state.h:74-81) and written with `tr()` when drawn, so after a switch it is automatically in the new language, and results you have not seen yet are not cleared (docs/20 U6, B1). `last_hint` is only used for de-duplication, never shown, and does not need clearing;
@@ -611,7 +612,7 @@ virtual uint8_t hintKeys(const HintKey** keys) const { *keys = nullptr; return 0
   4. Show the toast from §4.3 in the new language;
   5. If not recording, write NVS; if recording, mark "pending write" and write when the recording ends (writing flash stalls the cache, no need to compete with recording) [inf].
 - **Why no restart is needed**: all UI text is fetched with `tr()` at draw time, and module state only stores numbers and ids. That is already true today, the only exception being the toast queue, which passes in seconds [src]. This becomes a rule in docs/16 later (after `feat/app-sdk` is merged, ST-8): modules must not keep formatted UI text until the next frame.
-- **Launcher**: NVS is shared with other firmwares, and the `cpa` namespace will not collide. A full flash does not erase NVS (only `erase_flash` or `erase_region` does); if it is erased, the device goes back to Chinese [src launcher.md].
+- **Launcher**: NVS is shared with other firmwares, and the `cpa` namespace will not collide. A full flash does not erase NVS (only `erase_flash` or `erase_region` does); if it is erased, the device starts in English, as a new one does (Chinese until v0.5.2) [src launcher.md].
 
 ### 6.9 English is wider than Chinese: what was measured, what to do
 

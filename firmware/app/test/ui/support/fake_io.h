@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "codec.h"
+#include "core/support/lang_pin.h"
 #include "platform.h"
 #include "support/fake_canvas.h"
 #include "transport.h"
@@ -86,8 +87,9 @@ class FakePlatform : public cpa::Platform {
   uint32_t step_us = 0;
   uint32_t micros() override { return clock_us += step_us; }
   // docs/21 §6.8: NVS's settings, kept across a Runtime rebuilt on this platform (the
-  // simulator's debug.reboot); every write asked for, whether it took or not.
-  cpa::Settings nvs;
+  // simulator's debug.reboot); every write asked for, whether it took or not. Settings{}
+  // (English), or Chinese in a suite that pinned it (lang_pin.h).
+  cpa::Settings nvs = testsupport::fake_nvs();
   bool save_ok = true;
   std::vector<cpa::Settings> saves;
   cpa::Settings load_settings() override { return nvs; }

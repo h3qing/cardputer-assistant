@@ -20,7 +20,7 @@
 // buffer, the index and the engine are allocated once at boot; G-A0 measured 234,836 B free
 // and a 208,884 B largest block before them. CPA_REC_ALLOC_AT_START=1 allocates the ring
 // at each Start instead and frees it after the session; a failed allocation ends the start
-// with Failed{NoMemory} ("内存不足"). Without the card only the queues exist: the task is
+// with Failed{NoMemory} ("Out of memory"). Without the card only the queues exist: the task is
 // never started (the loop refuses recording itself), so post() only fills the queue.
 #pragma once
 

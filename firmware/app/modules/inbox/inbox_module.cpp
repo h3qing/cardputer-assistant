@@ -28,7 +28,7 @@ constexpr Txt kNoneThen{"那时没有等你的 session", "None needed you then"}
 constexpr ToastTxt kOfflineNoDismiss{"离线，不能忽略", "Offline: can't dismiss"};
 constexpr ToastTxt kTryLater{"请稍后再试", "Try again soon"};
 
-// The Tab menu's 本页 rows (docs/13 §6.2): each replays the key it names.
+// The Tab menu's "Here" rows (docs/13 §6.2): each replays the key it names.
 constexpr HelpRow kHelp[] = {
     {KeyEvent{KeyEventKind::Nav, 0, 0, 0, Nav::Enter}, "Enter", "", &txt::kReplyRow},
     {KeyEvent{KeyEventKind::Chord, 0, kModOpt, 'd', Nav::None}, "Opt+D", "", &txt::kDismissRow},
@@ -72,7 +72,7 @@ void render_detail(Canvas& c, const Rect& area, const AppState& s, const Session
 }
 
 // The title and, when the list is not live (docs/20 U19), how old it is; never synced, no
-// count at all ("等你 (0)" would be a guess).
+// count at all ("Inbox (0)" would be a guess).
 void render_title(Canvas& c, const Rect& area, const AppState& s, uint8_t n, uint32_t now) {
   char title[32];
   const DataLink l = data_link(s);
@@ -102,7 +102,7 @@ EmptyText empty_text(const AppState& s, uint32_t now) {
   return EmptyText{stale_text(data_age_s(s, now)), Line::from(tr(kNoneThen))};
 }
 
-// Nothing waits (docs/19 §6.4): Mando sits with his 在呢 sign; not live, he is faded (离线).
+// Nothing waits (docs/19 §6.4): Mando sits with his "Here" sign; not live, he is faded (Offline).
 void render_empty(Canvas& c, const Rect& area, const AppState& s, uint32_t now) {
   const theme::MandoAct act = data_link(s) == DataLink::Live ? theme::MandoAct::Idle : theme::MandoAct::Offline;
   const int16_t mx = static_cast<int16_t>(area.x + 24);

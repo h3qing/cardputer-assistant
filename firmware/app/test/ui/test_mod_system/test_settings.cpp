@@ -1,4 +1,4 @@
-// The settings tab and the WiFi page of 设置 (docs/21 §4.2-§4.4, §4.6, §9.2): the cursor
+// The settings tab and the WiFi page of Settings (docs/21 §4.2-§4.4, §4.6, §9.2): the cursor
 // starts on the WiFi row at every visit and stops only on the two rows that change
 // something; Enter opens the WiFi page or switches the language through the shell; the
 // link and sync facts; the words in both languages, inside the screen.
@@ -81,7 +81,7 @@ void test_dot_and_semicolon_move_between_the_two_rows() {
   TEST_ASSERT_TRUE(p.m.ui().row == SysRow::Lang);
 }
 
-// docs/28 S1a: three tabs, round: 设置 / 设备 / 存储 (`,` from 设置 is 存储).
+// docs/28 S1a: three tabs, round: Settings / Device / Storage (`,` from Settings is Storage).
 void test_comma_and_slash_switch_tabs() {
   Page p;
   TEST_ASSERT_TRUE(p.m.onKey(chr('/')));
@@ -329,7 +329,7 @@ void test_wifi_page_fits_in_both_languages() {
   }
 }
 
-// docs/21 §4.6: the 本页 rows by page; Enter is among them, so the menu switches the
+// docs/21 §4.6: the "Here" rows by page; Enter is among them, so the menu switches the
 // language too. Every row's words fit the menu in both languages.
 void test_help_rows_by_page() {
   Page p;
@@ -356,7 +356,7 @@ void test_help_rows_by_page() {
   }
 }
 
-// docs/21 §4.6: the hint bars (the shell adds [Tab] 菜单 / menu), within the bar in both.
+// docs/21 §4.6: the hint bars (the shell adds [Tab] menu), within the bar in both.
 void test_hint_keys_by_page() {
   Page p;
   std::vector<std::string> keys = keys_of(p.m);

@@ -3,28 +3,28 @@
 # records on through a 0.6 s grace and the page says so; pressed again inside it, it is
 # the same memo (one Start, one file); only a grace that runs out ends it, saved.
 # The grace counts toward rec_min_ms: a hold let go 0.2 s after ● REC is still too short.
-boot store=sd usb=on bat=4100
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1000
 down g0
 wait 600
 mic 2500 speech
-shot held  按住 G0 说：语音便条，提示栏"G0 松开结束"
+shot held  G0 held, talking: Voice memo, hint "[G0]let go: stop"
 up g0
 mic 200 speech
-shot slipped  松开 0.2 秒：还在录，黄色胶囊"松开了 · 0.6 秒内按回继续"
+shot slipped  Let go 0.2 s: still recording, yellow capsule "Let go · hold within 0.6 s"
 down g0
 mic 2000 speech
-shot pressed-again  按回来了：同一条便条接着录，计时没断
+shot pressed-again  Pressed again: the same memo records on, the timer unbroken
 up g0
 wait 400
-shot grace-again  又松开 0.4 秒：还在宽限里
+shot grace-again  Let go again 0.4 s: still in the grace
 wait 300
-shot ended  0.6 秒没按回：结束，"录音已保存 · 0:05"
+shot ended  No press within 0.6 s: ended, "Recording saved · 0:05"
 wait 2600
-shot home  回到主页：录1，只有一条
+shot home  Back on Home: R1, only one
 # a short hold: 0.7 s in all, the grace and all under 1 s of audio
 hold g0 700
 wait 900
-shot short  按住 0.7 秒就松开：宽限过后"录音太短，已丢弃"
+shot short  Held 0.7 s, then let go: after the grace "Too short: discarded"
 wait 2600

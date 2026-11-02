@@ -5,13 +5,14 @@
 // card a tap lit records a memo and the device is dark and locked again after it (docs/20
 // D7: after the card showed the result 2 s); during a meeting G0 still stars. docs/20 D2:
 // a screen gone dark on battery is locked already; locked over a draft the tapped card's
-// hold still records; a locked memo says "● 准备" until the microphone is up. The lock
+// hold still records; a locked memo says "● Wait" until the microphone is up. The lock
 // card shows counts, never a project or session name. docs/20 D7: locking lights the card
 // 2 s (test_lock_ux), so the tests below wait kLockFlashMs where they want it dark.
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "lock.h"
 #include "lock_screen.h"
 #include "power.h"
@@ -24,7 +25,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::CmdKind;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -176,7 +177,7 @@ static void test_locked_and_plugged_is_dark() {
   TEST_ASSERT_TRUE(r.tx.is_plugged);
   press_at(r, kOptL, 100);
   TEST_ASSERT_TRUE(r.rt.shell().locked());
-  r.step(kLockFlashMs);  // docs/20 D7: the card said "已锁屏"
+  r.step(kLockFlashMs);  // docs/20 D7: the card said "Locked"
   TEST_ASSERT_TRUE(level(r) == Backlight::Off);
   TEST_ASSERT_TRUE(r.rt.state().ui.locked);
   r.step(120000);
@@ -186,7 +187,7 @@ static void test_locked_and_plugged_is_dark() {
 static void test_fifty_pocket_presses_change_nothing() {
   RuntimeRig r;
   press_at(r, kOptL, 100);
-  r.step(kLockFlashMs);  // docs/20 D7: the card said "已锁屏"
+  r.step(kLockFlashMs);  // docs/20 D7: the card said "Locked"
   const size_t levels = r.plat.levels.size();
   const uint16_t pending = r.rt.state().outbox.pending;
   uint32_t seed = 7;
@@ -208,7 +209,7 @@ static void test_opt_l_from_dark_lights_once_and_enter_unlocks_in_time() {
     r.board.slot = 2;
     press_at(r, keys({key::kOpt, 31}), 50);  // Opt+S: a draft under the lock
     press_at(r, kOptL, 100);
-    TEST_ASSERT_TRUE(level(r) == Backlight::On);  // docs/20 D7: "已锁屏" for 2 s, no window
+    TEST_ASSERT_TRUE(level(r) == Backlight::On);  // docs/20 D7: "Locked" for 2 s, no window
     press_at(r, kEnterKey, 600);
     TEST_ASSERT_TRUE(r.rt.shell().locked());
     r.step(kLockFlashMs);
@@ -227,7 +228,7 @@ static void test_opt_l_from_dark_lights_once_and_enter_unlocks_in_time() {
 static void test_dark_g0_hold_records_nothing_and_lit_hold_records_a_memo() {
   RecRig x;
   press_at(x.r, kOptL, x.r.now + 100);
-  x.r.step(kLockFlashMs);  // docs/20 D7: the card said "已锁屏"
+  x.r.step(kLockFlashMs);  // docs/20 D7: the card said "Locked"
   x.hold_g0(600);  // dark: only lights the card
   x.release();
   x.steps();
@@ -324,7 +325,7 @@ static void test_lit_hold_over_a_draft_records_and_keeps_the_draft() {
   }
 }
 
-// A memo started from the lock card shows "● 准备" until the microphone is up, as the
+// A memo started from the lock card shows "● Wait" until the microphone is up, as the
 // unlocked memo does, so nobody starts talking too early; then "● REC" and the clock.
 static void test_locked_memo_says_wait_during_the_cue() {
   AppState s;
@@ -364,9 +365,9 @@ static void test_locked_hands_free_memo_says_how_it_ends() {
 }
 
 // gh #51 review: a locked end makes no sound, so the lit card says how the last memo ended
-// until the screen is dark again (RecLast goes then): 保存中… in place of the G0 line while it
+// until the screen is dark again (RecLast goes then): "Saving…" in place of the G0 line while it
 // ends; then, merged with docs/20 B1, the result in the clock's place (test_lock_card), and the
-// G0 line says how to record again. A refusal is the card's too (B1: × 没录上).
+// G0 line says how to record again. A refusal is the card's too (B1: "× not recorded").
 static void test_lock_card_says_how_the_last_memo_ended() {
   AppState s;
   s.rec.phase = RecPhase::Finishing;
@@ -400,7 +401,7 @@ static void test_meeting_g0_stars_while_locked() {
   x.port.feed(2000);
   press_at(x.r, kOptL, x.r.now + 10);
   TEST_ASSERT_TRUE(x.r.rt.shell().locked());
-  x.r.step(kLockFlashMs);  // docs/20 D7: the card said "已锁屏"
+  x.r.step(kLockFlashMs);  // docs/20 D7: the card said "Locked"
   TEST_ASSERT_TRUE(level(x.r) == Backlight::Dim);  // ● stays visible
   press_at(x.r, keys({key::kG0}), x.r.now + 10);   // a tap
   x.hold_g0(600);

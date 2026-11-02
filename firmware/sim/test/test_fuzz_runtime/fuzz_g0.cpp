@@ -35,7 +35,7 @@ void Fuzz::double_tap() {
   pk({K::G0}, 30 + rnd(300));
 }
 
-// The 去哪 row "双击G0 免提说一段", as a person finds it: Tab, /, down to it, Enter.
+// The Go page's row "G0 x2 Hands-free memo", as a person finds it: Tab, /, down to it, Enter.
 void Fuzz::menu_hands_free() {
   if (chance(0.7)) escape();
   pk({K::Tab});

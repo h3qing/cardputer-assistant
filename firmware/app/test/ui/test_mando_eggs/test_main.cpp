@@ -1,12 +1,12 @@
 // Mando's easter eggs on the screens (docs/04, hidden keys; mando_eggs.h):
 //   pat    Opt+W on home and on the lit lock card's clock: he hops with a heart, his line
-//          and "摸 ×N" where the greeting (home) or 已锁屏 (the card) was, for 1.5 s; then the
+//          and "pats ×N" where the greeting (home) or "Locked" (the card) was, for 1.5 s; then the
 //          page as it was. Nowhere else: not on other pages, not over the editor or the menu,
 //          never while recording, not on a dark or a result card. Silent: no toast, no hint.
 //   mood   home's greeting at night and at the weekend; the lock card's sign, a fourth z
 //          late at night, the early bird awake.
 //   clear  the sessions needing you went from some to none with home in front: once, he
-//          hops and the card says 搞定啦 (the greeting already says 都处理完了), never over
+//          hops and the card says "All clear" (the greeting already says "all done"), never over
 //          his "?" still on show.
 #include <unity.h>
 
@@ -206,7 +206,7 @@ static void test_home_says_his_line_and_counts() {
   TEST_ASSERT_EQUAL_STRING("下午好， 都处理完了", r.greeting().c_str());
   TEST_ASSERT_FALSE(r.heart());
   r.ctx.app.ui.pat = patted(3, 5000);
-  r.ctx.app.ui.pat.line = 1;  // 嘿嘿
+  r.ctx.app.ui.pat.line = 1;  // "Hehe"
   r.draw();
   TEST_ASSERT_EQUAL_STRING("嘿嘿 摸 \xC3\x97" "3", r.greeting().c_str());
   TEST_ASSERT_TRUE(r.canvas.arts[0].id == mando_art(MandoSize::M46, MandoAct::Hop, 0));
@@ -285,7 +285,7 @@ static void test_all_clear_on_home() {
   int signs = 0;  // the sign is in the card
   for (const TextOp& t : r.canvas.texts) signs += t.text == "搞定啦" && t.y > 12 + 18 && t.y < 12 + 46 ? 1 : 0;
   TEST_ASSERT_EQUAL_INT(1, signs);
-  int greetings = 0;  // 都处理完了 once only: in the greeting, not again in the sign
+  int greetings = 0;  // "all done" once only: in the greeting, not again in the sign
   for (const TextOp& t : r.canvas.texts) greetings += t.text == "都处理完了" ? 1 : 0;
   TEST_ASSERT_EQUAL_INT(1, greetings);
   TEST_ASSERT_NULL(r.canvas.find("没有等你的 session"));
@@ -318,7 +318,7 @@ int zs(const FakeCanvas& c) {
 static void test_lock_card_pat() {
   AppState s = locked_at(at_utc(0, 14, 0));
   s.ui.pat = patted(2, 9000);
-  s.ui.pat.line = 0;  // 汪!
+  s.ui.pat.line = 0;  // "Woof!"
   FakeCanvas c;
   render_lock_screen(c, s, true, 9000);
   TEST_ASSERT_TRUE(lock_card_act(s, 9000) == MandoAct::Hop);
@@ -349,7 +349,7 @@ static void test_lock_card_rare_line_in_english_fits() {
 
 static void test_lock_card_moods() {
   FakeCanvas c;
-  render_lock_screen(c, locked_at(at_utc(0, 23, 45)), true, 0);  // late: 夜深了 and a fourth z
+  render_lock_screen(c, locked_at(at_utc(0, 23, 45)), true, 0);  // late: "Bedtime" and a fourth z
   TEST_ASSERT_NOT_NULL(c.find("夜深了"));
   TEST_ASSERT_EQUAL_INT(4, zs(c));
   c.clear();

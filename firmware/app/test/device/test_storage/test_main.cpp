@@ -7,6 +7,8 @@
 //   - NVS: the boot counter is advanced and persisted before a ticket is issued;
 //   - NVS (docs/21 §6.8): English is saved and loaded back, a byte other than 0 or 1 in
 //     cpa/lang loads as 中文, and the value found is put back as it was;
+//   - NVS (v0.5.2): on an NVS with "boot", a missing cpa/lang is written 0 (Chinese) once,
+//     and a stored one is left alone;
 //   - 200 outbox saves (tmp -> close -> rename): p95 reported against the 100 ms target,
 //     asserted <= 200 ms (LittleFS misses the target, a known issue: see kSaveTargetUs).
 // The 200 timing files use a line that is NOT a valid outbox.item: should the suite
@@ -200,6 +202,31 @@ static void test_settings_lang_round_trip_and_a_bad_byte() {
   TEST_ASSERT_TRUE(now.has == was.has && (!was.has || now.b == was.b));
 }
 
+// v0.5.2 (docs/21 §6.8): nvs_lang_migrate(), which src/main.cpp runs before the ticket. This
+// NVS has "boot" (test_nvs_boot_counter_advances_and_persists ran first): with no "lang" it
+// writes 0 (Chinese), and nothing on a second call; a "lang" already there is left alone. The
+// fresh case (no "boot") is test_settings' and an erased-NVS device run's: removing
+// "boot" here would restart this NVS's ids.
+static void test_settings_lang_migration_keeps_an_older_device_chinese() {
+  const LangByte was = lang_byte();
+  TEST_ASSERT_TRUE(put_lang_byte(LangByte{false, 0}));
+  const bool wrote = cpa::nvs_lang_migrate();
+  const LangByte zh = lang_byte();
+  const bool again = cpa::nvs_lang_migrate();
+  TEST_ASSERT_TRUE(put_lang_byte(LangByte{true, 1}));
+  const bool over_en = cpa::nvs_lang_migrate();
+  const LangByte en = lang_byte();
+  TEST_ASSERT_TRUE(put_lang_byte(was));  // before the checks, so a failure leaves it as found
+  Serial.printf("CPA_NVS_LANG_MIGRATE wrote=%d zh=%d:%u again=%d over_en=%d en=%u\n", wrote, zh.has, zh.b, again,
+                over_en, en.b);
+  TEST_ASSERT_TRUE(cpa::nvs_boot_read().boot != 0);
+  TEST_ASSERT_TRUE(wrote);
+  TEST_ASSERT_TRUE(zh.has && zh.b == 0);
+  TEST_ASSERT_FALSE(again);
+  TEST_ASSERT_FALSE(over_en);
+  TEST_ASSERT_TRUE(en.has && en.b == 1);
+}
+
 static void test_outbox_items_are_sharded_but_listed_flat() {
   const cpa::MonoId id = timing_id(7);
   const auto json = cpa::outbox_path(id, cpa::OutboxFile::Json);
@@ -269,6 +296,7 @@ void setup() {
   RUN_TEST(test_list_mkdir_remove);
   RUN_TEST(test_nvs_boot_counter_advances_and_persists);
   RUN_TEST(test_settings_lang_round_trip_and_a_bad_byte);
+  RUN_TEST(test_settings_lang_migration_keeps_an_older_device_chinese);
   RUN_TEST(test_outbox_items_are_sharded_but_listed_flat);
   RUN_TEST(test_200_saves_acked_p95_within_200ms);
   RUN_TEST(test_200_saves_accumulated_p95_within_200ms);

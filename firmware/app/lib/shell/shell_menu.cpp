@@ -35,7 +35,7 @@ constexpr ToastTxt kJustHoldG0{"这一行是说明：直接按住 G0", "Only a n
 constexpr Txt kJustPress{"这一行是说明：直接按 %s", "Only a note: press %s"};
 constexpr Txt kCloseThenPress{"先按 Tab 关菜单，再按 %s", "Tab closes the menu, then %s"};
 
-// The menu's title over a page (docs/13 §6.3); "" = 本页.
+// The menu's title over a page (docs/13 §6.3); "" = the Here page.
 const char* page_title(const char* id) {
   static const struct {
     const char* id;
@@ -57,7 +57,7 @@ const char* rec_title(const RecInfo& r) {
   return tr(kMeetingTitle);
 }
 
-// Compose's "放弃已输入的内容？" prompt (compose.h), where Enter discards: its own rows,
+// Compose's "Discard what you typed?" prompt (compose.h), where Enter discards: its own rows,
 // since the editor's would say Enter saves. docs/20 U18: back to editing first, so the
 // row Enter takes at once never throws the draft away.
 const HelpRow kDiscardRows[] = {
@@ -66,8 +66,8 @@ const HelpRow kDiscardRows[] = {
     {KeyEvent{KeyEventKind::Nav, 0, 0, 0, Nav::Enter}, "Enter", "", &kDiscardDraft},
 };
 
-// The meeting's "结束录音？" box (rec_overlay.cpp): its own rows, worded as the box is,
-// since the Confirm layer's 取消 would read as dropping the recording. docs/20 D3: Opt+L
+// The meeting's "Stop recording?" box (rec_overlay.cpp): its own rows, worded as the box is,
+// since the Confirm layer's Cancel would read as dropping the recording. docs/20 D3: Opt+L
 // leaves the box for the meeting and locks.
 const HelpRow kEndRows[] = {
     {KeyEvent{KeyEventKind::Nav, 0, 0, 0, Nav::Enter}, "Enter", "", &kStopRec},
@@ -76,8 +76,8 @@ const HelpRow kEndRows[] = {
     {KeyEvent{KeyEventKind::Chord, 0, kModOpt, 'l', Nav::None}, "Opt+L", "", &kKeepRecLock},
 };
 
-// The meeting's "开始会议录音？" box: its own rows, worded as its card (kMeetingConfirmKeys)
-// and its bar, not the generic 确认 (docs/20 U22, B6).
+// The meeting's "Start a meeting recording?" box: its own rows, worded as its card
+// (kMeetingConfirmKeys) and its bar, not the generic Confirm (docs/20 U22, B6).
 const HelpRow kStartRows[] = {
     {KeyEvent{KeyEventKind::Nav, 0, 0, 0, Nav::Enter}, "Enter", "", &kStart},
     {KeyEvent{KeyEventKind::Char, '`', 0, 0, Nav::None}, "`", "", &kCancel},
@@ -86,7 +86,7 @@ const HelpRow kStartRows[] = {
 };
 
 // A confirm box's rows, worded as the box is (confirm_keys): what Enter does there, and `
-// and Fn+` 返回修改 with a draft behind the box (D6), else 取消 (docs/20 U22, B6).
+// and Fn+` Back to edit with a draft behind the box (D6), else Cancel (docs/20 U22, B6).
 struct BoxRows {
   HelpRow rows[3];
 };
@@ -167,7 +167,7 @@ void Shell::leave_rec_box() {
   if (p == RecPhase::Confirm || p == RecPhase::EndConfirm) port_.rec_input(rec::RecInput::Cancel, 0);
 }
 
-// docs/20 D7 (U11): the card says "已锁屏" for kLockFlashMs, so a lock is never mistaken for
+// docs/20 D7 (U11): the card says "Locked" for kLockFlashMs, so a lock is never mistaken for
 // a dead screen.
 void Shell::lock_now() {
   menu_open_ = false;
@@ -191,7 +191,7 @@ void Shell::lock_flash(uint32_t now, uint32_t ms) {
 }
 
 // The G0 key as the matrix has it (docs/20 U3c, D8): the lock card stays lit under a G0
-// that went down on it; "● 准备" (memo_ready) while a hold would record a memo, from the
+// that went down on it; "● Wait" (memo_ready) while a hold would record a memo, from the
 // press until G0Long or the release. Whether it would counts at the press.
 void Shell::g0_level(bool down, bool pressing, uint32_t now) {
   if (down == g0_down_ && pressing == pressing_) return;
@@ -277,7 +277,7 @@ __attribute__((noinline)) bool page_shows(MenuPage page, const MenuSource& src, 
   return false;
 }
 
-// A chord on any page of the menu (over an overlay there is no 去哪).
+// A chord on any page of the menu (over an overlay there is no Go page).
 bool menu_shows(const MenuSource& src, const AppState& s, const SysInfo& sys, const KeyEvent& ev) {
   if (ev.kind != KeyEventKind::Chord) return false;
   for (MenuPage p : {MenuPage::Here, MenuPage::Goto, MenuPage::Control}) {

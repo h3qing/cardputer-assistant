@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "core/support/lang_pin.h"
 #include "gen/art_ids.h"
 #include "raster_canvas.h"
 #include "text_fit.h"  // lib/theme is built whole: its canvases need module_api and core
@@ -18,7 +19,7 @@
 using namespace cpa;
 using namespace cpa::theme;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {

@@ -17,7 +17,7 @@ constexpr int kBatFullMv = 4150;
 
 using Num = FixedStr<15>;
 
-// docs/21 §6.7: the menu's words. Facts on 控制 are a word (KeyTxt) and a line.
+// docs/21 §6.7: the menu's words. Facts on Control are a word (KeyTxt) and a line.
 constexpr MenuTxt kExitAsks{"退出（有字先问）", "Exit (asks if text)"};
 constexpr MenuTxt kLockRecording{"锁屏（录音不停）", "Lock, keep recording"};
 constexpr MenuTxt kLockDraft{"锁屏（草稿留着）", "Lock, keep the draft"};
@@ -34,7 +34,7 @@ constexpr CountTxt kSessionsWait{"%u 个 session 等你", "%u session needs you"
 constexpr CountTxt kRecsWait{"%u 段录音等着传", "%u recording to sync", "%u recordings to sync", kMenuTxtW};
 constexpr Txt kSdBad{"SD 卡不能用：不能录音", "SD unusable: no recording"};  // as kSynced
 constexpr Txt kKeysLost{"键盘按太快，丢了 %u 次", "Typed too fast: %u lost", kMenuTxtW};
-constexpr Txt kRecSymbol{"录", "R"};  // the status bar's 录N / RN
+constexpr Txt kRecSymbol{"录", "R"};  // the status bar's RN
 constexpr KeyTxt kSound{"声音", "Sound"};
 constexpr MenuTxt kSoundOff{"关（录音不出声）", "Off (silent)"};
 constexpr KeyTxt kBattery{"电池", "Bat"};
@@ -148,7 +148,7 @@ bool listed(const MenuContent& m, const KeyEvent& ev) {
   return false;
 }
 
-// 本页: the module's rows or the layer's, then the System keys not listed yet (docs/13
+// Here: the module's rows or the layer's, then the System keys not listed yet (docs/13
 // §6.2). Never Tab: it closes the menu. Over a confirm box Opt+L does nothing (§5.3).
 void add_here(MenuContent& m, const MenuSource& src, const KeymapView& km) {
   const Layer under = src.layer;
@@ -164,7 +164,7 @@ void add_here(MenuContent& m, const MenuSource& src, const KeymapView& km) {
   add_layer(m, km, Layer::System, [&m, &label](const Binding& b) { return listed(m, b.trigger) ? nullptr : label(b); });
 }
 
-// 去哪 lists places first (docs/13 §6.3), then the rest; -1: on 控制 instead.
+// Go lists places first (docs/13 §6.3), then the rest; -1: on Control instead.
 int goto_rank(Action a) {
   switch (a) {
     case Action::Home: return 0;
@@ -207,7 +207,7 @@ Num mib_text(uint32_t mib) {
   return whole.append(".").append(num(static_cast<unsigned>(tenths % 10)).c_str()).append("G");
 }
 
-// 剩 412G · 待传 录2 · ↑0 / 412G free · R2 · ↑0
+// 412G free · R2 · ↑0
 MenuText sd_text(const AppState& s) {
   const Num free = s.rec.free_known ? mib_text(s.rec.free_mib) : Num::from("--");
   char buf[MenuText::capacity() + 1];
@@ -248,9 +248,9 @@ MenuRow legend(const char* symbol, unsigned n, const char* sentence) {
 }
 
 // docs/20 U21: what the status bar's counts mean, in whole sentences, one name each
-// (↑ notes, ! sessions, 录 recordings, ※SD the card, ※k the keyboard), each when not zero
+// (↑ notes, ! sessions, R recordings, ※SD the card, ※k the keyboard), each when not zero
 // as the bar draws them (status_bar.cpp; ※k stays here after the bar's 10 s). B3: once no
-// note or recording waits and the Mac is there, "√ 已同步" says so.
+// note or recording waits and the Mac is there, the √ row (kSynced) says so.
 void add_legend(MenuContent& m, const AppState& s) {
   const bool synced = s.link.mode == LinkMode::Ready && s.outbox.pending == 0 && s.rec.files_n == 0;
   if (synced) add(m, fact("\xE2\x88\x9A", MenuText::from(tr(kSynced))));  // √ (no ✓ in efontCN_12)
@@ -265,7 +265,7 @@ void add_legend(MenuContent& m, const AppState& s) {
   if (k > 0) add(m, legend("\xE2\x80\xBBk", k, tr(kKeysLost)));  // ※k
 }
 
-// 控制: the Lock keys (not over a confirm box, §5.3), then the facts and the status bar's
+// Control: the Lock keys (not over a confirm box, §5.3), then the facts and the status bar's
 // legend, shown only.
 void add_control(MenuContent& m, const MenuSource& src, const AppState& s, const SysInfo& sys,
                  const KeymapView& km) {

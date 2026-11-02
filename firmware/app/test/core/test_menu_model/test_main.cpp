@@ -6,12 +6,13 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "menu_model.h"
 #include "ui/support/fake_canvas.h"
 
 using namespace cpa;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static KeyEvent chr(char c) { return KeyEvent{KeyEventKind::Char, c, 0, 0, Nav::None}; }
@@ -75,7 +76,7 @@ static bool covers(const MenuRow& row, size_t i) {
   return row.binding >= 0 && i >= first && i < first + row.span;
 }
 
-// -- 去哪 and 控制 -----------------------------------------------------------------
+// -- Go and Control ----------------------------------------------------------------
 
 static void test_every_global_binding_appears_once_on_goto_or_control() {
   const MenuSource src = over(Layer::List, false);
@@ -132,7 +133,7 @@ static void test_control_page_rows() {
   sys.host_app = FixedStr<32>::from("cpad/0.4.0");
   const MenuContent m = menu_content(MenuPage::Control, over(Layer::List, false), s, sys, kFakeMap);
   TEST_ASSERT_TRUE(m.page == MenuPage::Control);
-  TEST_ASSERT_EQUAL_UINT8(5 + 2, m.n);  // docs/20 U21: then the status bar's legend (↑ 录; no !0)
+  TEST_ASSERT_EQUAL_UINT8(5 + 2, m.n);  // docs/20 U21: then the status bar's legend (↑ R; no !0)
   TEST_ASSERT_EQUAL_STRING("Opt+L 锁屏", row_text(m.rows[0]).c_str());  // the lock card says how to unlock
   TEST_ASSERT_TRUE(m.rows[0].ev == opt('l'));
   TEST_ASSERT_EQUAL_STRING("声音 关（录音不出声）", row_text(m.rows[1]).c_str());
@@ -145,9 +146,9 @@ static void test_control_page_rows() {
   }
 }
 
-// docs/20 U21: 控制 explains the status bar's counts in whole sentences, one name for
+// docs/20 U21: Control explains the status bar's counts in whole sentences, one name for
 // each count, with the numbers as they are now; each only while the bar shows it: ↑N,
-// !N, 录N and ※kN when not zero (status_bar.cpp; B3: ↑0 is no longer drawn either).
+// !N, RN and ※kN when not zero (status_bar.cpp; B3: ↑0 is no longer drawn either).
 static void test_control_page_explains_the_status_bar() {
   AppState s;
   s.outbox.pending = 1;
@@ -211,12 +212,12 @@ static void test_no_lock_row_over_a_confirm_box() {
   TEST_ASSERT_EQUAL_UINT8(4, ctl.n);  // the facts; no legend: the bar draws no ↑0 (docs/20 B3)
   TEST_ASSERT_EQUAL_STRING("声音", ctl.rows[0].keys.c_str());
   const MenuContent here = page(MenuPage::Here, over(Layer::Confirm, true), kFakeMap);
-  TEST_ASSERT_EQUAL_UINT8(1, here.n);  // Enter 确认, no Opt+L (docs/13 §5.3)
+  TEST_ASSERT_EQUAL_UINT8(1, here.n);  // Enter Confirm, no Opt+L (docs/13 §5.3)
 }
 
-// -- 本页 ---------------------------------------------------------------------------
+// -- Here --------------------------------------------------------------------------
 
-// Every 本页 row built from a layer replays that binding's trigger (but the shown-only ones:
+// Every "Here" row built from a layer replays that binding's trigger (but the shown-only ones:
 // a hold to record, a hands-free memo's end), and every binding of the layer (but Tab,
 // which closes the menu) is on the page once.
 static void test_here_rows_carry_the_trigger_and_cover_their_layer() {
@@ -243,7 +244,7 @@ static void test_here_rows_carry_the_trigger_and_cover_their_layer() {
 
 static void test_system_rows_follow_the_page_rows() {
   const MenuContent meeting = page(MenuPage::Here, over(Layer::RecPage, true), kFakeMap);
-  TEST_ASSERT_EQUAL_UINT8(4, meeting.n);  // 空格, 0-2, 5, then Opt+L; never Tab
+  TEST_ASSERT_EQUAL_UINT8(4, meeting.n);  // Space, 0-2, 5, then Opt+L; never Tab
   TEST_ASSERT_EQUAL_STRING("空格 加 ★", row_text(meeting.rows[0]).c_str());
   TEST_ASSERT_EQUAL_STRING("Opt+L 锁屏（录音不停）", row_text(meeting.rows[3]).c_str());
   TEST_ASSERT_TRUE(meeting.rows[3].ev == opt('l'));
@@ -254,9 +255,9 @@ static void test_system_rows_follow_the_page_rows() {
   TEST_ASSERT_EQUAL_STRING("Opt+L 锁屏", row_text(list.rows[0]).c_str());
 }
 
-// gh #51: 本页 over a hands-free memo, from kKeymap: G0 ends it (shown only: Tab, Enter are
+// gh #51: "Here" over a hands-free memo, from kKeymap: G0 ends it (shown only: Tab, Enter are
 // two pocket presses and must not end it, review of gh #51), the digits tag it, Opt+L locks
-// and it goes on; never Tab. 去哪 lists the double tap, which Enter starts.
+// and it goes on; never Tab. Go lists the double tap, which Enter starts.
 static void test_hands_free_rows() {
   const MenuContent m = page(MenuPage::Here, over(Layer::RecLatch, true));
   TEST_ASSERT_EQUAL_UINT8(3, m.n);
@@ -275,7 +276,7 @@ static void test_hands_free_rows() {
 }
 
 static void test_here_never_lists_tab_or_a_key_twice() {
-  // Should a layer bind Tab or Opt+L itself as well as the System layer, 本页 still lists
+  // Should a layer bind Tab or Opt+L itself as well as the System layer, "Here" still lists
   // Opt+L once and Tab not at all (Tab closes the menu).
   static const Binding kBoth[] = {
       {Layer::RecPage, Action::RecStar, 0, chr(' ')},
@@ -292,7 +293,7 @@ static void test_here_never_lists_tab_or_a_key_twice() {
 }
 
 static void test_system_rows_from_kkeymap() {
-  // Every System binding but Tab ends 本页 (outside a confirm box); none before V40-F.
+  // Every System binding but Tab ends "Here" (outside a confirm box); none before V40-F.
   uint8_t sys_n = 0;
   for (size_t i = 0; i < kKeymapCount; ++i) {
     sys_n = static_cast<uint8_t>(sys_n + (kKeymap[i].layer == Layer::System && kKeymap[i].action != Action::Menu));
@@ -379,7 +380,7 @@ static void test_a_broken_run_stays_apart() {
 }
 
 // v0.5 (docs/19 §6.5, mockup 03): a row that opens the board or the inbox carries its count,
-// 跑N or !N, as the home tiles do; none for zero, none on other rows.
+// runN or !N, as the home tiles do; none for zero, none on other rows.
 static void test_badges_on_the_board_and_inbox_rows() {
   AppState s;
   s.projects.live = true;

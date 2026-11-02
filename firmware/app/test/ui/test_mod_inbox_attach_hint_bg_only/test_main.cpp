@@ -1,10 +1,11 @@
 // Inbox module (04 US-07): waiting first, then idle, longest wait first; Enter replies,
 // Opt+D dismisses (online only); the attach hint is shown for background sessions
-// only, interactive ones say "在 Mac 上处理" (docs/20 U14: the name is on the line above).
+// only, interactive ones say "answer on the Mac" (docs/20 U14: the name is on the line above).
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "inbox_logic.h"
 #include "inbox_module.h"
 #include "theme_mando.h"
@@ -15,7 +16,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static AppState mixed() {
@@ -113,7 +114,7 @@ static void test_empty_inbox_and_cursor_follows_shrinking_list() {
   TEST_ASSERT_TRUE(ctx.composed.back().sid.value.equals("5c2e8a14"));  // the last row
   ctx.app = AppState{};
   set_ready(ctx.app);
-  set_sessions(ctx.app, {});  // docs/20 U19: the Mac says none (never synced: "还没连上 Mac")
+  set_sessions(ctx.app, {});  // docs/20 U19: the Mac says none (never synced: "No Mac yet")
   c.clear();
   m.render(c, kContentRect);
   TEST_ASSERT_TRUE(c.has("没有等你的 session"));
@@ -146,7 +147,7 @@ static void test_rows_breathe_and_waiting_has_a_stripe() {
   TEST_ASSERT_EQUAL_INT16(kScreenW - 8, right->x + c.textWidth(right->text.c_str()));
 }
 
-// Nothing waits: Mando sits with his 在呢 sign, and the page says so.
+// Nothing waits: Mando sits with his "Here" sign, and the page says so.
 static void test_an_empty_inbox_has_mando() {
   FakeContext ctx;
   set_ready(ctx.app);

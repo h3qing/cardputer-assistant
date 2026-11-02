@@ -7,6 +7,7 @@ namespace {
 
 constexpr char kNamespace[] = "cpa";
 constexpr char kLang[] = "lang";  // 0 中文, 1 English (lang_from_nvs)
+constexpr char kBoot[] = "boot";  // nvs_boot.cpp's counter: an earlier boot wrote it
 constexpr char kMarkBoot[] = "offb";
 constexpr char kMarkSeq[] = "offs";
 
@@ -21,7 +22,7 @@ Settings nvs_settings_load() {
   Preferences prefs;
   Settings s;
   if (!prefs.begin(kNamespace, true)) return s;
-  s.lang = lang_from_nvs(prefs.getUChar(kLang, lang_to_nvs(Lang::Zh)));
+  s.lang = lang_from_nvs(prefs.getUChar(kLang, lang_to_nvs(s.lang)));
   prefs.end();
   return s;
 }
@@ -35,6 +36,15 @@ bool nvs_settings_save(const Settings& s) {
   const bool back = wrote && prefs.getUChar(kLang, 0xFF) == b;
   prefs.end();
   return back;
+}
+
+bool nvs_lang_migrate() {
+  Preferences prefs;
+  if (!prefs.begin(kNamespace, false)) return false;
+  const Opt<Lang> first = lang_to_store(prefs.isKey(kLang), prefs.isKey(kBoot));
+  const bool wrote = first.has && prefs.putUChar(kLang, lang_to_nvs(first.value)) == sizeof(uint8_t);
+  prefs.end();
+  return wrote;
 }
 
 Opt<OfflineMark> nvs_offline_mark_load() {

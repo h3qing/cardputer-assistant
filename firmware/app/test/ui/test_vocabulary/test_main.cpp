@@ -1,21 +1,23 @@
 // One vocabulary (docs/20 U22, A8): each action has one name wherever it is written, the
 // home tiles, the Tab menu's rows (action_help) and the editor's title
-// (compose_kind_label): 记一条 · 排队给 AI · 开 session · 回复 · 项目 · 等你. Ages are
-// one Chinese function, rounded ("2 小时" for 1 h 59 min, not "1h"); a session's kind is
-// 终端 / 后台, not tty / bg; digit ranges are written "Opt+1-9".
+// (compose_kind_label): 记一条 · 排队给 AI · 开 session · 回复 · 项目 · 等你 (Note · AI queue ·
+// New session · Reply · Projects · Inbox). Ages are one Chinese function, rounded ("2 小时",
+// 2 h, for 1 h 59 min, not "1h"); a session's kind is 终端 / 后台 (terminal / background),
+// not tty / bg; digit ranges are written "Opt+1-9".
 #include <unity.h>
 
 #include <string>
 
 #include "action_help.h"
 #include "compose.h"
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "lang.h"
 #include "text_fit.h"
 
 using namespace cpa;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static bool has(const char* s, const char* word) { return std::string(s).find(word) != std::string::npos; }

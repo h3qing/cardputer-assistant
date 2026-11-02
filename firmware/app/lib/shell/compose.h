@@ -42,12 +42,12 @@ ComposeStep compose_key(const ComposeState& s, const KeyEvent& ev);
 
 // Live check shown while typing (04 US-02 AC4).
 bool compose_dash_blocked(const ComposeState& s);
-const char* compose_kind_label(ComposeKind k);  // 记一条 / 排队给 AI / 开 session / 回复 (docs/20 U22)
+const char* compose_kind_label(ComposeKind k);  // Note / AI queue / New session / Reply (docs/20 U22)
 const char* compose_result_text(ComposeResult r);  // toast text for a refused submit, or ""
 // docs/20 U13: a queue item or a new session needs a project that exists. The hint names
-// the key and the ones there are ("Opt+数字：1 cpa · 2 blog", "… …（共 9 个）" when they
+// the key and the ones there are ("Opt+digit: 1 cpa · 2 blog", "… 9 in all" when they
 // do not fit one row), or how to add one.
 FixedStr<96> need_project_text(const ProjectsView& p);
-FixedStr<96> no_slot_text(const ProjectsView& p, uint8_t slot);  // "没有第 5 个项目（共 2 个）"
+FixedStr<96> no_slot_text(const ProjectsView& p, uint8_t slot);  // "No project 5 (only 2)"
 
 }  // namespace cpa

@@ -2,14 +2,15 @@
 // whole in the theme's toast capsule, which leaves its text 224 px (docs/20 B6), so nothing
 // the user must read is cut (FakeCanvas: ASCII 6 px, everything else 12 px, the widest
 // efontCN_12 can be). The confirm titles say plainly what happens: a reply that cannot be
-// delivered is only stored on the Mac ("只存到 Mac 队列"), never "v0.4" or "正在运行" for a
-// session that waits.
+// delivered is only stored on the Mac ("Mac queue only"), never "v0.4" or "Session busy"
+// for a session that waits.
 #include <unity.h>
 
 #include <string>
 
 #include "compose.h"
 #include "confirm.h"
+#include "core/support/lang_pin.h"
 #include "rec_overlay.h"
 #include "rec_result.h"
 #include "support/fake_canvas.h"
@@ -19,7 +20,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static void fits(const std::string& s) {

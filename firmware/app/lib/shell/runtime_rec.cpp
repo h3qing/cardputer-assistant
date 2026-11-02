@@ -119,7 +119,8 @@ void Runtime::rec_apply(const rec::RecStep& st) {
   const bool was_held = rec_core_.held;
   const RecPhase was = rec_core_.phase;
   rec_core_ = st.state;
-  // docs/20 D3: a box's hints ("先处理确认框", "再按一次 Enter") go with it, however it goes
+  // docs/20 D3: a box's hints ("Answer the box first", "press Enter again") go with it,
+  // however it goes
   if (rec::rec_box(was) && rec_core_.phase != was) shell_.retract_hints();
   if (!rec::rec_live(rec_core_)) rec_side_.stop_due = false;  // the session is over
   for (uint8_t i = 0; i < st.effects.count; ++i) rec_effect(st.effects.items[i]);
@@ -255,8 +256,9 @@ void Runtime::tick_rec() {
 
 // Dimmed is not seen: a recording on battery dims the screen while it lies unread; nor is
 // the lock card lit by itself (docs/20 D7: it may light an empty pocket). A card that
-// answered a swallowed G0 hold (没有在录) ends the last result: shown after that hold, or
-// after the tap it asks for, an old "√ 已存" reads as the hold's own (its toast still waits).
+// answered a swallowed G0 hold ("Not recording") ends the last result: shown after that
+// hold, or after the tap it asks for, an old "√ Saved" reads as the hold's own (its toast
+// still waits).
 void Runtime::rec_seen() {
   RecLast& l = rec_side_.last;
   if (!l.has) return;

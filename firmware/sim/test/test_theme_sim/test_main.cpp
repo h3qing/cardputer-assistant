@@ -112,9 +112,9 @@ static void test_mandos_states_draw_only_palette_entries() {
   TEST_ASSERT_TRUE(mando > 400);  // home: Mando at (7, 14)
 }
 
-// docs/20 B1-B6: the lock card's results and 没有在录, the recording pages' countdown and
-// battery, the status bar's ● 准备 and ※SD, home offline and its faded Mando, the inbox and
-// board's per-row words, the confirm keycaps and a selected 说明 row, and (gh #53) the
+// docs/20 B1-B6: the lock card's results and "Not recording", the recording pages' countdown
+// and battery, the status bar's "● Wait" and ※SD, home offline and its faded Mando, the inbox
+// and board's per-row words, the confirm keycaps and a selected note row, and (gh #53) the
 // recording pages' legend of 1-9 with its lit choice: palette entries only, a glyph for every
 // word, an edge colour of its own for every rounded shape (tokens.AA_PAIRS), on every shot.
 static void test_the_ux_b_scripts_draw_only_palette_entries() {

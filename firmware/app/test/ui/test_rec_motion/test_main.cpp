@@ -10,6 +10,7 @@
 #include <set>
 #include <vector>
 
+#include "core/support/lang_pin.h"
 #include "core/support/memo_levels.h"
 #include "rec_overlay.h"
 #include "shell.h"
@@ -20,7 +21,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -187,7 +188,7 @@ constexpr int16_t kBarsH = 17;
 constexpr Rect kStarsAndBars{46, 73, 194, 34};
 
 // mockup 05, the judges' notes: before it is full a bar every 2 px from x 48, and the ● and
-// 现在 right after the newest bar, no track beyond it; the segment is in the title row.
+// "now" right after the newest bar, no track beyond it; the segment is in the title row.
 static void test_the_timeline_spans_the_meeting_with_its_stars() {
   Rig r(RecMode::Meeting);
   r.levels(500, 20);
@@ -215,18 +216,18 @@ static void test_the_timeline_spans_the_meeting_with_its_stars() {
   TEST_ASSERT_EQUAL_STRING("0:00 现在", p.line(109).c_str());
   const TextOp* now_label = p.find("现在");
   TEST_ASSERT_EQUAL_INT16(48 + 2 * 29 + 5 + 3, now_label->x + p.textWidth("现在"));  // under the ●
-  TEST_ASSERT_TRUE(p.line(15).find("第 3 段") != std::string::npos);  // "开会 #cpa · 第 3 段"
+  TEST_ASSERT_TRUE(p.line(15).find("第 3 段") != std::string::npos);  // "Meeting #cpa · Part 3"
   FakeCanvas again;
   const AnimFrame same = r.tick(again);  // nothing new: Mando nods and the ● breathes, that is all
   TEST_ASSERT_EQUAL_UINT8(2, same.n);
   TEST_ASSERT_TRUE(has_rect(same, Rect{46, 38, 12, 12}) && has_rect(same, Rect{10, 31, 26, 46}));
-  r.levels(4096, 1);  // one more cell: the bars that changed colour to the moved dot, and 现在
+  r.levels(4096, 1);  // one more cell: the bars that changed colour to the moved dot, and "now"
   FakeCanvas one;
   const AnimFrame g = r.tick(one);
   const int16_t from = static_cast<int16_t>(48 + 2 * 23 - 1);  // the 7th newest bar, less a pixel
   const int16_t dot = static_cast<int16_t>(48 + 2 * 30 + 5);
   TEST_ASSERT_TRUE(has_rect(g, Rect{from, kBarsTop, static_cast<int16_t>(dot + 3 - from), kBarsH}));
-  TEST_ASSERT_TRUE(has_rect(g, Rect{static_cast<int16_t>(dot - 2 + 3 - 24), 109, 24 + 2, 12}));  // 现在 moved 2 px
+  TEST_ASSERT_TRUE(has_rect(g, Rect{static_cast<int16_t>(dot - 2 + 3 - 24), 109, 24 + 2, 12}));  // "now" moved 2 px
   TEST_ASSERT_EQUAL_UINT(31, cells(one).size());  // the line drawn whole over it
   TEST_ASSERT_TRUE(end_dot_at(one, 48 + 2 * 30 + 5) && one.has("现在"));
 }
@@ -248,7 +249,7 @@ static void test_a_full_timeline_spans_the_width() {
     TEST_ASSERT_TRUE(cs[k].first.w >= 2);
   }
   TEST_ASSERT_TRUE(end_dot_at(c, 48 + 188 + 1));
-  r.levels(3000, 2);  // a cell more: every bar and star moves; the dot and 现在 stay
+  r.levels(3000, 2);  // a cell more: every bar and star moves; the dot and "now" stay
   FakeCanvas d;
   const AnimFrame g = r.tick(d);
   TEST_ASSERT_TRUE(has_rect(g, kStarsAndBars));

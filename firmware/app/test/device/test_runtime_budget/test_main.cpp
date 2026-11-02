@@ -281,10 +281,10 @@ MemoTimes time_memo_page(const char* hint) {
 void v040_screens() {
   key("\"opt\",\"h\"");
   TEST_ASSERT_EQUAL_STRING("home", g_rt.shell().top_id());
-  key("\"tab\"");  // 本页
+  key("\"tab\"");  // Here
   TEST_ASSERT_TRUE(g_rt.state().ui.menu);
-  key("\"/\"");  // 去哪
-  key("\"/\"");  // 控制
+  key("\"/\"");  // Go
+  key("\"/\"");  // Control
   key("\"tab\"");
   TEST_ASSERT_FALSE(g_rt.state().ui.menu);
   key("\"opt\",\"l\"");  // locked and dark

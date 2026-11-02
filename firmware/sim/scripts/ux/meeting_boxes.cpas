@@ -2,16 +2,16 @@
 # and s07_back_key). Before the fix an Enter inside the boxes' 400 ms guard vanished without a
 # word, the start box never went away and ignored Opt+L, so a pocket Enter minutes later
 # started a meeting; ` on the meeting page opened the end box.
-boot store=sd usb=off bat=4100
+boot store=sd usb=off bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1500
 # the habit, brisk: Opt+R, Enter ~170 ms later, Opt+L
 press opt+r
 wait 170
 press enter
-shot fast-enter  Enter inside 400 ms: "太快了，再按一次 Enter", the box stays
+shot fast-enter  Enter inside 400 ms: "Too fast: press Enter again", the box stays
 press opt+l
-shot brisk-optl  Opt+L on the start box: cancelled and locked ("已锁屏" 2 s)
+shot brisk-optl  Opt+L on the start box: cancelled and locked ("Locked" 2 s)
 wait 2500
 press enter
 mic 3000 1200
@@ -32,7 +32,7 @@ wait 450
 press enter
 mic 4000 1200
 press `
-shot grave-hint  ` on the meeting page: "开会中：Opt+R 结束", still recording
+shot grave-hint  ` on the meeting page: "In a meeting: Opt+R ends it", still recording
 press opt+r
 wait 300
 press enter

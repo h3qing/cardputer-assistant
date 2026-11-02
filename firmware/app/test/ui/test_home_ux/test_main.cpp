@@ -3,13 +3,14 @@
 //   - away from the Mac, home does not read as live: the greeting says it is offline, the
 //     card says how old its picture is and its ages stop, Mando is faded;
 //   - the most urgent card: waiting first (the longest wait), then idle newest first and
-//     marked 空闲; idle a day or more is folded ("+N 更早", "+N 个更早的 session");
+//     marked "idle"; idle a day or more is folded ("+N older", "+N older sessions");
 //   - the G0 hint says to wait for ● REC (D8);
 //   - when the device cannot record, the R tile is greyed and the G0 hint says why.
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "home_module.h"
 #include "support/fake_canvas.h"
@@ -21,7 +22,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() { set_lang(Lang::Zh); }  // a failed English test skips its LangScope
 
 namespace {
@@ -170,9 +171,9 @@ static void test_english_greeting_keeps_the_link_word_lower_case() {
   TEST_ASSERT_TRUE_MESSAGE(g.find("No Mac yet") == std::string::npos, g.c_str());
 }
 
-// U22: waiting first, the longest wait; then idle newest first, marked 空闲; idle for a day
-// or more is no one's most urgent and is counted: "+N 更早" beside the card's project (so
-// "等你回复" stays whole), "+N 个更早的 session" when nothing else is on the card.
+// U22: waiting first, the longest wait; then idle newest first, marked "idle"; idle for a
+// day or more is no one's most urgent and is counted: "+N older" beside the card's project
+// (so "waiting" stays whole), "+N older sessions" when nothing else is on the card.
 static void test_urgent_order_waiting_then_newest_idle() {
   Rig r;
   set_sessions(r.ctx.app, {session("aaaaaaa1", 2, "旧的支付重构", SessionKind::Tty, SessionState::Idle, true, 2 * kDayS),

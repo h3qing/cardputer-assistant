@@ -3,7 +3,7 @@
 # open (0 of 367 holds in the fuzz runs) and said nothing; now it records a memo and the draft
 # or the box stays. On the meeting's start box it says the box comes first. Let go, the memo
 # records on through its 0.6 s grace (gh #51) before it is saved.
-boot store=sd usb=on bat=4100
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 2600
 # 1. the note editor (a G0 tap opened it; the user decides to speak instead)
@@ -58,7 +58,7 @@ press opt+r
 wait 500
 down g0
 wait 600
-shot consent-hold  start box, G0 held: "先处理确认框", nothing records
+shot consent-hold  start box, G0 held: "Answer the box first", nothing records
 up g0
 press `
 wait 2600

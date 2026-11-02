@@ -1,4 +1,4 @@
-// The words of 设置 / Settings (docs/21 §4, appendix A): the settings page, the WiFi page
+// The words of Settings (docs/21 §4, appendix A): the settings page, the WiFi page
 // and the device page, each a zh/en pair checked when it is built (txt.h). Strings with a
 // % skip the width check; test_mod_system draws them with their widest arguments.
 #pragma once
@@ -98,7 +98,7 @@ constexpr LineTxt kNoInternal{"无内部存储，只用 SD", "No flash store: SD
 constexpr LineTxt kLegacyTable{"分区表是 v0.1 的，请整片刷写", "v0.1 partition table: flash it all"};
 constexpr LineTxt kNoStorage{"没有可用存储：请插入 FAT32 SD 卡", "No storage: insert a FAT32 SD card"};
 
-// --- the Tab menu's 本页 rows and the hint bar (§4.6) ---
+// --- the Tab menu's "Here" rows and the hint bar (§4.6) ---
 constexpr MenuTxt kChangeRow{"改这一行", "Change this row"};
 constexpr MenuTxt kPrevTab{"上一个标签", "Previous tab"};
 constexpr MenuTxt kNextTab{"下一个标签", "Next tab"};

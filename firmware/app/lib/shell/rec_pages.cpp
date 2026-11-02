@@ -62,7 +62,7 @@ RecRoom meeting_room(uint8_t rows) { return RecRoom{false, rows >= 2}; }
 // The meeting's timeline (mockup 05, the judges' notes): a 1 px bar every 2 px from x 48 round
 // y 98 until the cells first merge, then the cells spread over the whole kLineW, each bar its
 // pitch less a pixel; the newest kLineNew in Accent; a Live base line to a Rec dot 2 px after
-// the newest bar; the stars above; 0:00 and 现在 (under the dot) below, unless the legend
+// the newest bar; the stars above; 0:00 and "now" (under the dot) below, unless the legend
 // takes their row (gh #53).
 constexpr Rect kLineRect{46, 73, 194, 49};  // the bars, the stars and the labels
 constexpr int16_t kLineX = 48;
@@ -85,7 +85,7 @@ void draw_mando(Canvas& c, const RecInfo& r, const theme::MandoView& v) {
   theme::sign(c, st.sign_x, st.sign_y, sign, t);
 }
 
-// REC right of the timer: the memo's cue said "看到 ● REC 再说话" (v0.3.1).
+// REC right of the timer: the memo's cue said "Speak once you see ● REC" (v0.3.1).
 void draw_rec_word(Canvas& c, const Stage& st, const char* clock) {
   const int16_t x = static_cast<int16_t>(st.clock_x + c.digitsWidth(clock, DigitFont::Timer) + 5);
   c.text(x, static_cast<int16_t>(kDotY - 6), "REC", Style{Color::Rec, Color::Bg});
@@ -103,7 +103,7 @@ void draw_clock(Canvas& c, const RecInfo& r, const Stage& st, uint32_t now) {
 // gh #51: the memo's title row while G0 is let go (a Warn capsule: how long a re-press may
 // take) or the memo is hands-free (an Info capsule: how it ends). Nothing else changes:
 // Mando listens on, ● REC and the waveform go on. In the last 30 s (U15) the words are
-// shorter: "还剩 0:30" keeps the corner.
+// shorter: "0:30 left" keeps the corner.
 // docs/21: the recording pages' words.
 constexpr LineTxt kHandsFree{"免提录音 · 按 G0 结束", "Hands-free · tap G0 to end"};
 constexpr LineTxt kHandsFreeShort{"免提 · G0 结束", "G0 ends it"};
@@ -134,7 +134,7 @@ void draw_memo_state(Canvas& c, const RecInfo& r, bool late) {
   theme::pill(c, kTextX, kStateY, grace, theme::Tone::Warn, Color::Bg, ps);
 }
 
-// Before the microphone is up (v0.3.1: silent): no timer yet, "● 准备" in its place.
+// Before the microphone is up (v0.3.1: silent): no timer yet, "● Wait" in its place.
 void draw_cue(Canvas& c, bool explain) {
   c.text(kTextX, 36, tr(txt::kMemoReady), Style{Color::Warn, Color::Bg});
   if (explain) c.text(kTextX, 52, tr(kSpeakAtRec), Style{Color::Ink3, Color::Bg});
@@ -146,7 +146,7 @@ FixedStr<24> segment_text(const RecInfo& r) {
   return FixedStr<24>::from(seg);
 }
 
-// "★2" in a mustard capsule, right-aligned; just after a star "★ 已标记 12:31" (when).
+// "★2" in a mustard capsule, right-aligned; just after a star "★ marked 12:31" (when).
 // Returns its left edge.
 int16_t draw_stars(Canvas& c, const RecInfo& r, uint32_t now) {
   char buf[40];
@@ -163,7 +163,8 @@ int16_t draw_stars(Canvas& c, const RecInfo& r, uint32_t now) {
   return x;
 }
 
-// "开会 未归属 · 第 1 段" (the segment in the title row, clear of the star capsule at `end`).
+// "Meeting No project · Part 1" (the segment in the title row, clear of the star capsule
+// at `end`).
 void draw_title(Canvas& c, const AppState& s, int16_t end) {
   const int16_t tx = static_cast<int16_t>(6 + theme::title(c, 6, 15, tr(txt::kMeeting)) + 5);
   char line[64];
@@ -208,7 +209,7 @@ void draw_wave(Canvas& c, const Wave& w, const theme::LevelHistory& h, bool live
   }
 }
 
-// The memo's top right in its last 30 s: "还剩 0:30" in a Warn capsule (docs/20 U15),
+// The memo's top right in its last 30 s: "0:30 left" in a Warn capsule (docs/20 U15),
 // counting down to the cap.
 void draw_countdown(Canvas& c, const RecInfo& r, uint32_t now) {
   const int16_t right = static_cast<int16_t>(kScreenW - theme::kGutter);
@@ -222,9 +223,10 @@ void draw_countdown(Canvas& c, const RecInfo& r, uint32_t now) {
   theme::pill(c, static_cast<int16_t>(right - theme::pill_width(c, buf, ps)), 17, buf, theme::Tone::Warn, Color::Bg, ps);
 }
 
-// The memo's title row: "语音便条" and 第 N 段, or the grace or hands free (gh #51); the
+// The memo's title row: "Voice memo" and Part N, or the grace or hands free (gh #51); the
 // countdown in the corner in its last 30 s.
-// 语音便条; gh #53: "存到 #key" when the legend cut the chosen key, so it is on screen whole.
+// "Voice memo"; gh #53: "Save to #key" when the legend cut the chosen key, so it is on
+// screen whole.
 void draw_memo_name(Canvas& c, const char* where) {
   if (where == nullptr) return c.text(kTextX, 18, tr(txt::kVoiceMemo), Style{Color::Ink3, Color::Bg});
   c.text(kTextX, 18, tr(kSaveTo), Style{Color::Ink3, Color::Bg});
@@ -274,7 +276,7 @@ int16_t line_dot_x(const theme::LevelHistory& h) {
   return static_cast<int16_t>(right + 5 < kLineDotMax ? right + 5 : kLineDotMax);
 }
 
-// 现在 ends under the dot's rim, never over 0:00, and 2 px short of the screen's edge
+// "now" ends under the dot's rim, never over 0:00, and 2 px short of the screen's edge
 // (the dot's rim is on its last column; "now"'s w would be too).
 int16_t now_label_x(const Canvas& c, const theme::LevelHistory& h) {
   const int16_t w = c.textWidth(tr(kNow));
@@ -319,7 +321,7 @@ bool stars_moved(const theme::LevelHistory& was, const theme::LevelHistory& now)
   return moved;
 }
 
-// 现在 from where it was to where it is (w 0: the dot did not move).
+// "now" from where it was to where it is (w 0: the dot did not move).
 Rect label_dirty(const Canvas& c, const theme::LevelHistory& was, const theme::LevelHistory& now) {
   const int16_t a = now_label_x(c, was);
   const int16_t b = now_label_x(c, now);
@@ -332,7 +334,7 @@ Rect label_dirty(const Canvas& c, const theme::LevelHistory& was, const theme::L
 // What a tick changed on the timeline, as few pixels as it can (docs/19 §7.5): all of it
 // after a merge or a star; when spread cells moved for a new one, the bars and the stars;
 // else the bars from the first that changed height or colour (the newest kLineNew are
-// Accent) to the dot, and, when the dot moved, 现在 from where it was to where it is. Without
+// Accent) to the dot, and, when the dot moved, "now" from where it was to where it is. Without
 // the labels (the legend's row, gh #53) never below the bars.
 RecParts line_dirty(const Canvas& c, const theme::LevelHistory& was, const theme::LevelHistory& now, bool labels) {
   RecParts out;

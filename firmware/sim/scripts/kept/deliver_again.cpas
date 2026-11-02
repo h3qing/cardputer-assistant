@@ -1,7 +1,7 @@
-# docs/28 §3.5 (S1a): handed to the wrong Mac. The work Mac pulls two memos; in 设置 → 存储
-# (Opt+M, then `,`) "再交一次" asks first (a box on 取消), then puts them back, never for that
-# Mac; "给这台 Mac" would undo it; the home Mac takes them.
-boot store=sd usb=on bat=4100
+# docs/28 §3.5 (S1a): handed to the wrong Mac. The work Mac pulls two memos; in Settings → Storage
+# (Opt+M, then `,`) "Send again" asks first (a box on Cancel), then puts them back, never for that
+# Mac; "To this Mac" would undo it; the home Mac takes them.
+boot store=sd usb=on bat=4100 lang=zh
 include work_mac.cpas
 wait 600
 include memo.cpas
@@ -9,18 +9,18 @@ include memo.cpas
 pull
 press opt+m
 press ,
-shot storage  设置 → 存储: 再交一次 ·XXXX 的 2 次, 给这台 Mac 没有, 清掉留底 2 段, the facts
+shot storage  Settings → Storage: Send again from ·XXXX: 2, To this Mac none, Clear kept 2 files, the facts
 press tab
-shot storage-menu  Tab on 存储: its 本页 rows
+shot storage-menu  Tab on Storage: its Here rows
 press tab
 press enter
-shot again-box  Enter: 把 2 次再交给别的 Mac？ ·XXXX 不会再拿到, the cursor on 取消
+shot again-box  Enter: Send 2 to another Mac? ·XXXX won't get them again, the cursor on Cancel
 press /
 press enter
 wait 300
-shot again  / Enter: 已排回: 2 次录音; 待传 2, nothing kept; 给这台 Mac 2 段
+shot again  / Enter: Queued again: 2; To sync 2, nothing kept; To this Mac 2 files
 pull
-shot not-here  the work Mac pulls again: nothing (still 待传 2)
+shot not-here  the work Mac pulls again: nothing (still To sync 2)
 usb off
 wait 1500
 usb on

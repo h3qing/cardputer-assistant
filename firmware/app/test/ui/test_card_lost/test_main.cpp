@@ -1,5 +1,5 @@
 // The SD card latched while running (docs/20 U16, A9): a pulled card fails every save
-// until a reboot. The screen says so ("SD 卡出错：插好后需重启", not E_STORAGE); with
+// until a reboot. The screen says so ("SD card error: reseat it, restart", not E_STORAGE); with
 // the internal cpafs attached, the capture is kept there instead (the next boot's
 // migration moves it to the card); recording names the reboot too.
 #include <unity.h>
@@ -9,6 +9,7 @@
 #include "codec.h"
 #include "core/support/fake_fat_port.h"
 #include "core/support/fake_store.h"
+#include "core/support/lang_pin.h"
 #include "outbox_io.h"
 #include "rec_overlay.h"
 #include "runtime.h"
@@ -25,7 +26,7 @@ using testsupport::FakeFatPort;
 using testsupport::FakeStore;
 using testsupport::FatCall;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 class Spare : public SpareStore {

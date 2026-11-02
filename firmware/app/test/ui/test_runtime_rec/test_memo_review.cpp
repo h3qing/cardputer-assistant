@@ -123,7 +123,7 @@ void test_a_slow_tap_then_hold_records() {
 
 // Review UX finding 3: ending a locked hands-free memo on the lit card. The card stays lit
 // for 3 s from the end press and says how it ended (docs/20 B1: in the clock's place, Mando
-// 存好了); still locked.
+// and "Saved"); still locked.
 void test_a_locked_end_says_so_on_the_card() {
   RecRig x;
   tap(x, kG0);

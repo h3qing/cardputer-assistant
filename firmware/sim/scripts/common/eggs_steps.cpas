@@ -3,12 +3,12 @@
 # needs you.
 include demo_state.cpas
 wait 300
-shot home  home as ever: 早上好，1 件事在等你
+shot home  home as ever: Morning, 1 waiting for you
 press opt+w
-frames pat 4 200 Opt+W: Mando hops with a heart; his line and 摸 ×1 (×1 after 摸摸) where the greeting was
+frames pat 4 200 Opt+W: Mando hops with a heart; his line and pats ×1 (×1 after Pat pat) where the greeting was
 press opt+w
 press opt+w
-shot pat-three  three pats: 摸 ×3, never the same line twice in a row
+shot pat-three  three pats: pats ×3, never the same line twice in a row
 wait 1700
 shot pat-over  1.5 s on: the greeting again
 press opt+p
@@ -17,16 +17,16 @@ shot board  Opt+W on the board: nothing (home and the lock card only)
 press opt+h
 host sessions.snapshot {"rev":6,"total":1,"sessions":[{"sid":"5c2e8a14","slot":2,"name":"cpa/host-sim","kind":"bg","st":"busy","need":false,"age_s":75,"short":"a1b2c3"}]}
 wait 300
-shot all-clear  the last session that needed you is done: he hops, 搞定啦 in the card
+shot all-clear  the last session that needed you is done: he hops, All clear in the card
 wait 2600
 shot all-clear-over  2.5 s on: the card as ever
 host time.set {"epoch_ms":1792597500000,"tz_min":480}
 wait 300
-shot late-home  23:45: 夜深了，都处理完了
+shot late-home  23:45: Late night, all done
 press opt+l
-shot late-lock  locked at 23:45: sign 夜深了, a fourth z
+shot late-lock  locked at 23:45: sign Bedtime, a fourth z
 press opt+w
-shot lock-pat  Opt+W on the lit card: he hops with a heart, his line and the count in place of 已锁屏
+shot lock-pat  Opt+W on the lit card: he hops with a heart, his line and the count in place of Locked
 wait 1700
 shot lock-pat-over  the card as it was
 press opt+l
@@ -34,20 +34,20 @@ press enter
 host time.set {"epoch_ms":1792534200000,"tz_min":480}
 wait 300
 press opt+l
-shot early-lock  06:10: 早起鸟, Mando awake, no z's
+shot early-lock  06:10: Up early, Mando awake, no z's
 press opt+l
 press enter
 host time.set {"epoch_ms":1792825200000,"tz_min":480}
 wait 300
-shot weekend-home  Saturday 15:00: 周末好
+shot weekend-home  Saturday 15:00: Weekend
 press opt+l
-shot weekend-lock  locked on Saturday: 周末啦
+shot weekend-lock  locked on Saturday: Weekend
 press opt+l
 press enter
 wait 300
 press opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w
 press opt+w opt+w opt+w
-shot pat-100  the 100th pat: 今天也辛苦了 摸 ×100
+shot pat-100  the 100th pat: You did great today, pats ×100
 wait 1700
 press opt+l
 press opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w opt+w

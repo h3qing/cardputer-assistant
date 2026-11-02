@@ -65,7 +65,7 @@ bool before(const SessionRow& a, const SessionRow& b) {
   return aw ? a.age_s > b.age_s : a.age_s < b.age_s;
 }
 
-// Idle a day or more (as of the data's time): folded into "+N 个更早的".
+// Idle a day or more (as of the data's time): folded into "+N older sessions".
 bool older(const AppState& s, uint8_t i, uint32_t now) {
   const SessionRow& r = s.sessions.data.rows[i];
   return r.st != SessionState::Waiting && session_age_s(s.sessions, i, data_as_of(s, now)) >= kHomeOlderS;
@@ -197,7 +197,7 @@ HomeGrid home_grid(uint8_t tiles) {
 const char* home_greeting(const TimeInfo& t, uint32_t now) {
   const Opt<int64_t> at = local_ms(t, now);
   if (!at.has) return tr(kHello);
-  const char* mood = mood_greeting(mando_mood(t, now).mood);  // v0.5.0: 夜深了, 周末好
+  const char* mood = mood_greeting(mando_mood(t, now).mood);  // v0.5.0: "Late night", "Weekend"
   if (mood) return mood;
   const int64_t in_day = ((at.value % kDayMs) + kDayMs) % kDayMs;
   const int64_t hour = in_day / 3600000;

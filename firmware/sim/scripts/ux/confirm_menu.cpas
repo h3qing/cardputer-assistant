@@ -1,10 +1,10 @@
-# Review regression (U22, B6). Before: the Tab menu over a confirm box said "Enter 确认 /
-# ` 取消" while the box said "Enter 开始 · ` 返回修改" (D6: ` goes back to the editor), two
-# names for one key; the meeting start box's menu said "Enter 确认" under "Enter 开始".
-# Now: the rows say what the box says: Enter 开始 / 存为排队 / 关闭, ` 返回修改 with the draft
-# behind the box, else 取消 (a queue item's, opened from the board); the start box Enter 开始,
-# ` 取消, Opt+L 取消并锁屏.
-boot store=sd usb=on bat=4100
+# Review regression (U22, B6). Before: the Tab menu over a confirm box said "Enter Confirm /
+# ` Cancel" while the box said "Enter start · ` edit" (D6: ` goes back to the editor), two
+# names for one key; the meeting start box's menu said "Enter Confirm" under "Enter start".
+# Now: the rows say what the box says: Enter Start / Save as queued / Close, ` Back to edit with
+# the draft behind the box, else Cancel (a queue item's, opened from the board); the start box
+# Enter Start, ` Cancel, Opt+L Cancel and lock.
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1500
 press opt+1
@@ -12,10 +12,10 @@ press opt+s
 type fix the refund webhook
 press enter
 wait 500
-shot spawn  the spawn confirm: Enter 开始 · ` 返回修改
+shot spawn  the spawn confirm: [Enter]start · [`]edit
 press tab
 wait 400
-shot spawn-menu  its Tab menu: Enter 开始, ` 返回修改, Fn+` 返回修改
+shot spawn-menu  its Tab menu: Enter Start, ` Back to edit, Fn+` Back to edit
 press down
 wait 200
 press enter
@@ -31,7 +31,7 @@ press opt+r
 wait 200
 press tab
 wait 400
-shot start-menu  the meeting start box's menu: Enter 开始, ` 取消, Opt+L 取消并锁屏
+shot start-menu  the meeting start box's menu: Enter Start, ` Cancel, Opt+L Cancel and lock
 press tab
 wait 300
 press `
@@ -43,7 +43,7 @@ press opt+s
 type tidy the logs
 press enter
 wait 500
-shot queued  offline: 离线：只存到 Mac 队列, Enter 存为排队 · ` 返回修改
+shot queued  offline: Offline: Mac queue only, [Enter]save as queued · [`]edit
 press tab
 wait 400
-shot queued-menu  its Tab menu: Enter 存为排队, ` 返回修改, Fn+` 返回修改
+shot queued-menu  its Tab menu: Enter Save as queued, ` Back to edit, Fn+` Back to edit

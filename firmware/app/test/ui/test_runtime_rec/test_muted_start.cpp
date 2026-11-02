@@ -1,6 +1,6 @@
 // runtime_rec: the muted start of issue #31 through the real keys. The audio task arms the
 // engine (FakeRecPort.gated): while the codec is still muted the memo stays in the Cue
-// ("● 准备"), ● REC comes with the first live block, and letting go of G0 before that
+// ("● Wait"), ● REC comes with the first live block, and letting go of G0 before that
 // discards the memo (B5).
 #include <unity.h>
 

@@ -2,14 +2,14 @@
 # frame (50 ms), so the review sees them move. Things move only while the backlight is On:
 # the last frames, dimmed on battery, hold still but for the clock. Run:
 #   .pio/build/sim/cpa-sim shots scripts/theme_motion.cpas --out out/theme_motion
-boot store=sd usb=on bat=4100
+boot store=sd usb=on bat=4100 lang=zh
 include common/demo_state.cpas
 
 # Home: no one waits, then a session asks: the "!" pops up in two ticks.
 host sessions.snapshot {"rev":6,"total":1,"sessions":[{"sid":"9f00aa11","slot":1,"name":"landing page copy","kind":"bg","st":"idle","need":false,"age_s":3600,"short":"d4e5f6"}]}
 wait 800
 host sessions.snapshot {"rev":7,"total":1,"sessions":[{"sid":"8d3e7a19","slot":1,"name":"支付回调重试","kind":"tty","st":"waiting","need":true,"age_s":540}]}
-frames home-needs 3 200  主页：有人等你，"!" 两步弹出
+frames home-needs 3 200  Home: a session needs you, "!" pops up in two steps
 host sessions.snapshot {"rev":8,"total":1,"sessions":[{"sid":"9f00aa11","slot":1,"name":"landing page copy","kind":"bg","st":"idle","need":false,"age_s":3600,"short":"d4e5f6"}]}
 wait 600
 
@@ -18,34 +18,34 @@ wait 600
 down g0
 wait 700
 mic 1600 speech
-frames memo-voice 4 200 mic=speech  便条：有声音，点头、波形左移、● 呼吸
-frames memo-quiet 4 200 mic=16  便条：安静（屋里的底噪），歪头
+frames memo-voice 4 200 mic=speech  Memo, a voice: nods, the waveform scrolls left, ● breathes
+frames memo-quiet 4 200 mic=16  Memo, quiet (room noise): head tilted
 up g0
 # the memo records on through its 0.6 s grace (gh #51), then saves
 wait 700
-frames home-hop 6 200  主页：存好了，跳一下再坐下
+frames home-hop 6 200  Home: Saved, a hop, then he sits
 
 # Too short: dropped, and he heard nothing: the "?" pops up.
 wait 3000
 hold g0 560
 wait 700
-frames home-novoice 3 200  主页：太短没听到，"?" 两步弹出
+frames home-novoice 3 200  Home: too short, heard nothing, "?" pops up in two steps
 
 # The lit lock card: one more z every 600 ms, then none and again.
 wait 3000
 press opt+l
 press g0
-frames lock-doze 5 600  锁屏卡片：z 每 600 ms 多亮一个
+frames lock-doze 5 600  Lock card: one more z every 600 ms
 press opt+l
 press enter
 
 # The Tab sheet slides in from the right in three 50 ms frames, the knob to the next page.
 wait 500
 down tab
-frames menu-open 3 50  Tab：抽屉三帧滑入（每帧 50 ms）
+frames menu-open 3 50  Tab: the sheet slides in, three frames (50 ms each)
 up tab
 down right
-frames menu-knob 3 50  换页：滑块三帧滑到“去哪”
+frames menu-knob 3 50  Page: the knob slides to “Go” in three frames
 up right
 press tab
 
@@ -59,16 +59,16 @@ press space
 mic 2500 speech
 press space
 mic 3500 speech
-frames meeting 4 200 mic=speech  开会：点头、时间轴、★、● 呼吸
+frames meeting 4 200 mic=speech  Meeting: nods, the timeline, ★, ● breathes
 down tab
-frames menu-meeting 3 200 mic=speech  开会时的 Tab：下面的页压暗，不动
+frames menu-meeting 3 200 mic=speech  Tab in a meeting: the page under it dimmed, still
 up tab
 press tab
 
 # On battery, no key for 60 s: dimmed, nothing moves; only the clock goes on.
 usb off
 mic 61000 speech
-frames meeting-dim 3 400 mic=speech  调暗：Mando、时间轴、● 都不动，只有计时走
+frames meeting-dim 3 400 mic=speech  Dimmed: Mando, the timeline, ● still; only the timer runs
 press opt+r
 press enter
 wait 1500

@@ -270,8 +270,8 @@ int Fuzz::escape_memo(const cpa::RecInfo& r) {
 
 // What a user who wants "home, nothing open" presses, one step per look at the screen.
 // The number of presses, or -1 when stuck.
-// docs/21 §9.2: the language can always be found again: from home, Opt+M opens 设置 /
-// Settings on its WiFi row, "." is the language row, Enter switches. Three presses.
+// docs/21 §9.2: the language can always be found again: from home, Opt+M opens Settings on
+// its WiFi row, "." is the language row, Enter switches. Three presses.
 bool Fuzz::switch_language() {
   const cpa::Lang was = cpa::lang();
   bool shift = false;

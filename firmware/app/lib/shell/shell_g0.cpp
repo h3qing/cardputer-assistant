@@ -36,10 +36,10 @@ void Shell::on_g0(bool down, uint32_t now) {
 // on its down edge (and closes the menu: G0 does what it does, docs/04 §8.7). Locked, G0
 // acts on the lit card only: from dark the press lights the card, as a tap does (lock.h),
 // and ends nothing; its events are the memo's too, so the card never answers it with
-// 没有在录 while the memo records (docs/20 U3, B1). The end lights the card for its own 3 s,
-// which then say how the memo ended (lock_screen.cpp, docs/20 D7). Anywhere else the press
-// may be the second of a double tap, or a slow one (Late: the empty note the first tap
-// opened closes).
+// "Not recording" while the memo records (docs/20 U3, B1). The end lights the card for its
+// own 3 s, which then say how the memo ended (lock_screen.cpp, docs/20 D7). Anywhere else
+// the press may be the second of a double tap, or a slow one (Late: the empty note the
+// first tap opened closes).
 void Shell::g0_down() {
   const RecInfo& r = state().rec;
   const bool lit = !lock_.locked || lock_lit(now_);

@@ -102,7 +102,7 @@ reached the same way, for example `press tab` or `press opt+l`.
 ```
 include common/demo_state.cpas        # relative to this file
 boot store=sd usb=on bat=4100         # also store=internal | none; a new boot is a new device
-boot lang=en                          # the language NVS holds (default zh, docs/21)
+boot lang=zh                          # the language NVS holds (default en since v0.5.2, docs/21)
 host projects.snapshot {"rev":3,...}  # sends {"v":0,"t":"projects.snapshot","id":"hN",...}
 reply outbox.ack outbox.item {"status":"stored"}   # "re" = id of the device's last outbox.item
 press opt+s enter ; esc ms=80         # each key combo held 80 ms (default 50), then 30 ms up

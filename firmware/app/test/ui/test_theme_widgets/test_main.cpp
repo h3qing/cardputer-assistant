@@ -94,8 +94,8 @@ static void test_tiles_selected_and_not() {
   TEST_ASSERT_EQUAL_INT16(83 + 2 + 10 + 4, c.find("等你")->x);
 }
 
-// docs/20 U22's "开 session" (60 px) is wider than a 75 px tile leaves after its key: it is
-// drawn whole, still clear of the key and 2 px short of the tile's rounded end.
+// docs/20 U22's "开 session" ("new session", 60 px) is wider than a 75 px tile leaves after
+// its key: it is drawn whole, still clear of the key and 2 px short of the tile's rounded end.
 static void test_a_wide_label_is_whole_and_clear_of_both_ends() {
   FakeCanvas c;
   const Rect r{161, 64, 75, 16};

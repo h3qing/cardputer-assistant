@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "inbox_logic.h"
 #include "inbox_module.h"
 #include "support/fake_canvas.h"
@@ -14,7 +15,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 // wait-a (600 s) above wait-b (300 s): waiting sessions, the longest wait first.
@@ -90,9 +91,10 @@ static void test_render_highlights_the_selected_session() {
 }
 
 // Review (U22 vs U12, U14): the row's right column is no wider than v0.4.0's ("等待 59m
-// tty"), so with a 12-character project key the name keeps its room: the age is tight
-// ("59分钟") and the kind is left to the detail line (在 Mac 上处理 / claude attach). On the
-// theme's row (docs/19 §6.4: the stripe and 8 px insets) that room is 22 characters.
+// tty", wait 59m tty), so with a 12-character project key the name keeps its room: the age
+// is tight ("59分钟", 59 min) and the kind is left to the detail line (answer on the Mac /
+// claude attach). On the theme's row (docs/19 §6.4: the stripe and 8 px insets) that room is
+// 22 characters.
 static void test_long_names_keep_their_room() {
   Rig r;
   set_projects(r.ctx.app, {project(1, "cardputer-as", "Cardputer")});

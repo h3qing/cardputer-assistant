@@ -61,6 +61,7 @@ void test_debug_lang_decodes_and_encodes() {
   TEST_ASSERT_TRUE(d.outcome == Outcome::Ok && d.reply_to.has);
   const auto* l = std::get_if<DebugLang>(&d.msg.body);
   TEST_ASSERT_TRUE(l && l->lang == Lang::En);
+  TEST_ASSERT_TRUE(DebugLang{}.lang == Lang::En);  // the default, as Settings{} (v0.5.2)
   const auto line = g_diag_codec.encode(make_message(MsgId::from("h90"), {}, DebugLang{Lang::Zh}));
   TEST_ASSERT_TRUE(line.ok);
   TEST_ASSERT_EQUAL_STRING("{\"v\":0,\"t\":\"debug.lang\",\"id\":\"h90\",\"lang\":\"zh\"}\n", line.value.c_str());

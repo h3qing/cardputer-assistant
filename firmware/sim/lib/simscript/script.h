@@ -43,7 +43,7 @@ struct BootSpec {
   cpa::Store store = cpa::Store::Sd;
   bool usb = true;
   uint16_t bat_mv = 4100;
-  cpa::Lang lang = cpa::Lang::Zh;  // docs/21: the language NVS holds at boot
+  cpa::Lang lang = cpa::Lang::En;  // docs/21: the language NVS holds at boot (v0.5.2: English first)
 };
 
 struct Step {

@@ -1,19 +1,21 @@
 // The lit lock card after docs/20 B1 (U3c, U6, U11; D7):
-//   held   a G0 hold the lock swallows says so in big words, "没有在录" over "松开，点一下再
-//          按住", where the clock was; Mando does not doze there (dozing reads "all is
-//          well"): he tilts his head with a "?" and his sign says 没在录;
+//   held   a G0 hold the lock swallows says so in big words, "Not recording" over "Let go,
+//          tap, then hold", where the clock was; Mando does not doze there (dozing reads
+//          "all is well"): he tilts his head with a "?" and his sign says "No rec";
 //   result how the last recording ended, counts only (one that ended while locked, or one
-//          nobody has seen yet; one already seen unlocked is not shown again on the lock): "√ 已存 0:12" (Ok), "× 太短，未存"
-//          (Warn), why it stopped by itself ("会议已停：电量低", "已到 5 分钟上限") or did
-//          not start ("需要 SD 卡（插卡后重启）"); Mando sits up (存好了) or tilts (没听到);
-//   chips  等你 N, then 录N and ↑N only when not zero (one name each, as the status bar),
-//          or "√ 已同步" when both are zero and the Mac is there;
-//   ready  on an armed card, G0 down shows "● 准备" in the ● slot from the press (D8);
+//          nobody has seen yet; one already seen unlocked is not shown again on the lock):
+//          "√ Saved 0:12" (Ok), "× Too short" (Warn), why it stopped by itself
+//          ("Meeting: low battery", "5 min limit reached") or did not start
+//          ("Needs an SD card (insert, restart)"); Mando sits up ("Saved") or tilts ("Huh?");
+//   chips  Waiting N, then RN and ↑N only when not zero (one name each, as the status bar),
+//          or "√ synced" when both are zero and the Mac is there;
+//   ready  on an armed card, G0 down shows "● Wait" in the ● slot from the press (D8);
 //   motion only a dozing Mando's z's move.
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "lock_screen.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
 #include "rec_result.h"
@@ -29,7 +31,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::RecRefusal;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -79,7 +81,7 @@ void assert_inside(const FakeCanvas& c) {
 
 }  // namespace
 
-// U3c, B1: "没有在录" in big (bold) words where the clock was, and how to record instead.
+// U3c, B1: "Not recording" in big (bold) words where the clock was, and how to record instead.
 static void test_a_swallowed_hold_says_not_recording() {
   AppState s = locked();
   s.ui.lock_held = true;
@@ -153,7 +155,7 @@ static void test_the_card_shows_how_it_ended() {
   }
 }
 
-// U21, B3: one name per count (录N, ↑N, as the status bar), none drawn at zero; "√ 已同步"
+// U21, B3: one name per count (RN, ↑N, as the status bar), none drawn at zero; "√ synced"
 // once nothing waits and the Mac is there.
 static void test_chips_name_each_count_once() {
   AppState s = locked();
@@ -176,9 +178,9 @@ static void test_chips_name_each_count_once() {
   assert_inside(waiting);
 }
 
-// U19 (the review): unknown is not zero. Without session data the card has no 等你 chip
-// ("等你 0" read as "nobody waits"); data that is not live is marked, as home does: the
-// card's head says "已锁屏 · 离线" and the chip is not mustard. Long counts beside it fit.
+// U19 (the review): unknown is not zero. Without session data the card has no Waiting chip
+// ("Waiting 0" read as "nobody waits"); data that is not live is marked, as home does: the
+// card's head says "Locked · offline" and the chip is not mustard. Long counts beside it fit.
 static void test_the_need_chip_says_when_it_does_not_know() {
   AppState none = locked();
   none.sessions = SessionsView{};
@@ -210,7 +212,7 @@ static void test_the_need_chip_says_when_it_does_not_know() {
 }
 
 // D7: locking right after a recording that was seen unlocked (its toast) shows the card as
-// ever, "已锁屏" and Mando dozing by the clock; one that ended while locked stays until seen.
+// ever, "Locked" and Mando dozing by the clock; one that ended while locked stays until seen.
 static void test_a_result_seen_unlocked_is_not_shown_again() {
   AppState s = locked();
   s.rec.last = ended(true, 12000);
@@ -251,7 +253,7 @@ static void test_the_card_battery_is_coloured_when_low() {
   }
 }
 
-// D8: on an armed card G0 down shows "● 准备" from the press, in the ● slot, the card below it.
+// D8: on an armed card G0 down shows "● Wait" from the press, in the ● slot, the card below it.
 static void test_ready_from_the_press_on_an_armed_card() {
   AppState s = locked();
   s.ui.memo_ready = true;
@@ -264,9 +266,9 @@ static void test_ready_from_the_press_on_an_armed_card() {
   TEST_ASSERT_TRUE(c.filled_at(14, Color::Sheet));
 }
 
-// Through the runtime: lock, wait for the card to go, hold G0 (swallowed): "没有在录" while
-// it is held and (the review) after it is up, until the card goes dark or a tap lights it
-// again; nothing moves on the card meanwhile. A tap shows the card as before.
+// Through the runtime: lock, wait for the card to go, hold G0 (swallowed): "Not recording"
+// while it is held and (the review) after it is up, until the card goes dark or a tap lights
+// it again; nothing moves on the card meanwhile. A tap shows the card as before.
 static void test_through_the_runtime() {
   RecRig x;
   RuntimeRig& r = x.r;
@@ -291,9 +293,9 @@ static void test_through_the_runtime() {
 
 // The review's probe (stale_result): a memo saved while locked, its result flashed 2 s; ten
 // minutes later the habitual hold from the dark is swallowed. Neither under the hold nor
-// after it does the card show that old "√ 已存" with Mando's 存好了 (on a silent device it
-// reads "my memo was saved"): 没有在录 until the card goes dark, and the old result goes
-// with the hold the card answered (a tap then shows the clock).
+// after it does the card show that old "√ Saved" with Mando's "Saved" (on a silent device
+// it reads "my memo was saved"): "Not recording" until the card goes dark, and the old
+// result goes with the hold the card answered (a tap then shows the clock).
 static void test_a_swallowed_hold_never_shows_an_old_result() {
   RecRig x;
   RuntimeRig& r = x.r;
@@ -327,7 +329,7 @@ static void test_a_swallowed_hold_never_shows_an_old_result() {
   TEST_ASSERT_TRUE(r.disp.canvas_.has("打盹中"));
 }
 
-// docs/28 S1a: 留N while copies are kept; in English four chips are wider than the card, and
+// docs/28 S1a: "kept N" while copies are kept; in English four chips are wider than the card, and
 // the ones that do not fit are left out (the fuzz found "kept 2" past the edge).
 static void test_kept_chip_and_the_card_edge() {
   AppState s = locked();

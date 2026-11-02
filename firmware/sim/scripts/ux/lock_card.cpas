@@ -1,22 +1,22 @@
 # docs/20 B1 regression (U3c, U6, U11; D7). Before: a G0 hold the lock swallowed left the
 # card as it was, Mando dozing ("all is well") while nothing recorded; a recording that ended
-# while locked left no trace on the card; the card said "待传 0" (a third name for 录N).
-# Now: "没有在录" in bold where the clock was, Mando awake with "?"; how it ended ("√ 已存",
-# "× 太短，未存", why it stopped by itself), Mando sitting up or tilting his head; counts
-# with one name each, "√ 已同步" once nothing waits on USB; the battery coloured when low.
-boot store=sd usb=on bat=4100
+# while locked left no trace on the card; the card said "to sync 0" (a third name for RN).
+# Now: "Not recording" in bold where the clock was, Mando awake with "?"; how it ended ("√ Saved",
+# "× Too short", why it stopped by itself), Mando sitting up or tilting his head; counts
+# with one name each, "√ synced" once nothing waits on USB; the battery coloured when low.
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1500
 press opt+l
-shot locked  locked on USB: the card 2 s, 等你 1 and √ 已同步
+shot locked  locked on USB: the card 2 s, Waiting 1 and √ synced
 wait 2500
 host sessions.snapshot {"rev":6,"total":2,"sessions":[{"sid":"8d3e7a19","slot":1,"name":"支付回调重试","kind":"tty","st":"waiting","need":true,"age_s":540},{"sid":"5c2e8a14","slot":2,"name":"cpa/host-sim","kind":"bg","st":"waiting","need":true,"age_s":75,"short":"a1b2c3"}]}
 wait 300
-shot needs-you  a second session waits: the card 3 s, 等你 2 (counts only)
+shot needs-you  a second session waits: the card 3 s, Waiting 2 (counts only)
 wait 3500
 down g0
 wait 900
-shot not-recording  a swallowed hold: 没有在录 / 松开，点一下再按住; Mando awake, 没在录
+shot not-recording  a swallowed hold: Not recording / Let go, tap, then hold; Mando awake, No rec
 up g0
 wait 3500
 press g0
@@ -25,7 +25,7 @@ down g0
 wait 800
 up g0
 wait 1000
-shot too-short  tap, then a 0.8 s hold: × 太短，未存; Mando 没听到
+shot too-short  tap, then a 0.8 s hold: × Too short; Mando: Huh?
 wait 3500
 press opt+l
 press enter
@@ -40,6 +40,6 @@ press opt+l
 wait 2500
 bat 3440
 wait 12000
-shot auto-stop  locked, the battery stopped the meeting: √ 已存 / 会议已停：电量低, 电 16% red
+shot auto-stop  locked, the battery stopped the meeting: √ Saved / Meeting: low battery, Bat 16% red
 wait 3000
 shot dark  dark and locked again

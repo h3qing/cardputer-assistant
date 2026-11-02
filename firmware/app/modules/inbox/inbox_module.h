@@ -1,4 +1,4 @@
-// Inbox module ("等你"), a thin shell over inbox_logic.
+// Inbox module (txt::kWaiting), a thin shell over inbox_logic.
 #pragma once
 
 #include "inbox_logic.h"
@@ -15,7 +15,7 @@ class InboxModule : public Module {
   void render(Canvas& c, const Rect& area) const override;
   const char* hint() const override;
   uint8_t contextSlot() const override;
-  uint8_t help(const HelpRow** rows) const override;  // the Tab menu's 本页 rows
+  uint8_t help(const HelpRow** rows) const override;  // the Tab menu's "Here" rows
 
  private:
   ModuleContext* ctx_ = nullptr;

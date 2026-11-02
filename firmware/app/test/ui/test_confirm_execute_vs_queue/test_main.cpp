@@ -6,6 +6,7 @@
 #include <string>
 
 #include "confirm.h"
+#include "core/support/lang_pin.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
 #include "support/fake_port.h"
@@ -15,7 +16,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static ConfirmSpec spawn_spec() {
@@ -192,7 +193,7 @@ static void test_shell_reply_to_tty_session_is_queued_with_reason() {
   r.shell.on_key(enter(), 1000);
   FakeCanvas c;
   r.shell.render(c, 1000);
-  // docs/20 U7: no stale "要到 v0.4" (this is v0.4); a terminal session takes no reply
+  // docs/20 U7: no stale "not until v0.4" (this is v0.4); a terminal session takes no reply
   TEST_ASSERT_TRUE(c.has("终端里的 session：只存到 Mac 队列"));
   r.shell.on_key(enter(), 1400);
   TEST_ASSERT_EQUAL_UINT32(0, r.port.agents.size());
@@ -272,7 +273,7 @@ static void test_notes_and_queue_items_skip_confirm() {
   TEST_ASSERT_TRUE(r.port.queued[0].intent == Intent::Todo);
 }
 
-// Review (U25): the uncertain item's box keeps "在 cpa 开 session" on its first row and
+// Review (U25): the uncertain item's box keeps "New session in cpa" on its first row and
 // adds the warning on a row of its own, above the quoted text.
 static void test_shell_uncertain_spawn_box_keeps_its_title() {
   Rig r;

@@ -1,9 +1,10 @@
 // How a recording ends, on the runtime (docs/20 U6, U15, S1): the memo cap screen waits
 // for G0 to go up; an automatic stop while locked keeps its reason (RecLast) and its
 // toast until the screen is seen lit; a lost end event no longer leaves the device
-// stuck in "保存中…"; the 3.55 V warning line.
+// stuck in "Saving…"; the 3.55 V warning line.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "rec_result.h"
 #include "runtime.h"
@@ -13,7 +14,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() { set_lang(Lang::Zh); }  // a failed English test skips its LangScope
 
 static const KeySet kG0 = KeySet{}.with(key::kG0);
@@ -70,8 +71,8 @@ static void test_mando_hops_after_the_held_screen() {
 }
 
 // Review (U15 on battery): the G0 press was 5 minutes ago, so the first tick after the cap
-// turned the backlight off and the held screen was never seen ("录音已停", no tip). Held,
-// it stays lit as the recording was (dimmed), with the cap's text and tip.
+// turned the backlight off and the held screen was never seen ("Recording stopped", no
+// tip). Held, it stays lit as the recording was (dimmed), with the cap's text and tip.
 static void test_memo_cap_screen_on_battery() {
   RecRig x;
   x.r.unplug();
@@ -139,7 +140,7 @@ static void test_locked_auto_stop_keeps_the_reason() {
   TEST_ASSERT_TRUE(x.r.rt.state().rec.last.seen);
   TEST_ASSERT_TRUE_MESSAGE(x.r.disp.canvas_.has("会议已停：电量低"), x.r.disp.canvas_.dump().c_str());
   TEST_ASSERT_FALSE(x.r.disp.canvas_.has("不能录音"));  // a stop is not a refusal
-  press(x, opt('l'));  // dark again (docs/20 D7: after "已锁屏" for 2 s): seen once, now gone
+  press(x, opt('l'));  // dark again (docs/20 D7: after "Locked" for 2 s): seen once, now gone
   x.r.step(kLockFlashMs + 100);
   TEST_ASSERT_FALSE(x.r.rt.state().rec.last.has);
 }

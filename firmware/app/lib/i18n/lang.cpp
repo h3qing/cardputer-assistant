@@ -3,7 +3,7 @@
 namespace cpa {
 namespace {
 
-Lang g_lang = Lang::Zh;
+Lang g_lang = Lang::En;  // until the shell reads NVS (v0.5.2: English first)
 
 }  // namespace
 

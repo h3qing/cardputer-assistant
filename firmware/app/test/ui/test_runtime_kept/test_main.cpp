@@ -1,4 +1,4 @@
-// The kept copies end to end (docs/28 S1a, §9 "再交一次", "5 秒提示"): a Runtime with the
+// The kept copies end to end (docs/28 S1a, §9 "Send again", "5 s notice"): a Runtime with the
 // audio task on the host, two Macs told apart by their hello's host_id.
 #include <unity.h>
 
@@ -47,7 +47,7 @@ static void test_deliver_again_goes_to_the_other_mac_only() {
   TEST_ASSERT_EQUAL_UINT16(1, x.r.rt.state().rec.kept.segs);
 }
 
-// §9 "5 秒提示": offline memos are held for 5 s, then listed, files.rev moving.
+// §9 "5 s notice": offline memos are held for 5 s, then listed, files.rev moving.
 static void test_plug_in_hint_holds_offline_memos_five_seconds() {
   RecRig x;
   hello(x, kMacA);

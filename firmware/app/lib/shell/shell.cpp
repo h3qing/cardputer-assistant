@@ -354,7 +354,7 @@ void Shell::execute(const ConfirmSpec& spec) {
   d.qid = spec.qid;
   d.text = spec.text;
   if (!port_.send_agent(d)) return queue_instead(spec, tr(kBusy));
-  close_overlay();  // the result toast follows (agent.result, or "结果未知")
+  close_overlay();  // the result toast follows (agent.result, or "Unknown result")
 }
 
 void Shell::queue_instead(const ConfirmSpec& spec, const char* why) {

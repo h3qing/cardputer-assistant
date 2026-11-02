@@ -3,8 +3,8 @@
 //     the editor's title says the same; offline there is no Opt+D in it;
 //   - a session's name is never "key/key/…", the inbox's detail lines give it whole, and the
 //     reply confirm shows its end and a short id, so two alike sessions differ;
-//   - a spawn whose result never came back is "开?" on the board;
-//   - the board's overview names ` 返回;
+//   - a spawn whose result never came back is "new?" on the board;
+//   - the board's overview names [`]back;
 //   - away from the Mac the inbox says how old its list is, its ages stop, and an empty one
 //     does not say all is done.
 #include <unity.h>
@@ -13,6 +13,7 @@
 
 #include "board_module.h"
 #include "confirm.h"
+#include "core/support/lang_pin.h"
 #include "inbox_module.h"
 #include "reducers.h"
 #include "shell.h"
@@ -26,7 +27,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -117,7 +118,7 @@ static void test_a_session_label_never_doubles_the_key() {
 }
 
 // U7: Enter delivers only to an idle background session with replies on; the hint says so
-// for the selected row ("记给 Mac" otherwise), and it is the confirm box's own decision.
+// for the selected row ("Note to Mac" otherwise), and it is the confirm box's own decision.
 static void test_inbox_hint_says_if_a_reply_reaches() {
   InboxRig r;
   TEST_ASSERT_EQUAL_STRING("Enter记给Mac Opt+D忽略 `返回  Tab菜单", r.m.hint());  // 架构设计: a terminal
@@ -157,7 +158,7 @@ static void test_board_sessions_hint_per_row() {
   TEST_ASSERT_EQUAL_STRING("Enter记给Mac Opt+D忽略 `返回  Tab菜单", r.m.hint());
   r.m.onKey(chr('.'));
   TEST_ASSERT_EQUAL_STRING("Enter回复 Opt+D忽略 `返回  Tab菜单", r.m.hint());
-  r.m.onKey(chr('/'));  // 队列: its own hint
+  r.m.onKey(chr('/'));  // Queue: its own hint
   TEST_ASSERT_TRUE(starts(r.m.hint(), "Enter开session"));
 }
 
@@ -244,7 +245,7 @@ static void test_editor_title_says_where_a_reply_goes() {
   TEST_ASSERT_FALSE(c.has("cpa/cpa/"));
 }
 
-// U25: a spawn whose result never came back may already run: "开?" in mustard, not "开".
+// U25: a spawn whose result never came back may already run: "new?" in mustard, not "new".
 static void test_an_uncertain_spawn_is_marked() {
   BoardRig r;
   QueueRow unsure = queue_item("q18", 1, "write docs", Intent::Spawn);

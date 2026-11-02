@@ -14,7 +14,7 @@
 
 文档以英文为主，大多数页面旁边有中文版（`*.zh-CN.md`，第一行有链接）。设备（设置 → 语言，Opt+M 打开设置）和 Mac app 都能在中文和英文之间切换。
 
-> 状态：v0.5.1 已发布（[发布说明](docs/releases/v0.5.1.zh-CN.md)）：录音留在设备上，直到对的 Mac 来拿（[docs/28](docs/28-multi-mac-sync.zh-CN.md) S1a）；文档、`cpa`、安装脚本和 Mac app 以英文为主，也支持中文。计划见 [docs/13](docs/13-assistant-v2-plan.zh-CN.md)，按键见下面的[按键](#按键)。`cpa`、`cpad`、`cpa-fw` 和仓库名都是占位名，首次公开发布前统一改（[04 §16](docs/04-prd.zh-CN.md) 第 9 条）。
+> 状态：v0.5.2 已发布（[发布说明](docs/releases/v0.5.2.zh-CN.md)）：设备默认英文（中文在设置里一键切换），用电池黑屏时会歇着，大批「再交一次」「清掉留底」不再触发看门狗重启；录音留在设备上，直到对的 Mac 来拿（[docs/28](docs/28-multi-mac-sync.zh-CN.md) S1a）。计划见 [docs/13](docs/13-assistant-v2-plan.zh-CN.md)，按键见下面的[按键](#按键)。`cpa`、`cpad`、`cpa-fw` 和仓库名都是占位名，首次公开发布前统一改（[04 §16](docs/04-prd.zh-CN.md) 第 9 条）。
 
 ## 三块代码，一份契约
 

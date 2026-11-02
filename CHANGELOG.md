@@ -5,8 +5,20 @@
 Format follows [Keep a Changelog](https://keepachangelog.com/); versions follow SemVer. Each version's details are in `docs/releases/<version>.md`, which the release workflow uses as the body of the GitHub Release when a tag is pushed.
 
 ## [Unreleased]
+
+## [v0.5.2] - 2026-11-01
 ### Added
-- Dark-screen idle yield (docs/29 P1; requirement (2026-10-28): a device nobody touches for a long time stays on and runs the battery down): on battery, with the screen dark and locked and the lock card off, no recording, no Mac on the cable, the audio task and the ledger idle, and no key down (nor within 1 s of the last key), the main loop gives up the CPU for 10 ms after each pass instead of spinning at 240 MHz. A key is at most 10 ms later; lit, dimmed, recording and plugged into a Mac behave exactly as before. Pure function `lib/core/idle_yield.*`, with host tests that include the `millis()` wrap; the device test `device/test_idle_yield` (passes per second and the largest gap, lit, dark and with a Mac plugged in) has not run on the real device yet.
+- Dark-screen idle yield (docs/29 P1; requirement (2026-10-28): a device nobody touches for a long time stays on and runs the battery down): on battery, with the screen dark and locked and the lock card off, no recording, no Mac on the cable, the audio task and the ledger idle, and no key down (nor within 1 s of the last key), the main loop gives up the CPU for 10 ms after each pass instead of spinning at 240 MHz. A key is at most 10 ms later; lit, dimmed, recording and plugged into a Mac behave exactly as before. Pure function `lib/core/idle_yield.*`, with host tests that include the `millis()` wrap; on the real device `device/test_idle_yield` gives 98 passes a second when dark against about 14,400 lit, and the yield adds at most 4.2 ms to the loop's longest gap (its gate now checks what the yield adds, docs/29 P1's "key sampling at most 10 ms later", instead of an absolute 20 ms that the lit loop itself misses).
+- The firmware reports `cpa-fw/0.5.2`; `cpa --version`, `cpa-stt --version` and the Mac app are 0.5.2.
+### Changed
+- The device starts in English (English first, with Chinese supported, after #88–#92): a device with nothing stored, such as a new one or one whose NVS was erased, shows English, and so does the simulator's `boot` (a script written for Chinese says `boot lang=zh`). A device that already ran an earlier cpa-fw and was never switched stays Chinese: on its first boot with this firmware, before the boot counter is written, `cpa/lang` is stored as 0, once. A language already chosen is never touched, and Opt+M, `.`, Enter still switches. Firmware tests written for the Chinese interface pin it in `setUp()`.
+- Firmware and simulator code comments are in English, and so are the simulator scripts' comments and screenshot captions. A comment keeps Chinese only where it is about the Chinese text itself (glyphs, widths, the "语言 Language" row, CJK test data).
+- Install instructions (README, release notes, the headers and `--help` of `install.sh` and `uninstall.sh`) give the public `curl … | bash` line only; leftover personal wording in the docs is gone (#97).
+### Fixed
+- The boot scan's stack (#85): with about 100 recordings waiting on the card, the audio task had only 1,028 B of its 6 KB stack left after the boot scan. Each `.M` now decodes straight into the caller's `RecMeta` and the recovery plan is built in place: 1,624 B left on the device (gate 1,536 B). No heap, static RAM or stack-size change.
+- The task-watchdog reboot during a large "deliver again" or "Clear kept" (#85; the known issue of v0.5.1): the audio task's file work sleeps a tick every 100 ms, so the idle task on core 0 is never starved. On the device, 200 kept segments were queued again in 5.7 s and cleared in 14.2 s, with no reboot.
+- Installer: no more "printf: write error: Broken pipe" lines during a curl install (#98); the installer tests also run in a HOME without `~/Library/LaunchAgents`.
+- daemon tests: the MCP stdio test no longer deadlocks on a pipe macOS leaves small (#96).
 
 ## [v0.5.1] - 2026-10-29
 ### Added

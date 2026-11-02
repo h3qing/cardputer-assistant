@@ -6,8 +6,8 @@
 //   3. a key with nothing after it takes the next word when that starts with a Han
 //      character: "Enter 确认" -> [Enter] 确认;
 //   4. pure ASCII words in a row are one key: "Opt N/Q/S 类型" -> [Opt N/Q/S] 类型;
-//   5. a word starting with a Han character is plain text, except the key names 退格 and
-//      空格: "退格 退出" -> [退格] 退出.
+//   5. a word starting with a Han character is plain text, except the key names 退格
+//      (Backspace) and 空格 (Space): "退格 退出" -> [退格] 退出.
 //   6. (docs/21 §6.6) English words are ASCII like keys, so an English hint brackets its
 //      keys, and then only brackets count: "[Enter]open [`]keep recording" -> [Enter] open,
 //      [`] keep recording. Words run to the next "[" at a word start; text before the first

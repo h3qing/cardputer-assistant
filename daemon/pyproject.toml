@@ -1,6 +1,6 @@
 [project]
 name = "cpad"
-version = "0.5.1"
+version = "0.5.2"
 description = "Mac daemon (cpad) and CLI (cpa) for Cardputer Assistant"
 readme = "README.md"
 license = "MIT"

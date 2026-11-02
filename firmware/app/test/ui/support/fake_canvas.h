@@ -147,7 +147,7 @@ class FakeCanvas : public cpa::Canvas {
 
   // The texts of the line starting at y as words: left to right, joined by a space, a text
   // drawn again a pixel to the right (a bold title) once. A hint bar of keycaps reads
-  // "Enter 放弃 ` 返回".
+  // "Enter discard ` back".
   std::string line(int16_t y) const {
     std::vector<TextOp> on;
     for (const auto& t : texts) {

@@ -40,7 +40,7 @@ class ShellPort {
     (void)slot;
     return rec::RecRefusal::NoSd;
   }
-  // What a gesture now would be refused for, or None (docs/20 D8: "● 准备" only for a hold
+  // What a gesture now would be refused for, or None (docs/20 D8: "● Wait" only for a hold
   // that records).
   virtual rec::RecRefusal rec_refusal() const { return rec::RecRefusal::NoSd; }
   // A key while a recording overlay is up, already mapped by the shell (§4.1 tables).

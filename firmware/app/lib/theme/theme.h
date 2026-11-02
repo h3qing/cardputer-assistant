@@ -54,7 +54,7 @@ struct Keycap {
 int16_t keycap_width(const Canvas& c, const char* key, const Keycap& k = Keycap{});
 int16_t keycap(Canvas& c, int16_t x, int16_t y, const char* key, const Keycap& k = Keycap{});  // its width
 
-// A capsule with a word in it (跑1, !2, 等你 1); taller than kCapH, the text sits a pixel
+// A capsule with a word in it (run1, !2, Waiting 1); taller than kCapH, the text sits a pixel
 // lower, as in the mockups. Returns its width.
 struct PillSize {
   int16_t h = kCapH;
@@ -63,12 +63,12 @@ struct PillSize {
 int16_t pill_width(const Canvas& c, const char* text, PillSize s = PillSize{});
 int16_t pill(Canvas& c, int16_t x, int16_t y, const char* text, Tone t, Color under, PillSize s = PillSize{});
 
-// A one-word sign centred on xc (Mando's 在听 / 打盹中, docs/19 §7): a kSignH capsule,
+// A one-word sign centred on xc (Mando's "Listen" / "Napping", docs/19 §7): a kSignH capsule,
 // moved in to stay kSignEdge px inside the screen (docs/21 §6.9). Returns where it was drawn.
 constexpr int16_t kSignEdge = 2;
 Rect sign(Canvas& c, int16_t xc, int16_t y, const char* text, Tone t, Color under = Color::Bg);
 
-// WhisperWoof's live words: something that has not landed yet (存到 [未归属]), a 14 px
+// WhisperWoof's live words: something that has not landed yet (Save to [No project]), a 14 px
 // Select capsule in a Live outline with Accent text. Returns its width.
 constexpr int16_t kLiveH = 14;
 int16_t live_capsule(Canvas& c, int16_t x, int16_t y, const char* text, Color under = Color::Bg);
@@ -100,8 +100,8 @@ bool hint_fits(const Canvas& c, const char* hint);
 void hint_bar(Canvas& c, const HintLine& line);
 bool hint_fits(const Canvas& c, const HintLine& line);
 
-// A line in the hint format anywhere ("Enter 开始    ` 取消" in a confirm card): the keys as
-// caps on `under`, the words in `ink`, at the roomiest spacing. Returns its width.
+// A line in the hint format anywhere ("[Enter]start    [`]cancel" in a confirm card): the
+// keys as caps on `under`, the words in `ink`, at the roomiest spacing. Returns its width.
 int16_t keys_text(Canvas& c, int16_t x, int16_t y, const char* text, Color ink, Color under);
 
 // A toast over the hint bar: one capsule in the tone's colours, 2 px in from each side, its

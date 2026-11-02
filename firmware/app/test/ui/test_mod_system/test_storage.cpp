@@ -1,6 +1,6 @@
-// docs/28 S1a: System -> 存储 / Storage. 再交一次 and 清掉留底 open a box whose cursor is on
-// 取消, so Enter alone never sends anything again nor clears (review 4); 给这台 Mac undoes a
-// deliver again for the Mac on the link (review 6).
+// docs/28 S1a: System -> Storage. "Send again" and "Clear kept" open a box whose cursor is
+// on "Cancel", so Enter alone never sends anything again nor clears (review 4); "To this Mac"
+// undoes a deliver again for the Mac on the link (review 6).
 #include <unity.h>
 
 #include "test_system_rig.h"
@@ -71,7 +71,7 @@ void test_storage_rows_and_facts_in_english() {
   TEST_ASSERT_TRUE(one.has("Kept 1 file ·") && one.has("1 file") && !one.has("1 files"));
 }
 
-// Review 4: Opt+M , Enter used to send a batch again at once; now a box on 取消.
+// Review 4: Opt+M , Enter used to send a batch again at once; now a box on "Cancel".
 void test_send_again_opens_a_box_on_cancel() {
   StoreTab s;
   TEST_ASSERT_TRUE(s.m.onKey(enter()));
@@ -83,7 +83,7 @@ void test_send_again_opens_a_box_on_cancel() {
   TEST_ASSERT_TRUE(c.has("\xC2\xB7" "3F2A 不会再拿到"));
   TEST_ASSERT_FALSE(c.has("待传 3"));  // the facts below the box are not half drawn under its edge
   expect_inside(c);
-  s.m.onKey(enter());  // 取消
+  s.m.onKey(enter());  // Cancel
   TEST_ASSERT_TRUE(s.ctx.kept_asks.empty());
   s.m.onKey(enter());
   s.m.onKey(chr('/'));
@@ -124,7 +124,7 @@ void test_clear_opens_a_box_on_cancel() {
   s.m.onKey(chr('.'));
   s.m.onKey(enter());
   TEST_ASSERT_TRUE(s.m.ui().confirm && !s.m.ui().yes);
-  s.m.onKey(enter());  // 取消
+  s.m.onKey(enter());  // Cancel
   TEST_ASSERT_FALSE(s.m.ui().confirm);
   TEST_ASSERT_TRUE(s.ctx.kept_asks.empty());
   s.m.onKey(enter());
@@ -177,7 +177,7 @@ void test_nothing_kept_and_busy_say_so() {
   TEST_ASSERT_TRUE(c.has("没有"));
 }
 
-// No batch (or one handed to a Mac without a host_id): Enter on 再交一次 says so, asks nothing.
+// No batch (or one handed to a Mac without a host_id): Enter on "Send again" says so, asks nothing.
 void test_send_again_without_a_batch_says_so() {
   StoreTab s;
   s.ctx.app.rec.kept.batch_host = 0;

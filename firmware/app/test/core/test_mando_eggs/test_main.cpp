@@ -1,9 +1,9 @@
 // Mando's easter eggs (docs/04, hidden keys), the pure part:
 //   pat    Opt+W: one more pat, a random short line (never the same twice in a row), every
-//          100th the rare one; shown 1.5 s; "摸 ×N" / "pats ×N", "×N" after 摸摸 / Pat pat;
-//   mood   by the local clock: 夜深了 from 23:30 to 5:00 (an extra z), 早起鸟 from 5:00 to
-//          7:00 (awake), 周末啦 on Saturday and Sunday; the time unknown, as before;
-//   clear  the sessions needing you went from some to none: 搞定啦 for 2.5 s, never over
+//          100th the rare one; shown 1.5 s; "pats ×N", "×N" after "Pat pat";
+//   mood   by the local clock: "Bedtime" from 23:30 to 5:00 (an extra z), "Up early" from
+//          5:00 to 7:00 (awake), "Weekend" on Saturday and Sunday; the time unknown, as before;
+//   clear  the sessions needing you went from some to none: "All clear" for 2.5 s, never over
 //          a saved hop or his "?" still on show.
 #include <unity.h>
 
@@ -89,14 +89,14 @@ static void test_every_hundredth_pat_is_the_rare_line() {
 
 static void test_the_count_in_both_languages() {
   PatState p = pats(3);
-  p.line = 0;  // 汪!
+  p.line = 0;  // Woof!
   TEST_ASSERT_EQUAL_STRING("摸 \xC3\x97" "3", pat_count(p).c_str());  // 摸 ×3
   set_lang(Lang::En);
   TEST_ASSERT_EQUAL_STRING("pats \xC3\x97" "3", pat_count(p).c_str());
   TEST_ASSERT_EQUAL_STRING("pats \xC3\x97" "100", pat_count(pats(100)).c_str());
 }
 
-// After 摸摸 / Pat pat the word is not said twice: just "×N"; the rare line keeps it.
+// After "Pat pat" the word is not said twice: just "×N"; the rare line keeps it.
 static void test_the_count_does_not_echo_pat_pat() {
   PatState p = pats(3);
   p.line = 2;
@@ -218,7 +218,7 @@ static void test_all_clear_waits_for_a_voice_moment() {
 }
 
 static void test_the_all_clear_sign_is_not_the_greeting() {
-  TEST_ASSERT_EQUAL_STRING("搞定啦", tr(egg::kAllClear));  // the greeting already says 都处理完了
+  TEST_ASSERT_EQUAL_STRING("搞定啦", tr(egg::kAllClear));  // the greeting already says "all done"
   set_lang(Lang::En);
   TEST_ASSERT_EQUAL_STRING("All clear", tr(egg::kAllClear));
 }

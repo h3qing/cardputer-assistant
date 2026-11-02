@@ -1143,3 +1143,35 @@ Two HIL rigs on one Mac (`create_rig()` twice = two temporary `$CPA_HOME`s, each
 - [ ] `(cd firmware/app && pio run -e cardputer-adv -t upload)`, `debug.(key|state|reboot|rec|mic|codec|lang)` 0 times; `cpa pause 1`, `cpa status`: the kept copies on the card are HIL's test recordings, so clear them with "Clear kept" (清掉留底) on the Storage page, `files.n=0`.
 
 **Merge only after tonight**: 11.1–11.3 all pass, or any failure is clearly explained as a test assumption (11.2). Step 8's real power cut is S1a's "hardware power-cut gate" in docs/28 §8.
+
+
+## 12. v0.5.2 "the boot scan's stack, the dark-screen yield, English by default": real device
+
+### 12.1 Real device (2026-11-01 21:58–22:40 PST, the agent had the device to itself)
+
+Device and card as in §6.0, on USB the whole time, serial port `/dev/cu.usbmodem101`, the real cpad paused (`cpa pause`). Before starting, `cpa status --json`: link ready, `cpa-fw/0.5.0`, 0 segments on the card. Each PR was tested at its own head before merging; #94 was tested after main (#85, #87) was merged into it, so its runs are the v0.5.2 firmware.
+
+**#85 (boot scan's stack, watchdog), head `fe27443`:**
+- [x] `device/test_rec_budget` **5/5** (3 min 9 s): `CPA_BOOT_SCAN waiting=100 indexed=102 audio_stack_left=1624` (gate 1,536; 1,028 before the fix); `CPA_REC_LEDGER segs=200 recs=25 requeued=200 again_us=5730642 clear_cmds=4 clear_us=14184968 audio_stack_left=1624`: deliver again and clear on 200 segments, **no task-watchdog abort**, the port stayed up (on 2026-10-29 this suite aborted on the watchdog and the device fell off USB).
+- [x] HIL (test build): `rec_memo` 18/18 (memo start 507 ms), `rec_meeting` 20/20 (462 KB/s), `rec_resume` 10/10, `rec_reboot` 18/18 (44 ms lost at a mid-segment reboot).
+- [x] Reset torture (a), `debug.reboot` in the middle of a pull (scratch scenario: a 40 s meeting, one ~1.3 MB segment, a reboot 0.4–2.6 s after the first `file.get`): **6 real mid-pull reboots**, each time the card mounted, the boot scan indexed the half-pulled segment, the meeting landed **once**, intact, device SHA matches, no gaps, each segment stored once and deleted once, `files_n=0`. A seventh reboot came after the pull had ended and does not count.
+
+**#87 (dark-screen idle yield, docs/29 P1), head `df6895e`, then `2bccd9e`:**
+- [x] `device/test_idle_yield` on `df6895e`: one assert failed, `dark_gap_max_us=24002 < 20000`. The lit loop, which never yields, already had `lit_gap_max_us=20761` (a full redraw), so the absolute gate asked for something the firmware never had. `2bccd9e` gates what the yield adds (`dark ≤ lit + kIdleYieldMs + 2 ms`, docs/29 P1 "key sampling ≤ 10 ms later").
+- [x] On `2bccd9e`, twice: **pass**, `CPA_IDLE lit_hz=14385 lit_gap_max_us=20773 dark_hz=98 dark_yields=296 dark_gap_max_us=25002 host_hz=15189`. Dark: 98 passes/s (from about 14,400); lit and host never yield.
+- [x] HIL (test build, plugged in, so no yield): `rec_memo` 18/18, memo start **507 ms** (unchanged); `lock` 12/12.
+- [ ] 👤 On battery, by hand: after the screen goes dark, G0 tap-and-hold still records with nothing missing at the start; Opt+L, Enter unlocks on the first try.
+- Finding for P2: the dark loop has one ~15 ms pass in every 3 s window, the same every run: work still done while dark.
+
+**#94 (English by default), merged with main as `aa0387f`:**
+- [x] NVS backed up first: `read_flash 0x9000 0x5000` twice, identical (the partition table read from the device confirms `nvs` at 0x9000, size 0x5000). Kept outside the repo.
+- [x] The long-used device keeps English: the test build over the existing NVS (`cpa/lang` = 1); HIL `lang` **5/5** (starts `en`; Opt+M `.` Enter → `zh`, kept over `debug.reboot`; back to `en`, kept), `handshake` 6/6.
+- [x] `device/test_storage` **11/11**: `CPA_NVS_LANG_MIGRATE wrote=1 zh=1:0 again=0 over_en=0 en=1`.
+- [x] Erased NVS: the app test build flashed first, then `erase_region 0x9000 0x5000` and a hard reset, so the first boot on the erased NVS was the app (a test suite's `nvs_boot_ticket()` would have made it Chinese). First boot `en`, still `en` after two `debug.reboot`s; boots `34X70FS-00001/2/3` (a new boot-id prefix after an erase).
+- [x] HIL `--scenarios all` on the fresh NVS: **10/10**.
+- [x] NVS put back: `write_flash 0x9000` of the backup, hash verified; the readback differs only in the one entry the next boot wrote (29 bytes, the boot counter and its bitmap). Boots `1833562-00082/3/4`, its own counter again, English.
+
+### 12.2 After the runs
+
+- [x] Kept copies left by the HIL runs cleared through the device's own keys on the test build: Opt+M, `,` (Storage), `.` `.` ("Clear kept"), Enter, `/`, Enter; the language unchanged. (`debug.state` has no kept count: 👤 the lock card should no longer show "kept N".)
+- [ ] The v0.5.2 release build flashed, `cpa pause 1`, `cpa status` link ready with `cpa-fw/0.5.2` (§12.3).

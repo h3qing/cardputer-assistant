@@ -14,7 +14,7 @@ Turns the M5Stack Cardputer ADV into a "pocket side screen + quick-note keyboard
 
 The docs are in English; most pages have a Chinese version next to them (`*.zh-CN.md`, linked on the first line). The device (Settings → Language, opened with Opt+M) and the Mac app can both switch between English and Chinese.
 
-> Status: v0.5.1 is released ([release notes](docs/releases/v0.5.1.md)): recordings stay on the device until the right Mac takes them ([docs/28](docs/28-multi-mac-sync.md) S1a), and the docs, `cpa`, the installer and the Mac app are English first, with Chinese supported. The plan is in [docs/13](docs/13-assistant-v2-plan.md), and the keys are under [Keys](#keys) below. `cpa`, `cpad`, `cpa-fw` and the repo name are all placeholders, to be renamed before the first public release ([04 §16](docs/04-prd.md) item 9).
+> Status: v0.5.2 is released ([release notes](docs/releases/v0.5.2.md)): the device starts in English (Chinese is one setting away), rests when its screen is dark on battery, and handles large "deliver again" and "Clear kept" runs without a watchdog reboot; recordings stay on the device until the right Mac takes them ([docs/28](docs/28-multi-mac-sync.md) S1a). The plan is in [docs/13](docs/13-assistant-v2-plan.md), and the keys are under [Keys](#keys) below. `cpa`, `cpad`, `cpa-fw` and the repo name are all placeholders, to be renamed before the first public release ([04 §16](docs/04-prd.md) item 9).
 
 ## Three pieces of code, one contract
 

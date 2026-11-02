@@ -374,7 +374,7 @@ static void test_caps_and_battery() {
   TEST_ASSERT_FALSE(has(rec_tick(st.state, ok), RecFx::Stop));  // recovered: the 10 s restart
   low.now = 15000;
   st = rec_tick(st.state, low);
-  // docs/20 U6: an automatic stop is not a refusal ("不能录音"): the reason rides along
+  // docs/20 U6: an automatic stop is not a refusal ("can't record"): the reason rides along
   // to the end of the recording (test_auto_stop_reasons)
   TEST_ASSERT_TRUE(has(st, RecFx::Stop) && st.state.stop_why == RecRefusal::Battery);
   TEST_ASSERT_FALSE(has(st, RecFx::Refuse));
@@ -418,7 +418,7 @@ static void test_cap_values() {
 }
 
 // docs/11 §4.7: with the record-time allocation mode the ring is allocated at Start; a
-// failed allocation ends the attempt with "内存不足", on the screen only.
+// failed allocation ends the attempt with "Out of memory", on the screen only.
 static void test_allocation_failure_at_start() {
   RecCoreState s;
   s.ready = true;

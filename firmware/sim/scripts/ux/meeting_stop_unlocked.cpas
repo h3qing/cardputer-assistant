@@ -1,9 +1,9 @@
 # Review regression (D7, D2). Before: on battery an unlocked meeting dims after a minute;
 # when the battery stopped it, the screen went from dimmed straight to black and locked, so
-# "会议已停：电量低" was never shown until some later G0 tap.
+# "Meeting: low battery" was never shown until some later G0 tap.
 # Now: the end lights the screen as a key would (the result page and its toast), then it
 # dims, goes dark and locks as usual.
-boot store=sd usb=off bat=4100
+boot store=sd usb=off bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1500
 press opt+r
@@ -14,7 +14,7 @@ shot dimmed  a meeting left alone 70 s on battery: dimmed
 bat 3440
 mic 12000 2500
 wait 300
-shot stopped  the battery stopped it: lit, 会议已停：电量低
+shot stopped  the battery stopped it: lit, Meeting: low battery
 wait 45000
 shot still  45 s on: still lit
 wait 20000

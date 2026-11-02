@@ -1,15 +1,16 @@
-// Home launcher (docs/13 §5.6, v0.4.0): a 3 x 3 grid P 项目 / I 等你 / R 开会;
-// N 记一条 / Q 排队给 AI / S 开 session; M 设置 / L 锁屏 / Tab 菜单. A tile only presses a
+// Home launcher (docs/13 §5.6, v0.4.0): a 3 x 3 grid P Board / I Inbox / R Meet;
+// N Note / Q AI queue / S Session; M Settings / L Lock / Tab Menu. A tile only presses a
 // key for the user (ModuleContext::press): its letter or Enter presses Opt+letter, the
 // Tab tile presses Tab, 1-9 press Opt+1-9. docs/20 D1: R and L need Opt (their letters
 // alone press nothing), and a letter that is no tile hints once per visit. ; . , / move
 // with wrap. Badges come from
-// AppState ("跑N", "!N"); a card names the most urgent session needing you (docs/19 §6.3;
+// AppState (kRunningTile, "!N"); a card names the most urgent session needing you (docs/19 §6.3;
 // Mando and the greeting: test_home_mando).
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "home_module.h"
 #include "support/fake_canvas.h"
@@ -19,7 +20,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 struct Rig {

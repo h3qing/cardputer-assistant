@@ -28,7 +28,7 @@ constexpr int16_t kMandoDx = 13;
 constexpr int16_t kMandoDy = 9;
 constexpr int16_t kSignDx = 26;  // centre
 constexpr int16_t kSignDy = 59;
-constexpr int16_t kColumnDx = 65;  // 已锁屏, the date line and the chips
+constexpr int16_t kColumnDx = 65;  // "Locked", the date line and the chips
 constexpr int16_t kClockDx = 63;   // the clock's first cell (its ink starts a pixel in)
 constexpr int16_t kClockDy = 21;
 constexpr int16_t kBigDy = 20;     // docs/20 B1: the words in the clock's place, and below them
@@ -75,8 +75,8 @@ MonthDay month_day(int64_t days) {
 bool mark_shown(const AppState& s) { return rec_on_screen(s.rec.phase) || s.ui.memo_ready; }
 bool mark_ready(const AppState& s) { return !rec_on_screen(s.rec.phase) || s.rec.phase == RecPhase::Cue; }
 
-// "●42:10 ★2" (meeting) or "● REC 0:12" (memo; hands free "● 免提 0:12", gh #51: the dark
-// screen's only sign of how it ends), red; "● 准备" in mustard from the press until the
+// "●42:10 ★2" (meeting) or "● REC 0:12" (memo; hands free "● Hands-free 0:12", gh #51: the
+// dark screen's only sign of how it ends), red; "● Wait" in mustard from the press until the
 // microphone is up, as on the unlocked pages, so nobody starts talking too early.
 FixedStr<32> rec_mark_text(const AppState& s, uint32_t now) {
   const RecInfo& r = s.rec;
@@ -134,8 +134,8 @@ const char* weekday_of(int64_t days) {
   return tr(txt::kWeekdays[((days + 4) % 7 + 7) % 7]);  // 1970-01-01 was a Thursday
 }
 
-// The Mac's picture behind 等你 (docs/20 U19, unknown is not zero): live; kept from before
-// the Mac went away (home says 现在离线); or none at all.
+// The Mac's picture behind "Waiting N" (docs/20 U19, unknown is not zero): live; kept from
+// before the Mac went away (home says "offline now"); or none at all.
 enum class NeedData : uint8_t { None, Live, Kept };
 
 NeedData need_data(const AppState& s) {
@@ -145,8 +145,8 @@ NeedData need_data(const AppState& s) {
   return kept ? NeedData::Kept : NeedData::None;
 }
 
-// 等你 N, mustard while N > 0 and live; none without a picture ("等你 0" would read as nobody
-// waits). Into chip; false: no chip.
+// "Waiting N", mustard while N > 0 and live; none without a picture ("Waiting 0" would read
+// as nobody waits). Into chip; false: no chip.
 bool need_chip(const AppState& s, char (&chip)[24], theme::Tone& tone) {
   const NeedData d = need_data(s);
   if (d == NeedData::None) return false;
@@ -156,8 +156,8 @@ bool need_chip(const AppState& s, char (&chip)[24], theme::Tone& tone) {
   return true;
 }
 
-// The 等你 chip (need_chip); then, one name each as on the status bar (docs/20 U21), 录N
-// and ↑N while not zero, or "√ 已同步" once neither waits and the Mac is there (B3): counts
+// The Waiting chip (need_chip); then, one name each as on the status bar (docs/20 U21), RN
+// and ↑N while not zero, or "√ synced" once neither waits and the Mac is there (B3): counts
 // only, from x.
 void draw_chips(Canvas& c, const AppState& s, int16_t x, int16_t y) {
   char chip[4][24];
@@ -201,8 +201,8 @@ void draw_zs(Canvas& c, int16_t cx, int16_t cy, uint8_t z, bool extra) {
   }
 }
 
-// His sign on the card: what he does, or (docs/20 B1) 没在录 under a swallowed hold, 没录上
-// when a recording did not start; over the clock, the clock's mood (v0.5.0: 夜深了 ...).
+// His sign on the card: what he does, or (docs/20 B1) "No rec" under a swallowed hold, "Missed"
+// when a recording did not start; over the clock, the clock's mood (v0.5.0: "Bedtime" ...).
 void draw_card_sign(Canvas& c, const AppState& s, theme::MandoAct act, int16_t cx, int16_t cy, uint32_t now) {
   const char* text = theme::mando_sign(act);
   theme::Tone tone = theme::mando_sign_tone(act);
@@ -238,7 +238,7 @@ void draw_card_mando(Canvas& c, const AppState& s, int16_t cx, int16_t cy, uint8
   draw_card_sign(c, s, act, cx, cy, now);
 }
 
-// The head of the column: 已锁屏 (· 离线), or a pat's line and count (v0.5.0), the count
+// The head of the column: "Locked" (· offline), or a pat's line and count (v0.5.0), the count
 // left out where both do not fit.
 void draw_head(Canvas& c, const AppState& s, int16_t col, int16_t y, uint32_t now) {
   const Style ink3{Color::Ink3, Color::Sheet};
@@ -266,7 +266,7 @@ void draw_clock(Canvas& c, const AppState& s, int16_t cx, int16_t cy, uint32_t n
   }
 }
 
-// One centred line of keycaps and words below the card, written as a hint ("先点 [G0]再按住说",
+// One centred line of keycaps and words below the card, written as a hint ("Tap [G0]then hold",
 // hint_layout.h): each key a keycap, each run of words as it is, 3 px apart.
 struct HintPart {
   bool key;
@@ -322,7 +322,7 @@ void word_line(Canvas& c, int16_t y, const char* text, Color ink) {
 }
 
 // The second line: how G0 works now: a meeting's star, a hands-free memo's end (gh #51: a G0
-// press on the lit card), the memo hold and the double tap; 保存中… while a recording ends.
+// press on the lit card), the memo hold and the double tap; "Saving…" while a recording ends.
 // How it ended is the card's own (draw_body, docs/20 B1).
 void draw_hints(Canvas& c, bool recording, const RecInfo& r) {
   hint_line(c, recording ? 110 : 108, tr(kUnlockLine));
@@ -333,7 +333,7 @@ void draw_hints(Canvas& c, bool recording, const RecInfo& r) {
   hint_line(c, y, tr(kMemoLine));
 }
 
-// "10/21 周三 · 电 94%" (v0.4's format); the battery yellow under 30 %, red from 17 % (docs/20
+// "10/21 Wed · Bat 94%" (v0.4's format); the battery yellow under 30 %, red from 17 % (docs/20
 // B3), as on the status bar the lock hides.
 void draw_date_line(Canvas& c, const AppState& s, int16_t x, int16_t y, uint32_t now) {
   const FixedStr<16> date = lock_date_text(s.time, now);

@@ -1,5 +1,5 @@
 // Toast priority (docs/20 U20, A8): the user's own result is shown at once, ahead of the
-// Mac's "X 等你" notices (which it pushes out: the status bar's !N keeps that count);
+// Mac's "X needs you" notices (which it pushes out: the status bar's !N keeps that count);
 // errors stay 4.5 s; a refused key's hint is never repeated within 3 s and goes away when
 // its condition does; while the screen is locked or dark a toast waits instead of
 // running out unseen (docs/20 U6).
@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "runtime.h"
 #include "support/fake_canvas.h"
 #include "support/fixtures.h"
@@ -16,7 +17,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static std::string current(const ToastQueue& q) {
@@ -133,7 +134,7 @@ static void test_held_results_collapse_when_seen() {
 }
 
 // The pocket day of the review (rv-ux-lens locked_backlog): three recordings end while
-// locked, then the user unlocks and writes a note. Its "已保存" shows within 600 ms.
+// locked, then the user unlocks and writes a note. Its "Saved" shows within 600 ms.
 static void test_results_held_while_locked_do_not_delay_the_next_one() {
   RuntimeRig r;
   r.handshake();
@@ -166,7 +167,7 @@ static void test_results_held_while_locked_do_not_delay_the_next_one() {
   TEST_ASSERT_FALSE(after.has("录音太短"));
 }
 
-// §4.4: with two "等你" queued, a saved note's result is on screen within 600 ms.
+// §4.4: with two "X needs you" queued, a saved note's result is on screen within 600 ms.
 static void test_runtime_shows_the_own_result_first() {
   RuntimeRig r;
   r.handshake();

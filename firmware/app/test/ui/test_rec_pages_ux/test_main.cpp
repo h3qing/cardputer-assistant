@@ -1,10 +1,10 @@
 // The recording pages after docs/20 B2 (U1, U6, U8, U15, U23; D3, D8):
-//   ready      G0 down where a hold would record shows "● 准备" in the status bar's ● slot
+//   ready      G0 down where a hold would record shows "● Wait" in the status bar's ● slot
 //              from the press, not 500 ms later (D8: no pre-roll, only the sign);
-//   countdown  from 4:30 the memo page says "还剩 0:30" (a Warn capsule where 第 N 段 was)
+//   countdown  from 4:30 the memo page says "0:30 left" (a Warn capsule where "Part N" was)
 //              and its waveform turns Warn, so the 5 minute cap never comes unannounced;
 //              gh #51's grace and hands-free capsule shares the row with it, shorter;
-//   battery    the meeting page keeps "电 N%" (yellow under 30 %, red from 17 %, the stop
+//   battery    the meeting page keeps "Bat N%" (yellow under 30 %, red from 17 %, the stop
 //              line); under 30 % the start box adds how long the battery lasts;
 //   boxes      the hint bar no longer repeats the card's key line: it names Opt+L instead;
 //   hint       the meeting page names Space (★) again, as keycaps at the roomiest spacing.
@@ -12,6 +12,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
 #include "rec_overlay.h"
 #include "runtime.h"
@@ -27,7 +28,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -113,8 +114,8 @@ static int16_t text_end(const FakeCanvas& c, const TextOp* t) {
   return static_cast<int16_t>(t->x + c.textWidth(t->text.c_str()));
 }
 
-// gh #51 meets U15: the grace or hands-free capsule takes the title row ("语音便条" and 第 N
-// 段 go); in the last 30 s it is shorter and "还剩 0:30" keeps its corner, the two apart.
+// gh #51 meets U15: the grace or hands-free capsule takes the title row ("Voice memo" and
+// "Part N" go); in the last 30 s it is shorter and "0:30 left" keeps its corner, the two apart.
 static void test_the_memo_state_and_the_countdown_share_the_row() {
   Rig r;
   r.phase(RecPhase::Recording, RecMode::Memo);

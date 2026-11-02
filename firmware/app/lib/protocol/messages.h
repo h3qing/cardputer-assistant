@@ -290,7 +290,7 @@ struct DebugCodec {  // h2d, test firmware only (v0.3.2, issue #31): the codec a
 };
 
 struct DebugLang {  // h2d, test firmware only (v0.4.3, docs/21 §7): the UI language, as the settings page sets it
-  Lang lang = Lang::Zh;
+  Lang lang = Lang::En;
 };
 
 struct DebugKey {

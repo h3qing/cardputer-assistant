@@ -106,7 +106,7 @@ static const Pair kPairs[] = {
     {Color::Rec, Color::Card, 4.5}, {Color::RecDot, Color::Bg, 4.5}, {Color::Bg, Color::Warn, 4.5},
     // S2: the live-words capsule, Mando's "!" and "?" bubbles
     {Color::Accent, Color::Select, 4.5}, {Color::OnAccent, Color::Warn, 4.5}, {Color::OnAccent, Color::Ink2, 4.5},
-    // docs/20 B1: the lock card's result and "没有在录" lines
+    // docs/20 B1: the lock card's result and "Not recording" lines
     {Color::Ok, Color::Sheet, 4.5}, {Color::Warn, Color::Sheet, 4.5},
 };
 

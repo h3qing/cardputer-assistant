@@ -8,6 +8,7 @@
 #include <string>
 
 #include "board_logic.h"
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "keymap.h"
 #include "menu_model.h"
@@ -19,7 +20,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 struct Rig {
@@ -72,11 +73,11 @@ static void test_global_keys_on_the_meeting_page_say_what_works() {
 static void test_enter_on_an_explaining_menu_row_says_so() {
   Rig r;
   r.key(nav(Nav::Menu));
-  r.key(chr('/'));  // 去哪 (no module rows: the Global layer)
+  r.key(chr('/'));  // the Go page (no module rows: the Global layer)
   const MenuContent m = menu_content(MenuPage::Goto, r.shell.menu_source(), r.port.app, r.port.info);
   uint8_t row = 0;
   while (row < m.n && m.rows[row].ev.kind != KeyEventKind::None) ++row;
-  TEST_ASSERT_TRUE(row < m.n);  // "第 N 个项目页（按 Opt+1-9）" is shown only
+  TEST_ASSERT_TRUE(row < m.n);  // the "Project N" row (Opt+1-9) is shown only
   for (uint8_t i = 0; i < row; ++i) r.key(chr('.'));
   r.key(enter());
   TEST_ASSERT_TRUE(r.shell.menu_open());
@@ -99,7 +100,7 @@ static void test_enter_on_the_hold_row_says_hold_g0() {
   TEST_ASSERT_TRUE_MESSAGE(r.hint_row().find("这一行是说明：直接按住 G0") != std::string::npos, r.hint_row().c_str());
 }
 
-// Review: a fact on 控制 (电池, SD, the status bar's legend) explains no key: Enter on it
+// Review: a fact on Control (battery, SD, the status bar's legend) explains no key: Enter on it
 // says nothing, rather than "press the key it shows".
 static void test_enter_on_a_fact_row_says_nothing() {
   Rig r;
@@ -109,7 +110,7 @@ static void test_enter_on_a_fact_row_says_nothing() {
     Rig f;
     f.key(nav(Nav::Menu));
     f.key(chr('/'));
-    f.key(chr('/'));  // 控制
+    f.key(chr('/'));  // Control
     for (uint8_t i = 0; i < row; ++i) f.key(chr('.'));
     const std::string before = f.hint_row();
     f.key(enter());

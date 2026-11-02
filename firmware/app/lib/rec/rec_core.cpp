@@ -70,7 +70,7 @@ RecStep start(const RecStep& st, const RecCtx& c) {
   if (c.free_known && c.free_bytes < kFreeWarnBytes) {
     RecEffect w = fx(RecFx::Warn);
     const uint32_t hours = static_cast<uint32_t>(c.free_bytes / kBytesPerHour);
-    w.hours = hours > 0 ? hours : 1;  // "剩约 N 小时": never 0
+    w.hours = hours > 0 ? hours : 1;  // "about N h left": never 0
     out.effects = out.effects.with(w);
   }
   return out;

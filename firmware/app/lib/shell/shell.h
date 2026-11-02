@@ -220,7 +220,7 @@ class Shell : public ModuleContext {
   uint32_t discard_ms_ = 0;   // the discard prompt opened (its 400 ms guard, docs/20 U18)
   bool g0_down_ = false;      // docs/20 U3c, D8: G0 on the matrix (g0_level)
   bool pressing_ = false;     // ... down and short of a hold
-  bool memo_ready_ = false;   // ... and a hold would record a memo: "● 准备"
+  bool memo_ready_ = false;   // ... and a hold would record a memo: "● Wait"
   G0Gesture g0_;              // gh #51: the double tap (shell_g0.cpp)
   PatState pat_;              // v0.5.0: Opt+W (shell_eggs.cpp), RAM only
   bool egg_on_ = false;       // ... a pat or the all clear is on show

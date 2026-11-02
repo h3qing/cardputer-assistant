@@ -12,7 +12,7 @@ constexpr int64_t kMinMs = 60000;
 constexpr int64_t kLateFrom = 23 * 60 + 30;  // minutes into the local day
 constexpr int64_t kEarlyFrom = 5 * 60;
 constexpr int64_t kEarlyTo = 7 * 60;
-constexpr uint8_t kPatPatLine = 2;  // 摸摸 / Pat pat: the count says just "×N"
+constexpr uint8_t kPatPatLine = 2;  // "Pat pat": the count says just "×N"
 
 // A pseudo-random line from the time and the count, never the one before.
 uint8_t pick_line(uint32_t now, uint32_t n, uint8_t prev, bool first) {

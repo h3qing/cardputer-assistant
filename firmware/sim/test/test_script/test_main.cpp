@@ -60,8 +60,8 @@ static void test_boot_options() {
   TEST_ASSERT_TRUE(s.steps[1].boot.store == cpa::Store::Sd);
   TEST_ASSERT_TRUE(s.steps[1].boot.usb);
   TEST_ASSERT_TRUE(parse("boot store=none\n").steps[0].boot.store == cpa::Store::None);
-  // docs/21: the language in NVS at boot, Chinese unless a script says otherwise
-  TEST_ASSERT_TRUE(s.steps[0].boot.lang == cpa::Lang::Zh);
+  // docs/21: the language in NVS at boot, English unless a script says otherwise (v0.5.2)
+  TEST_ASSERT_TRUE(s.steps[0].boot.lang == cpa::Lang::En);
   TEST_ASSERT_TRUE(parse("boot lang=en\n").steps[0].boot.lang == cpa::Lang::En);
   TEST_ASSERT_TRUE(parse("boot lang=zh\n").steps[0].boot.lang == cpa::Lang::Zh);
   TEST_ASSERT_EQUAL_STRING("main.cpas:1: unknown boot option 'lang=fr'", parse("boot lang=fr\n").error.c_str());

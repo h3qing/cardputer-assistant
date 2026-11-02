@@ -1,4 +1,4 @@
-// 设置 / Settings (Opt+M; docs/21 §4): the settings tab first (WiFi, the language, the
+// Settings (Opt+M; docs/21 §4): the settings tab first (WiFi, the language, the
 // link and the last sync), the storage tab (docs/28 S1a: the kept copies) and the device
 // tab with today's diagnostics (04 US-16) one `/` each away, and the WiFi page under the
 // WiFi row. The language is switched through the shell
@@ -19,7 +19,7 @@ class SystemModule : public Module {
   void onEnter(uint8_t arg) override;
   bool onKey(const KeyEvent& key) override;
   void render(Canvas& c, const Rect& area) const override;
-  uint8_t help(const HelpRow** rows) const override;  // the Tab menu's 本页 rows, by page
+  uint8_t help(const HelpRow** rows) const override;  // the Tab menu's "Here" rows, by page
   uint8_t hintKeys(const HintKey** keys) const override;
   const SystemUi& ui() const { return ui_; }
 

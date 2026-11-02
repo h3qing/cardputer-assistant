@@ -1,4 +1,4 @@
-// The device tab of 设置 (04 US-16; docs/21 §4.5): firmware version, dev, boot id, outbox
+// The device tab of Settings (04 US-16; docs/21 §4.5): firmware version, dev, boot id, outbox
 // counts (with bad items), free / minimum heap, largest block, loop stack left, battery and
 // the daemon version; how the device booted, the primary store and its free space, the
 // migration counts; one warning row with the storage errors, the storage note, NVS, the
@@ -257,7 +257,7 @@ static void test_device_tab_is_labelled_rows() {
   TEST_ASSERT_TRUE(value->x == 46 && value->style.fg == Color::Ink && value->y == dev->y);
   TEST_ASSERT_EQUAL_STRING("020000000001 boot 3QZK1M7-0000C", value->text.c_str());
   TEST_ASSERT_TRUE(c.filled_at(kContentRect.y + 49, Color::Line));
-  // below the tabs (docs/28: 存储 is also the storage tab's pill)
+  // below the tabs (docs/28: 存储, the Store row, is also the storage tab's pill)
   TEST_ASSERT_EQUAL_INT16(kContentRect.y + 51, c.find_below("存储", kContentRect.y + 20)->y);
   const TextOp* warn = c.find("NVS 错误");
   TEST_ASSERT_TRUE(warn->x == 4 && warn->style.fg == Color::Warn);

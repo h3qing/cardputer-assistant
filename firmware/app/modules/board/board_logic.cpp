@@ -120,7 +120,7 @@ BoardUi board_pick(const BoardUi& ui, const AppState& s) {
 }
 
 uint8_t board_row_count(const BoardUi& ui, const AppState& s) {
-  if (ui.slot == 0) return static_cast<uint8_t>(s.projects.data.n + 1);  // + "其他"
+  if (ui.slot == 0) return static_cast<uint8_t>(s.projects.data.n + 1);  // + "Other"
   return ui.tab == BoardTab::Sessions ? board_session_count(s, ui.slot) : queue_count(s, ui.slot);
 }
 

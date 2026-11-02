@@ -150,9 +150,9 @@ struct PatState {
 struct UiFlags {
   bool menu = false;    // the Tab menu is open (overlay still reports the layer under it)
   bool locked = false;  // Opt+L lock is on
-  // docs/20 (not in debug.state): G0 is down and a hold would record a memo, "● 准备" from
-  // the press (D8); locked, a G0 hold is being swallowed: "没有在录" (U3, B1), and after its
-  // release until the card goes dark or a key lights it
+  // docs/20 (not in debug.state): G0 is down and a hold would record a memo, "● Wait" from
+  // the press (D8); locked, a G0 hold is being swallowed: "Not recording" (U3, B1), and
+  // after its release until the card goes dark or a key lights it
   bool memo_ready = false;
   bool lock_held = false;
   Moment moment = Moment::None;  // v0.5, not in debug.state

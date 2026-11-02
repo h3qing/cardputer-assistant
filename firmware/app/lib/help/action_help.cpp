@@ -11,7 +11,7 @@ struct ActionHelp {
 };
 
 // In keymap.h's order, worded as docs/13 §5.2 and §6.3 write them, in one vocabulary
-// (docs/20 U22: 记一条 · 排队给 AI · 开 session · 回复 · 项目 · 等你; words.h). Tab menu
+// (docs/20 U22: Note · AI queue · New session · Reply · Projects · Inbox; words.h). Tab menu
 // rows: 120 px in either language (docs/21 §6.4).
 constexpr ActionHelp kHelp[] = {
     {Action::QuickNote, MenuTxt{"记一条 → 今日笔记", "Note → today's notes"}},

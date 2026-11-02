@@ -8,6 +8,7 @@
 #include <string>
 
 #include "board_module.h"
+#include "core/support/lang_pin.h"
 #include "home_module.h"
 #include "inbox_module.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
@@ -20,7 +21,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -55,7 +56,7 @@ struct Rig {
 
 static void test_a_shown_chord_closes_the_menu_and_runs() {
   Rig r;
-  r.keys({nav(Nav::Menu), opt('i')});  // 去哪 shows Opt+I
+  r.keys({nav(Nav::Menu), opt('i')});  // the Go page shows Opt+I
   TEST_ASSERT_FALSE(r.shell.menu_open());
   TEST_ASSERT_EQUAL_STRING("inbox", r.shell.top_id());
   r.keys({nav(Nav::Menu), opt('2')});  // the "Opt+1-9" row
@@ -65,7 +66,7 @@ static void test_a_shown_chord_closes_the_menu_and_runs() {
   r.keys({nav(Nav::Menu), opt('n')});
   TEST_ASSERT_FALSE(r.shell.menu_open());
   TEST_ASSERT_TRUE(r.shell.overlay() == proto::Overlay::Compose);
-  r.keys({nav(Nav::Menu), opt('l')});  // 控制 shows Opt+L; the draft stays under the lock
+  r.keys({nav(Nav::Menu), opt('l')});  // Control shows Opt+L; the draft stays under the lock
   TEST_ASSERT_TRUE(r.shell.locked());
   TEST_ASSERT_FALSE(r.shell.menu_open());
   TEST_ASSERT_TRUE(r.shell.overlay() == proto::Overlay::Compose);
@@ -83,7 +84,7 @@ static void test_a_chord_the_menu_does_not_show_is_eaten() {
   TEST_ASSERT_EQUAL_UINT8(3, r.shell.compose_slot());
 }
 
-// Over the meeting's start box the menu shows Opt+L (取消并锁屏): it does that at once.
+// Over the meeting's start box the menu shows Opt+L ("Cancel and lock"): it does that at once.
 static void test_opt_l_over_the_meeting_box() {
   Rig r;
   r.port.app.rec.avail = true;

@@ -5,7 +5,7 @@
 //   - on FAT the projects cache is written in place, never renamed;
 //   - a failed save, outbox_apply or cache write counts one storage error;
 //   - an SD card that latched during boot (scan or migration) is a storage error, not
-//     "full": saving fails, says so ("SD 卡出错：插好后需重启", docs/20 U16) and the
+//     "full": saving fails, says so ("SD card error: reseat it, restart", docs/20 U16) and the
 //     system page asks for a restart;
 //   - the boot migration kicks USB and shows its progress after 500 ms.
 #include <unity.h>
@@ -14,6 +14,7 @@
 
 #include "core/support/fake_fat_port.h"
 #include "core/support/fake_store.h"
+#include "core/support/lang_pin.h"
 #include "migrate_screen.h"
 #include "runtime.h"
 #include "sd_store.h"
@@ -29,7 +30,7 @@ using testsupport::FakeFatPort;
 using testsupport::FakeStore;
 using testsupport::FatCall;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 // FileStore that counts every call and fails all of them (NullStore with a counter).
@@ -277,7 +278,7 @@ static void test_storage_facts_reach_the_system_info() {
   TEST_ASSERT_TRUE(s.launcher);
   TEST_ASSERT_EQUAL_UINT32(0, s.cpafs_bytes);
   TEST_ASSERT_TRUE(s.note == StoreNote::NoInternal);
-  TEST_ASSERT_TRUE(s.fw.equals("cpa-fw/0.5.1"));
+  TEST_ASSERT_TRUE(s.fw.equals("cpa-fw/0.5.2"));
 }
 
 static bool page_has(const SystemPage& p, const char* text) {
@@ -313,7 +314,7 @@ static void test_sd_latched_at_boot_is_a_storage_error_not_full() {
   TEST_ASSERT_FALSE(c.has("存储已满"));
 }
 
-// The boot migration screen (09 §3.1, §8): every item kicks USB; "正在迁移到 SD 卡 i/n"
+// The boot migration screen (09 §3.1, §8): every item kicks USB; "Moving to the SD card i/n"
 // appears once the migration has run 500 ms, redrawn at most every 200 ms and always
 // for the last item.
 static uint32_t g_clock = 0;

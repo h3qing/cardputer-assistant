@@ -38,7 +38,7 @@ MenuStep moved(const MenuState& st, const MenuContent& m, int delta) {
   return stay(out);
 }
 
-// , and /: the previous or next page, wrapping; an overlay has no 去哪.
+// , and /: the previous or next page, wrapping; an overlay has no Go page.
 MenuStep paged(const MenuContent& m, int delta) {
   static const MenuPage kAll[] = {MenuPage::Here, MenuPage::Goto, MenuPage::Control};
   static const MenuPage kOverlay[] = {MenuPage::Here, MenuPage::Control};
@@ -63,9 +63,9 @@ bool bound_everywhere(const KeyEvent& ev) {
          keymap_lookup(Layer::System, ev).action != Action::None;
 }
 
-// A letter is Opt+letter (docs/13 §3.3: Tab, then a letter). On 去哪 and 控制 when a row
-// there replays that key; on 本页 when Opt+letter is bound everywhere (the rows there are
-// the page's own), but not over an overlay, which keeps its keys (§6.1).
+// A letter is Opt+letter (docs/13 §3.3: Tab, then a letter). On the Go and Control pages
+// when a row there replays that key; on Here when Opt+letter is bound everywhere (the rows
+// there are the page's own), but not over an overlay, which keeps its keys (§6.1).
 MenuStep shortcut(const MenuState& st, const KeyEvent& ev, const MenuContent& m) {
   if (ev.kind != KeyEventKind::Char) return stay(st);
   const char c = (ev.ch >= 'A' && ev.ch <= 'Z') ? static_cast<char>(ev.ch - 'A' + 'a') : ev.ch;
@@ -90,7 +90,7 @@ constexpr int16_t kRowsY = 36;
 constexpr int16_t kRowPad = 4;     // a row's right end to its label's
 constexpr int16_t kBadgeEnd = 6;  // a row's right end to its badge's
 
-// A fact on 控制 (a row there that is shown only): a word, not a key.
+// A fact on Control (a row there that is shown only): a word, not a key.
 bool is_fact(const MenuContent& m, const MenuRow& r) {
   return m.page == MenuPage::Control && r.ev.kind == KeyEventKind::None;
 }
@@ -152,7 +152,7 @@ int16_t label_dx(const KeyColumn& k, uint8_t i) {
   return dx < kMenuKeyColW ? dx : kMenuKeyColW;
 }
 
-// "跑2" / "!1"; "" for none.
+// "run2" / "!1"; "" for none.
 FixedStr<16> badge_text(const MenuRow& r) {
   if (r.badge == MenuBadge::None) return FixedStr<16>{};
   char buf[16];
@@ -230,7 +230,7 @@ void draw_row(Canvas& c, const Rect& row, int16_t ldx, const MenuRow& r, bool se
   draw_fit(c, x, y, static_cast<int16_t>(right - x), r.label.c_str(), theme::over(sel ? Color::OnAccent : Color::Ink));
 }
 
-// A slim bar on the sheet's right edge while rows are off screen (docs/13 §6.3: "往下翻还有…").
+// A slim bar on the sheet's right edge while rows are off screen (docs/13 §6.3: "more below…").
 void draw_scrollbar(Canvas& c, int16_t x, uint8_t top, uint8_t n) {
   if (n <= kMenuVisibleRows) return;
   const int16_t track = kMenuVisibleRows * kMenuRowH;

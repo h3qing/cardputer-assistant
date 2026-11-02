@@ -22,14 +22,14 @@ constexpr int16_t kTextX = 23;  // a card's text, right of the number keycap
 // from the ends of the selection capsule.
 constexpr int16_t kListRowH = 14;
 constexpr int16_t kListX = 8;
-constexpr int16_t kMarkW = 24;  // a queue item's mark (开 / 回 / · / 开?), then its text
+constexpr int16_t kMarkW = 24;  // a queue item's zh mark (开 / 回 / · / 开?), then its text
 constexpr int16_t kMarkWEn = 30;  // docs/21: "new?" is 24 px, so English leaves 6 px after it too
 
 constexpr KeyEvent key_chr(char c) { return KeyEvent{KeyEventKind::Char, c, 0, 0, Nav::None}; }
 constexpr KeyEvent key_opt(char k) { return KeyEvent{KeyEventKind::Chord, 0, kModOpt, k, Nav::None}; }
 constexpr KeyEvent kEnter{KeyEventKind::Nav, 0, 0, 0, Nav::Enter};
 
-// The Tab menu's 本页 rows (docs/13 §6.2): each replays the key it names.
+// The Tab menu's "Here" rows (docs/13 §6.2): each replays the key it names.
 constexpr HelpRow kHomeHelp[] = {
     {kEnter, "Enter", "", &txt::kOpenProject},
     {key_chr(';'), ";", "", &txt::kUp},
@@ -81,7 +81,7 @@ uint8_t first_row(int sel, uint8_t cursor, uint8_t visible) {
 }
 
 struct Count {
-  const char* kind;  // 跑 / 等 / 队 / 共
+  const char* kind;  // run / ! / Q / all
   uint16_t n;
   theme::Tone tone;
 };
@@ -109,7 +109,7 @@ int16_t draw_counts(Canvas& c, int16_t x_end, int16_t y, const Count* counts, ui
 }
 
 struct CardText {
-  const char* num;  // "" for none (其他)
+  const char* num;  // "" for none (Other)
   const char* title;
   Color title_ink;
   const char* sub;
@@ -314,7 +314,7 @@ void BoardModule::render_sessions(Canvas& c, const Rect& area, int16_t y0) const
 }
 
 // Offline (or with no Claude) Enter and Opt+D do nothing here: the items are grey, and the
-// selected one reads in Ink2 with a 离线 pill that says why.
+// selected one reads in Ink2 with an "offline" pill that says why.
 void BoardModule::render_queue(Canvas& c, const Rect& area, int16_t y0) const {
   const AppState& s = ctx_->state();
   const uint8_t rows = board_row_count(ui_, s);
@@ -343,7 +343,7 @@ void BoardModule::render_queue(Canvas& c, const Rect& area, int16_t y0) const {
   }
 }
 
-// docs/13 §5.6: up to three keys, then "Tab菜单" at the right end. docs/20 U10: the overview
+// docs/13 §5.6: up to three keys, then "[Tab]menu" at the right end. docs/20 U10: the overview
 // names its back key too; U7, U19: Sessions says whether Enter reaches the selected one.
 const char* BoardModule::hint() const {
   if (ui_.slot == 0) return tr(txt::kOverviewHint);  // ;. are on the Tab menu (docs/19 §6.4)
@@ -354,7 +354,7 @@ const char* BoardModule::hint() const {
     const bool reaches = r != nullptr && reply_reaches(s, *r);
     return reply_hint(s.link.mode == LinkMode::Ready, reaches, board_row_count(ui_, s) == 0);
   }
-  return tr(txt::kQueueHint);  // Opt+D 完成 is on the Tab menu: the bar would be crowded
+  return tr(txt::kQueueHint);  // Opt+D (mark done) is on the Tab menu: the bar would be crowded
 }
 
 uint8_t BoardModule::help(const HelpRow** rows) const {

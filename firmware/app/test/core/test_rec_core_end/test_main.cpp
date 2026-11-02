@@ -123,7 +123,8 @@ static void test_auto_stop_reasons() {
 }
 
 // docs/20 U15: the memo cap ends the recording while G0 is still held; the overlay stays
-// ("已到 5 分钟，已保存，松开 G0") until the release, instead of jumping back to the page.
+// ("5 min reached: saved", "Let go of [G0]") until the release, instead of jumping back to
+// the page.
 static void test_memo_cap_holds_until_release() {
   const RecStep st = rec_event(recording(RecMode::Memo, 0), evt(EvtKind::Saved), ctx(300900));
   TEST_ASSERT_TRUE(st.state.phase == RecPhase::Idle && st.state.held && !rec_live(st.state));
@@ -186,7 +187,7 @@ static void test_a_late_end_belongs_to_the_old_recording() {
   const uint8_t now = start->gen;
   st = rec_event(st.state, tagged(EvtKind::Saved, old), ctx(14100));
   TEST_ASSERT_TRUE(st.state.phase == RecPhase::Cue);
-  TEST_ASSERT_EQUAL_UINT8(0, st.effects.count);  // no "已到 5 分钟上限" for someone else's end
+  TEST_ASSERT_EQUAL_UINT8(0, st.effects.count);  // no "5 min limit reached" for someone else's end
   st = rec_event(st.state, tagged(EvtKind::Started, old), ctx(14150));
   TEST_ASSERT_TRUE(st.state.phase == RecPhase::Cue);
   st = rec_event(st.state, tagged(EvtKind::Started, now), ctx(14200));
@@ -206,7 +207,7 @@ static void test_a_late_end_belongs_to_the_old_recording() {
 }
 
 // Review (U6): the card fills during a recording. RecEngine keeps the segment so far, so
-// it is an automatic stop that saved ("会议已停：SD 卡满 · 已存 1:00"), not a refusal;
+// it is an automatic stop that saved ("Meeting: SD full · saved 1:00"), not a refusal;
 // before Started (nothing recorded) it stays one.
 static void test_card_full_while_recording_is_a_saved_stop() {
   RecEvt full = evt(EvtKind::Failed);

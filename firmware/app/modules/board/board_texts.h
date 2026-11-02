@@ -1,4 +1,4 @@
-// The words of 项目 / Projects (docs/21 §6.7, appendix A): the overview, a project's
+// The words of Projects (docs/21 §6.7, appendix A): the overview, a project's
 // Sessions and queue tabs, their Tab menu rows, hints and toasts, each a checked zh/en pair
 // (txt.h). Hint strings bracket their keys in English (hint_layout.h rule 6).
 #pragma once
@@ -9,7 +9,7 @@
 namespace cpa {
 namespace txt {
 
-// --- the Tab menu's 本页 rows ---
+// --- the Tab menu's "Here" rows ---
 constexpr MenuTxt kOpenProject{"打开选中的项目", "Open this project"};
 constexpr MenuTxt kToQueue{"切到队列", "To the queue"};
 constexpr MenuTxt kSpawnAsks{"开 session（先确认）", "New session (asks)"};

@@ -12,7 +12,7 @@ namespace cpa {
 // Emitted when slot/key/name changed: the shell rewrites /cfg/projects.json.
 enum class ProjectsEvent : uint8_t { IdentityChanged };
 
-// Emitted for each session whose need became true: toast "<key>/<name> 等你".
+// Emitted for each session whose need became true: toast "<key>/<name> needs you".
 struct NeedToast {
   uint8_t index = 0;  // row in the new SessionsView
 };
@@ -24,7 +24,7 @@ TimeInfo reduce_time(const TimeInfo& t, const TimeData& d, uint32_t now);
 
 Opt<ProjectRow> project_by_slot(const ProjectsView& v, uint8_t slot);
 uint16_t need_count(const SessionsView& v);
-// Sessions running in every project and in none ("跑N" on home and in the Tab menu); 0 while
+// Sessions running in every project and in none ("runN" on home and in the Tab menu); 0 while
 // the board is only the cached names (no counts yet).
 uint32_t running_count(const ProjectsView& v);
 uint8_t queue_count_for_slot(const QueueView& v, uint8_t slot);

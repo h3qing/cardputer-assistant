@@ -45,7 +45,7 @@
 
 namespace cpa {
 
-constexpr char kFwVersion[] = "cpa-fw/0.5.1";  // bumped by the Lead at release (v0.2 tests pin it)
+constexpr char kFwVersion[] = "cpa-fw/0.5.2";  // bumped by the Lead at release (v0.2 tests pin it)
 constexpr uint32_t kRenderMinMs = 50;     // <= 20 fps
 constexpr uint32_t kRenderEveryMs = 1000; // clock, ages
 constexpr uint32_t kStatsEveryMs = 1000;

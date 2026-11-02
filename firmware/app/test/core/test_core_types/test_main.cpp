@@ -97,7 +97,7 @@ constexpr size_t kAppStateBytesV031 = 3488;
 // docs/20 U6, U15: RecInfo.held, .bat_low and .last (how the last recording ended).
 constexpr size_t kRecResultBytes = 16;
 constexpr size_t kMomentBytes = 8;
-// docs/20 D8, U3: UiFlags.memo_ready ("● 准备") and .lock_held ("没有在录").
+// docs/20 D8, U3: UiFlags.memo_ready ("● Wait") and .lock_held ("Not recording").
 constexpr size_t kUxFlagsBytes = 4;
 // v0.5.0 (docs/04, hidden keys): UiFlags.pat, Opt+W's pats (count, time, line: 12 B, 16 padded).
 constexpr size_t kPatBytes = 16;

@@ -8,13 +8,14 @@
 #include <string>
 
 #include "action_help.h"
+#include "core/support/lang_pin.h"
 #include "lang.h"
 #include "module.h"  // lib/help is built whole: its menu files need module.h's libraries
 #include "ui/support/fake_canvas.h"
 
 using namespace cpa;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() { set_lang(Lang::Zh); }  // a failed English test skips its LangScope
 
 static const int16_t kMaxW = 120;
@@ -49,7 +50,7 @@ static void test_labels_follow_docs_13() {
 }
 
 // docs/21: someone who reads only English, on a device left in Chinese, finds the way back
-// on 去哪: the Opt+M row names the page in both languages (the home tile stays 设置).
+// on Go: the Opt+M row names the page in both languages (the home tile stays "设置" only).
 static void test_settings_row_names_itself_in_english_too() {
   TEST_ASSERT_EQUAL_STRING("设置 Settings", action_help(Action::System));
   set_lang(Lang::En);
@@ -59,7 +60,7 @@ static void test_settings_row_names_itself_in_english_too() {
 
 static void test_labels_are_distinct_where_the_keys_differ() {
   // Two different actions never read the same, except the two "back" ones (Escape is
-  // Fn+` everywhere, Back is ` or 退格 in lists) and the two ways to leave a confirm.
+  // Fn+` everywhere, Back is ` or Del in lists) and the two ways to leave a confirm.
   for (int a = 1; a <= static_cast<int>(Action::Projects); ++a) {
     for (int b = a + 1; b <= static_cast<int>(Action::Projects); ++b) {
       const Action x = static_cast<Action>(a), y = static_cast<Action>(b);

@@ -1,6 +1,7 @@
 // The back key in the editor and on its confirm box (docs/20 A5):
 //   D5 (U10)  in the editor ` leaves it, as on every other page: at once when empty, after
-//             "放弃？" with text; Fn+` types the backtick; there is no draft parking;
+//             "Discard what you typed?" with text; Fn+` types the backtick; there is no
+//             draft parking;
 //   D6 (U9)   on the confirm box of a new session or a reply (opened from the editor) ` and
 //             Fn+` go back to the editor with the text and the target kept; a confirm with
 //             no draft under it (a queue item from the board) still just closes.
@@ -8,6 +9,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
 #include "support/fake_port.h"
@@ -16,7 +18,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {

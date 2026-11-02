@@ -3,7 +3,7 @@
 //   Result  the user's own action (saved, sent, refused): shown before every notice,
 //           which it pushes out (the status bar's !N keeps that count); in order among
 //           results, so a later "saved" never hides an earlier error;
-//   Notice  from the Mac ("X 等你"): first in, first out, behind the results;
+//   Notice  from the Mac ("X needs you"): first in, first out, behind the results;
 //   Hint    a refused key's hint (docs/20 U17): as a result, never the same text twice
 //           within kHintRepeatMs, and retracted once its condition is gone.
 // A toast shows for 2.5 s, an error for 4.5 s. While the screen is not seen (locked or

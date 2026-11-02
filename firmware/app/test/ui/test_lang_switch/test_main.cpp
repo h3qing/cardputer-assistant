@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "lang_switch.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
@@ -18,7 +19,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() { set_lang(Lang::Zh); }
+void setUp() { testsupport::pin_zh(); }
 void tearDown() { set_lang(Lang::Zh); }
 
 namespace {
@@ -154,7 +155,7 @@ static void test_switch_toasts_fit_the_toast_bar() {
 
 // test_runtime_lang.cpp
 void test_boot_shows_the_stored_language();
-void test_boot_without_a_stored_language_is_chinese();
+void test_boot_without_a_stored_language_is_english();
 void test_a_switch_is_written_once();
 void test_switching_back_writes_again();
 void test_a_failed_write_is_not_retried_every_pass();
@@ -179,7 +180,7 @@ int main() {
   RUN_TEST(test_a_pending_write_says_nothing_more);
   RUN_TEST(test_switch_toasts_fit_the_toast_bar);
   RUN_TEST(test_boot_shows_the_stored_language);
-  RUN_TEST(test_boot_without_a_stored_language_is_chinese);
+  RUN_TEST(test_boot_without_a_stored_language_is_english);
   RUN_TEST(test_a_switch_is_written_once);
   RUN_TEST(test_switching_back_writes_again);
   RUN_TEST(test_a_failed_write_is_not_retried_every_pass);

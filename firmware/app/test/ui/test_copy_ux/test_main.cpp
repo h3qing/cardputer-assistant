@@ -1,6 +1,7 @@
 // docs/20 B6 (U9, U17, U22, U7): words and layout.
 //   - a confirm box names Enter and ` with one verb each on its card and in its hint bar:
-//     开始 / 存为排队 / 关闭, and ` 返回修改 when a draft is behind it (D6), else ` 取消;
+//     Start / Save as queued / Close, and ` Back to edit when a draft is behind it (D6),
+//     else ` Cancel;
 //   - the editor wraps at spaces, so a word is not cut in two (a longer word still breaks);
 //   - a Tab-menu row that only explains a key still looks like one when it is selected;
 //   - every fixed toast and hint fits the theme's toast capsule (224 px), uncut.
@@ -8,6 +9,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "home_logic.h"
 #include "menu_model.h"
 #include "menu_view.h"
@@ -22,7 +24,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -110,7 +112,7 @@ static void test_a_new_session_box_says_one_verb() {
   TEST_ASSERT_EQUAL_STRING(k.card.c_str(), k.bar.c_str());
 }
 
-// A queue item's box has no draft behind it: ` only closes it, and says 取消.
+// A queue item's box has no draft behind it: ` only closes it, and says Cancel.
 static void test_a_queue_item_box_says_cancel() {
   Rig r;
   r.shell.confirm(queue_item_spec());

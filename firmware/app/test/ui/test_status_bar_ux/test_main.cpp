@@ -4,14 +4,15 @@
 //   battery  yellow under 30 % (the 3.55 V warning), red from 17 % (the 3.45 V stop line);
 //   ※SD      the device records but has no usable SD card (none at boot, or lost);
 //   budget   the left group gets what the right one leaves: the weekday goes first, then
-//            录N, ↑N, ※k, ※SD; ●, the link, !N, the clock and the battery always stay, and
+//            RN, ↑N, ※k, ※SD; ●, the link, !N, the clock and the battery always stay, and
 //            nothing ever overlaps;
-//   control  the Tab menu's legend follows the bar, and says "√ 已同步" once nothing waits
-//            and the Mac is there.
+//   control  the Tab menu's legend follows the bar, and says "√ Synced: all on the Mac"
+//            once nothing waits and the Mac is there.
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "menu_model.h"
 #include "rec_core.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
@@ -24,7 +25,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {

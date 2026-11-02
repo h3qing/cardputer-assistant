@@ -28,13 +28,13 @@ int rec_bat_minutes(uint16_t mv);
 
 // v0.5 (docs/19 §6.6-§6.7, §7.2): the memo and meeting pages, with Mando.
 constexpr uint16_t kVoiceLevel = 104;  // a block this loud (RMS, -50 dBFS: theme::kVoiceOn) is someone talking
-FixedStr<16> rec_tag_text(const AppState& s);  // where it goes: "未归属", "#cpa", "#3"
+FixedStr<16> rec_tag_text(const AppState& s);  // where it goes: "No project", "#cpa", "#3"
 // Cue: he sits; Recording: nods while there is a voice, else tilts his head; EndConfirm:
 // sits; Finishing: sniffs (saving). rec_mando judges the voice by r.level, a tick by the
 // level history's (theme::level_voice).
 theme::MandoAct rec_mando_act(RecPhase p, bool voice);
 theme::MandoAct rec_mando(const RecInfo& r);
-const char* rec_sign(const RecInfo& r);  // 在听, 保存中…; nullptr in Cue (no sign)
+const char* rec_sign(const RecInfo& r);  // "Listen", "Saving…"; nullptr in Cue (no sign)
 
 // v0.5 S3 (docs/19 §3.5): what the pages draw between ticks: the level history the last tick
 // took (the memo's waveform, the meeting's timeline) and Mando as the last tick showed him.
@@ -53,7 +53,7 @@ constexpr LineTxt kMeetingConfirmKeys{"Enter 开始    ` 取消", "[Enter]start 
 constexpr LineTxt kEndConfirmKeys{"Enter 结束    ` 继续录", "[Enter]stop    [`]keep going"};
 
 // gh #53: the room the pages' legend of 1-9 and 0 leaves (rec_legend.h): under three rows
-// the memo's waveform is 2/3 as tall; under two the meeting's timeline has no 0:00 and 现在.
+// the memo's waveform is 2/3 as tall; under two the meeting's timeline has no 0:00 and "now".
 // The ticks ask it, from the state, so they draw only where the last full frame put them.
 struct RecRoom {
   bool low_wave = false;
@@ -66,7 +66,7 @@ Rect rec_mando_part(Canvas& c, const RecInfo& r, const theme::MandoView& v);  //
 // The memo's waveform, in the room the legend left it.
 Rect rec_wave_part(Canvas& c, const theme::LevelHistory& h, bool late = false, const RecRoom& room = RecRoom{});
 // The meeting's timeline from was to now: only what changed, in up to two rectangles (the
-// bars and the dot, and 现在 when the dot moved; n == 0: nothing).
+// bars and the dot, and "now" when the dot moved; n == 0: nothing).
 struct RecParts {
   uint8_t n = 0;
   Rect r[2];

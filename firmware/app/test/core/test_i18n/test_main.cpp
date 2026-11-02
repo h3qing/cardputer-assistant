@@ -28,7 +28,7 @@ constexpr Txt kLanguage{"语言", "Language"};
 
 }  // namespace
 
-static void test_default_is_chinese() {
+static void test_tr_in_chinese() {
   TEST_ASSERT_TRUE(lang() == Lang::Zh);
   TEST_ASSERT_EQUAL_STRING("队列为空", tr(kQueueEmpty));
 }
@@ -173,7 +173,7 @@ static void test_shared_words() {
 
 int main() {
   UNITY_BEGIN();
-  RUN_TEST(test_default_is_chinese);
+  RUN_TEST(test_tr_in_chinese);
   RUN_TEST(test_set_lang_switches_every_tr);
   RUN_TEST(test_nvs_byte_round_trip_and_unknown_is_chinese);
   RUN_TEST(test_other_and_codes);

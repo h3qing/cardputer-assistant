@@ -11,6 +11,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
 #include "runtime.h"
 #include "shell.h"
@@ -23,7 +24,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -102,7 +103,7 @@ static void test_every_cover_shows_the_dot() {
         const std::string what = std::to_string(static_cast<int>(mode)) + "/" + std::to_string(static_cast<int>(c)) +
                                  "/" + std::to_string(static_cast<int>(p)) + "\n" + canvas.dump();
         TEST_ASSERT_TRUE_MESSAGE(canvas.has("●"), what.c_str());
-        // Cue: the microphone is not up yet; locked, "● 准备" stands in for the clock, as
+        // Cue: the microphone is not up yet; locked, "● Wait" stands in for the clock, as
         // on the unlocked pages (the status bar's ●0:00 is not drawn under the lock)
         const char* clock = p != RecPhase::Cue ? "1:05" : (c == Cover::Locked ? "● 准备" : "0:00");
         TEST_ASSERT_TRUE_MESSAGE(canvas.has(clock), what.c_str());
@@ -144,7 +145,7 @@ static void test_the_dot_reads_on_its_ground() {
         r.shell.render(canvas, 65000);
         int dots = 0;
         for (const TextOp& t : canvas.texts) {
-          if (t.text.rfind("●", 0) != 0 || dimmed(canvas, t)) continue;  // not "看到 ● REC 再说话"
+          if (t.text.rfind("●", 0) != 0 || dimmed(canvas, t)) continue;  // not "Speak once you see ● REC"
           ++dots;
           const bool cue = t.text.find("准备") != std::string::npos;
           TEST_ASSERT_TRUE_MESSAGE(t.style.fg == (cue ? Color::Warn : Color::Rec), t.text.c_str());

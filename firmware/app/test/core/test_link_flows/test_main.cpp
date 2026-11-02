@@ -1,4 +1,4 @@
-// Flow contract test (05 §9.1, protocol/README "流程"): the device side of every flow
+// Flow contract test (05 §9.1, protocol/README "Flows"): the device side of every flow
 // in protocol/vectors/v0/flows is replayed through the pure cores (see device_sim.h).
 // Host lines are delivered to the device; each device line of the flow must have been
 // produced by the device (same type, re, payload) at or before its time; the device

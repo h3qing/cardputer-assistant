@@ -44,7 +44,7 @@ SystemLine join(const SystemLine& line, const char* piece) {
   return (sep ? line.append("  ") : line).append(piece, n);
 }
 
-// "<words><n>", e.g. "已迁移 3".
+// "<words><n>", e.g. "moved 3".
 FixedStr<32> counted(const Txt& words, unsigned n) {
   char buf[40];
   std::snprintf(buf, sizeof buf, "%s%u", tr(words), n);
@@ -64,7 +64,7 @@ FixedStr<24> store_text(const SysInfo& info) {
   }
 }
 
-// 存储 SD 476G  剩 412G, or what this boot's migration did in place of the free space.
+// Store SD 476G  free 412G, or what this boot's migration did in place of the free space.
 void add_store(SystemPage& p, const AppState& s, const SysInfo& info) {
   SystemLine line = SystemLine::from(tr(txt::kStore)).append(store_text(info).c_str());
   const bool migrated = info.migrated > 0 || info.migrate_failed > 0;

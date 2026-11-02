@@ -11,8 +11,8 @@ constexpr KeyEvent key_chr(char c) { return KeyEvent{KeyEventKind::Char, c, 0, 0
 constexpr KeyEvent kEnter{KeyEventKind::Nav, 0, 0, 0, Nav::Enter};
 constexpr KeyEvent kHomeKey{KeyEventKind::Chord, 0, kModOpt, 'h', Nav::None};
 
-// The Tab menu's 本页 rows (docs/21 §4.6): each replays the key it names, so the menu
-// switches the language too (Enter on the 语言 row).
+// The Tab menu's "Here" rows (docs/21 §4.6): each replays the key it names, so the menu
+// switches the language too (Enter on the Language row).
 constexpr HelpRow kSettingsHelp[] = {
     {key_chr(';'), ";", "", &txt::kUp},
     {key_chr('.'), ".", "", &txt::kDown},
@@ -28,7 +28,7 @@ constexpr HelpRow kDeviceHelp[] = {
     {key_chr('`'), "`", "", &txt::kBackRow},
     {kHomeKey, "Opt+H", "", &txt::kHome},
 };
-// docs/28 S1a: the storage tab, and its "清掉留底？" box (Enter does what the cursor is on).
+// docs/28 S1a: the storage tab, and its "Clear kept files?" box (Enter does what the cursor is on).
 constexpr HelpRow kStorageHelp[] = {
     {key_chr(';'), ";", "", &txt::kUp},
     {key_chr('.'), ".", "", &txt::kDown},
@@ -48,7 +48,7 @@ constexpr HelpRow kWifiHelp[] = {
     {kHomeKey, "Opt+H", "", &txt::kHome},
 };
 
-// The hint bars (§4.6); the shell adds [Tab] 菜单 / menu. , / are not on the settings
+// The hint bars (§4.6); the shell adds [Tab] menu. , / are not on the settings
 // tab's bar: the tab pills are on the screen and on the Tab menu.
 constexpr HintKey kSettingsHint[] = {{";.", txt::kPick}, {"Enter", txt::kChange}, {"`", txt::kBack}};
 constexpr HintKey kDeviceHint[] = {{",/", txt::kSwitchPage}, {"`", txt::kBack}};

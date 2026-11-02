@@ -1,10 +1,10 @@
 // The device page's logic (04 US-16, docs/09-m2-design.md §8, docs/21 §4.5): its rows as
 // text in the shown language, pure. Under the tab pills there are 8 rows of 12 px:
-//   固件 <fw>  rst <reason>              FW ...
+//   FW <fw>  rst <reason>
 //   dev <dev>  boot <boot id>
-//   启动 直接|Launcher  daemon <app>|--    Boot direct|Launcher ...
-//   存储 SD 476G|内部 1.5M|无  剩 412G     Store ... free 412G (or the boot's migration counts)
-//   outbox / 堆 / 电池 + 栈余 rows          outbox / Heap / Bat + stack
+//   Boot direct|Launcher  daemon <app>|--
+//   Store SD 476G|Flash 1.5M|none  free 412G (or the boot's migration counts)
+//   outbox / Heap / Bat + stack rows
 //   one warning row, when there is one: storage errors, the storage note, NVS, invariant,
 //   modules, and the keyboard's ghost / re-init counts last (7 fixed rows and this one: it always fits)
 // How long since the Mac last spoke and what waits to sync are on the settings page.

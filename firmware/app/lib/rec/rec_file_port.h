@@ -2,7 +2,7 @@
 // point, so the recording code stays pure and testable on the host. hal's
 // VfsRecFilePort implements it with ::open / ::write / ::fsync / ...; tests use
 // FakeRecFilePort, which injects power cuts. Errors follow FatPort's FatErr (09 §3.8),
-// plus Full for ENOSPC (docs/11 §4.3: the segment is closed normally, "SD 卡已满").
+// plus Full for ENOSPC (docs/11 §4.3: the segment is closed normally, "SD card full").
 //
 // Invariant (docs/11 §4.5): at most one file is open at a time. open_* while one is open
 // is a caller bug (FakeRecFilePort counts it); close() first.

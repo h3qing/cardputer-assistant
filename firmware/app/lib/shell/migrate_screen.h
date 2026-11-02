@@ -1,7 +1,7 @@
 // MigrateScreen (docs/09-m2-design.md §3.1, §8): the MigrateObserver setup() hands to
 // Runtime::begin while cpafs's pending items move to the SD card. setup() answers no
 // host line meanwhile, so every item kicks the USB transport; once the migration has
-// run 500 ms the screen shows "正在迁移到 SD 卡 i/n", redrawn at most every 200 ms (a
+// run 500 ms the screen shows "Moving to the SD card i/n", redrawn at most every 200 ms (a
 // frame push costs ~10-20 ms of the ~40 ms an item takes) and always for the last item.
 // A boot-time I/O shell: its clock reading and redraw time are its only state.
 #pragma once

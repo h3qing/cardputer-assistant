@@ -12,7 +12,7 @@
 // docs/09-m2-design.md §8: boot mode, primary store, migration and storage errors).
 //
 // v0.4.0 (docs/13 §10.1), both with defaults so v0.3 modules are unchanged:
-//   - Module::help(): the module's own rows for the Tab menu's 本页 page;
+//   - Module::help(): the module's own rows for the Tab menu's Here page;
 //   - ModuleContext::press(): "press this key for me". The home tiles and the menu rows
 //     run only by replaying a key, so they always do what the key does.
 // v0.5 (docs/19 §3.5, §4.3), with a default: Module::animate(), the page's motion.
@@ -91,11 +91,11 @@ struct SysInfo {
   uint16_t store_errors = 0;    // failed saves, outbox_apply and cache writes since boot
 };
 
-// One 本页 row of the Tab menu (docs/13 §6.2). Enter on the row closes the menu and
+// One Here-page row of the Tab menu (docs/13 §6.2). Enter on the row closes the menu and
 // replays ev; a row whose ev.kind is None (a range such as "1-9") is shown, not replayed.
 struct HelpRow {
   KeyEvent ev;
-  const char* keys = "";   // UTF-8, the key as the row shows it ("空格", "1-9")
+  const char* keys = "";   // UTF-8, the key as the row shows it ("Space", "1-9")
   const char* label = "";  // UTF-8, what it does
   const Txt* text = nullptr;  // docs/21 §6.7: what it does in both languages; label when unset
 };
@@ -104,7 +104,7 @@ struct HelpRow {
 inline const char* help_label(const HelpRow& r) { return r.text ? tr(*r.text) : r.label; }
 
 // One key of a structured hint bar (docs/21 §6.6): {"Enter", {"打开", "open"}}. The shell
-// adds "[Tab] 菜单 / menu" after the module's keys.
+// adds "[Tab] menu" after the module's keys.
 struct HintKey {
   const char* keys;
   Txt words;
@@ -156,7 +156,7 @@ class Module {
   virtual void render(Canvas& c, const Rect& area) const = 0;
   virtual const char* hint() const { return ""; }
   virtual uint8_t contextSlot() const { return 0; }
-  // Sets *rows to the module's 本页 rows and returns how many (0: none, *rows nullptr).
+  // Sets *rows to the module's Here-page rows and returns how many (0: none, *rows nullptr).
   // The rows stay valid until the module's next onEnter() or onKey().
   virtual uint8_t help(const HelpRow** rows) const {
     *rows = nullptr;

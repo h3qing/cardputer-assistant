@@ -133,7 +133,7 @@ uint8_t memo_rows_for(const LegendList& l) {
   return kMemoRowsMax;
 }
 
-// 0 不归属 stays while the whole list fits both rows at four letters; else a bare [0]. No
+// 0 "none" stays while the whole list fits both rows at four letters; else a bare [0]. No
 // cell for "?": the title says "#9".
 LegendList meeting_list(const Canvas& c, const AppState& s) {
   const LegendList all = legend_list(c, s.projects, s.rec.slot, false);

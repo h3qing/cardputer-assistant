@@ -67,8 +67,8 @@ SystemUi with_store(const SystemUi& ui, StoreRow row, bool confirm, bool yes) {
   return out;
 }
 
-// "清掉留底？" / "再交给别的 Mac？": any move flips the cursor, Enter does what it is on, back
-// is 取消.
+// "Clear kept files?" / "Send to another Mac?": any move flips the cursor, Enter does what it
+// is on, back is Cancel.
 SystemStep confirm_next(const SystemUi& ui, const KeyEvent& ev) {
   if (is_back(ev)) return handled(with_store(ui, ui.store, false, false));
   const Action a = keymap_lookup(Layer::List, ev).action;

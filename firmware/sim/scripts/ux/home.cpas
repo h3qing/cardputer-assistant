@@ -1,19 +1,19 @@
 # docs/20 B4 regression (U5, U8, U16, U19, U22; from the review's refute_urgent_order,
 # s15_offline_boot, s19_stale_offline and fm07_nosd). Before: the R and L tiles read as
-# single keys (D1 made them Opt); the hint said "按住 G0 说一段" (talk at once, losing the
+# single keys (D1 made them Opt); the hint said "hold G0, talk" (talk at once, losing the
 # first 0.65 s); idle sessions two days old held the one urgent card; unplugged, home said
-# "都处理完了" with a live-looking Mando and ages that kept growing; with no SD card home
-# still offered 开会 and G0. Now: Opt+R / Opt+L keycaps; "G0按住，看到●REC再说"; waiting
-# first, then the newest idle, marked 空闲, the day-old ones folded into "+N 更早";
-# offline a faded Mando, "现在离线" and "离线 · N 分钟前的情况" with stopped ages; no card:
-# 开会 greyed and the hint says why.
-boot store=sd usb=on bat=4100
+# "All done" with a live-looking Mando and ages that kept growing; with no SD card home
+# still offered Meet and G0. Now: Opt+R / Opt+L keycaps; "[G0]hold, talk after REC"; waiting
+# first, then the newest idle, marked "idle", the day-old ones folded into "+N older";
+# offline a faded Mando, "offline now" and "Offline · as of N min ago" with stopped ages; no card:
+# Meet greyed and the hint says why.
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1500
 shot online  Opt+R / Opt+L tiles; G0: wait for ● REC
 host sessions.snapshot {"rev":6,"total":3,"sessions":[{"sid":"bb000001","slot":2,"name":"旧的支付重构","kind":"tty","st":"idle","need":true,"age_s":180000},{"sid":"bb000002","slot":1,"name":"刚做完的录音修复","kind":"tty","st":"idle","need":true,"age_s":120},{"sid":"bb000003","slot":1,"name":"昨天下午的文案","kind":"bg","st":"idle","need":true,"age_s":18000,"short":"d4e5f6"}]}
 wait 3500
-shot idle-newest  idle: the newest first, 空闲, the 2-day one folded
+shot idle-newest  idle: the newest first, marked idle, the 2-day one folded
 host sessions.snapshot {"rev":7,"total":2,"sessions":[{"sid":"bb000001","slot":2,"name":"旧的支付重构","kind":"tty","st":"idle","need":true,"age_s":180000},{"sid":"bb000004","slot":2,"name":"上周的迁移","kind":"tty","st":"idle","need":true,"age_s":700000}]}
 wait 3500
 shot only-older  only day-old idle ones: folded, not urgent
@@ -25,16 +25,16 @@ wait 540000
 press opt+l
 press enter
 wait 300
-shot offline-9m  unplugged 9 min: faded Mando, 现在离线, ages stopped
+shot offline-9m  unplugged 9 min: faded Mando, offline now, ages stopped
 press opt+i
 shot offline-inbox  the inbox says how old its list is
-boot store=sd usb=off bat=4100
+boot store=sd usb=off bat=4100 lang=zh
 wait 1500
-shot never  booted away from the Mac: 还没连上 Mac, no 0s
-boot store=sd usb=on bat=4100
+shot never  booted away from the Mac: no Mac yet, no 0s
+boot store=sd usb=on bat=4100 lang=zh
 wait 1500
 shot no-cpad  cable in, cpad not answering: what to run
-boot store=internal usb=on bat=4100
+boot store=internal usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 wait 1500
-shot no-sd  no SD card: 开会 greyed, the hint says why
+shot no-sd  no SD card: Meet greyed, the hint says why

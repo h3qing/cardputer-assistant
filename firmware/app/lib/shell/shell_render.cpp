@@ -75,8 +75,8 @@ FixedStr<64> target_text(const AppState& s, const ComposeSpec& sp) {
   return out.append("/").append(sp.sid.value.c_str());
 }
 
-// docs/20 U7: the editor's title says where a reply goes: 回复 when it reaches the session,
-// else 记给 Mac (it is only stored on the Mac).
+// docs/20 U7: the editor's title says where a reply goes: "Reply" when it reaches the session,
+// else "Note to Mac" (it is only stored on the Mac).
 const char* compose_title_label(const AppState& s, const ComposeSpec& sp) {
   if (sp.kind != ComposeKind::Feedback) return compose_kind_label(sp.kind);
   const SessionRow* r = find_session(s, sp.sid);
@@ -84,7 +84,7 @@ const char* compose_title_label(const AppState& s, const ComposeSpec& sp) {
 }
 
 // docs/20 U14: which session a reply goes to, so two alike ones differ on the confirm box:
-// its name's end, a short id, how long it waited ("…webhook-timeout · aaaa · 5 分钟").
+// its name's end, a short id, how long it waited ("…webhook-timeout · aaaa · 5 min").
 TextLine session_identity(const Canvas& c, const AppState& s, const Opt<Sid>& sid, uint32_t now) {
   const SessionRow* r = find_session(s, sid);
   if (r == nullptr) return TextLine::from(sid.has ? sid.value.c_str() : "");
@@ -199,20 +199,20 @@ void Shell::render_content(Canvas& c, uint32_t now) const {
 
 // The exit key is always named in plain words (issue #15): Backspace leaves an empty
 // editor, ` one with text (it asks first; docs/20 D5) and everything else. The editor's
-// hints end with "Tab菜单" (docs/13 §5.6); the confirm boxes' keep their two keys.
+// hints end with "[Tab]menu" (docs/13 §5.6); the confirm boxes' keep their two keys.
 const char* Shell::hint_text() const {
   if (rec_up()) return rec_hint();
   if (overlay_ == proto::Overlay::Compose) {
     if (compose_.discard) return tr(txt::kDiscardHint);
     if (compose_.text.empty()) return tr(txt::kEmptyHint);
-    return tr(txt::kTextHint);  // Opt+0-9 目标 is on the menu's 本页
+    return tr(txt::kTextHint);  // Opt+0-9 (Change project) is on the menu's Here page
   }
   if (overlay_ == proto::Overlay::Confirm) return confirm_keys(confirm_decide(confirm_.spec, state()), confirm_.draft);
   const Module* m = top();
   return m ? m->hint() : "";
 }
 
-// docs/21 §6.6: a page module's structured hint is its keys and then [Tab] 菜单 / menu, in
+// docs/21 §6.6: a page module's structured hint is its keys and then [Tab] menu, in
 // the shown language, never parsed; more keys than the bar holds draw as one line.
 void Shell::render_plug(Canvas& c) const {
   const KeptView& k = state().rec.kept;

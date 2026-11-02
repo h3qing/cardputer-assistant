@@ -1,23 +1,23 @@
 # docs/20 B5 regression (U7, U10, U14, U19, U25; from the review's fm05_reply, verify-inbox,
-# t10b_confirm, refute_s10_spawned and s08). Before: every row's hint said "Enter回复" though a
+# t10b_confirm, refute_s10_spawned and s08). Before: every row's hint said "[Enter]reply" though a
 # terminal session takes no reply; a session the device started read "key/key/…"; two alike
 # sessions had pixel-identical confirm boxes; the detail line gave "claude attach", not the
 # name; an uncertain spawn looked like any queue item; the board's overview named no back
-# key; offline the inbox still offered Opt+D. Now: the hint follows the row ("Enter记给Mac"),
+# key; offline the inbox still offered Opt+D. Now: the hint follows the row ("[Enter]note"),
 # the editor's title too; names are whole on the detail lines and never doubled; the reply
-# box shows the name's end, a short id and the wait; "开?" in mustard; "`返回" on the
+# box shows the name's end, a short id and the wait; "new?" in mustard; "[`]back" on the
 # overview; offline no Opt+D and the list says how old it is.
-boot store=sd usb=on bat=4100
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 host sessions.snapshot {"rev":6,"total":3,"sessions":[{"sid":"8d3e7a19","slot":1,"name":"支付回调重试","kind":"tty","st":"waiting","need":true,"age_s":540},{"sid":"d4e5aa01","slot":2,"name":"cardputer/refund-webhook-timeout","kind":"bg","st":"idle","need":true,"age_s":300,"short":"a1b2c3"},{"sid":"d4e5aa02","slot":2,"name":"refund-webhook-retries","kind":"bg","st":"idle","need":true,"age_s":60,"short":"b2c3d4"}]}
 host queue.snapshot {"rev":3,"items":[{"qid":"q20","slot":1,"text":"add retry tests for webhook","intent":"spawn","uncertain":true},{"qid":"q18","slot":1,"text":"write e2e test for refunds","intent":"spawn"},{"qid":"q17","slot":1,"text":"给 webhook 加签名校验","intent":"todo"}]}
 wait 9000
 press opt+i
-shot inbox-tty  a terminal session: Enter记给Mac
+shot inbox-tty  a terminal session: [Enter]note
 press down
-shot inbox-bg  idle in the background: Enter回复; the whole name below, not doubled
+shot inbox-bg  idle in the background: [Enter]reply; the whole name below, not doubled
 press enter
-shot editor-reply  the editor's title: 回复 → the session
+shot editor-reply  the editor's title: Reply → the session
 type ok
 press enter
 wait 500
@@ -39,13 +39,13 @@ press enter
 press up
 press up
 press enter
-shot editor-note  a terminal session's editor: 记给 Mac
+shot editor-note  a terminal session's editor: Note to Mac
 press bksp
 press opt+p
-shot board-overview  the overview names `返回
+shot board-overview  the overview names [`]back
 press opt+1
 press /
-shot board-queue  an uncertain spawn: 开?
+shot board-queue  an uncertain spawn: new?
 press ,
 shot board-sessions  Sessions: the per-row hint
 usb off

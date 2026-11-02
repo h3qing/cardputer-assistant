@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "rec_engine.h"
 #include "runtime.h"
 #include "support/fixtures.h"
@@ -16,7 +17,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::CmdKind;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static std::string files_of(const std::string& line) {

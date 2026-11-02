@@ -15,7 +15,7 @@
 // pocket holds never record); "armed" counts at the press, kG0LongMs before G0Long;
 // the card stays lit while G0 is held (a swallowed hold, or one that went down on the
 // lit card: lock_g0), kHoldLitMs past its time at most (a pocket may press G0 for minutes).
-// The card that answered a swallowed hold says so (没有在录) until it goes dark or another
+// The card that answered a swallowed hold says so ("Not recording") until it goes dark or another
 // key lights it, not only while G0 is down. docs/20 D7: locking lights the card for the user (lock_engage's
 // lit_ms); lock_flash lights it by itself for a while, without arming it or opening the
 // window (a recording's end, a session needing you). A card lit by itself may light an
@@ -47,7 +47,7 @@ struct LockState {
   uint32_t arm_until_ms = 0;     // ... for a press before then (exclusive)
   bool g0_held = false;  // G0 went down on the lit card and is still down: it stays lit
   bool flash = false;    // lit by lock_flash, by no key: nobody may be looking
-  bool swallowed = false;  // the lit card answers a swallowed hold (没有在录), until dark or a key
+  bool swallowed = false;  // the lit card answers a swallowed hold ("Not recording"), until dark or a key
 };
 
 enum class LockOut : uint8_t { Pass, Swallow, Unlock };

@@ -5,6 +5,7 @@
 // head, !N only when not zero, the weekday when it fits, ●mm:ss in a fixed left slot.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "rec_overlay.h"
 #include "shell.h"
 #include "status_bar.h"
@@ -17,7 +18,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static std::string bar(const AppState& s, uint32_t now = 0) {
@@ -42,7 +43,7 @@ static void test_link_glyphs() {
   TEST_ASSERT_TRUE(bar(s).find("◇") != std::string::npos);
   s.link.mode = LinkMode::Ready;
   TEST_ASSERT_TRUE(link_glyph(s) == LinkGlyph::Online);
-  TEST_ASSERT_TRUE(head_drawn(s));                         // Mando's head, not "● 在线":
+  TEST_ASSERT_TRUE(head_drawn(s));                         // Mando's head, not "● online":
   TEST_ASSERT_TRUE(bar(s).find("●") == std::string::npos);  // ● on the bar means recording
   s.outbox.pending = 3;
   TEST_ASSERT_TRUE(link_glyph(s) == LinkGlyph::Syncing);
@@ -210,7 +211,7 @@ static void test_shell_frame_has_status_hint_and_toast() {
   TEST_ASSERT_TRUE(c.has("probe hint"));
 }
 
-// v0.3 (docs/11 §4.2, §3.3): ●mm:ss while recording, 录N while segments wait for sync.
+// v0.3 (docs/11 §4.2, §3.3): ●mm:ss while recording, "RN" while segments wait for sync.
 static void test_recording_and_waiting_segments() {
   AppState s = demo_state();
   TEST_ASSERT_TRUE(bar(s).find("录") == std::string::npos);

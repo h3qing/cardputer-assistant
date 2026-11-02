@@ -6,6 +6,7 @@
 // for G0's events and on_g0 for its edges (after that sample's events); lock_gate first.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
 #include "support/fake_port.h"
@@ -15,7 +16,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::RecInput;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -171,8 +172,8 @@ static void test_hands_free_keys_and_the_end() {
   TEST_ASSERT_EQUAL_UINT32(1, r.sent(RecInput::Press));
 }
 
-// The menu's rows: "G0 结束并保存" is shown only (review of gh #51: Tab, Enter are two
-// pocket presses, and they must not end it); "双击G0" (去哪) starts one, and as G0 is up
+// The menu's rows: "G0 Stop and save" is shown only (review of gh #51: Tab, Enter are two
+// pocket presses, and they must not end it); "G0 x2" (Go page) starts one, and as G0 is up
 // then, the core hears its release at once: a memo that ends by itself is not held (U15).
 static void test_menu_rows_show_the_end_and_start() {
   Rig r;
@@ -248,7 +249,7 @@ static void test_a_note_touched_or_late_keeps_g0() {
   s.shell.tick(180 + kDoubleTapMs);
   s.tap(180 + kLateTapMs);
   TEST_ASSERT_EQUAL_UINT32(0, s.port.gestures.size());
-  TEST_ASSERT_TRUE(s.composing());  // the empty note's G0: "空文本不保存", as before
+  TEST_ASSERT_TRUE(s.composing());  // the empty note's G0: "Empty: not saved", as before
 }
 
 // Holding G0 in an empty quick note (a slow tap, then hold) closes it and records, as the
@@ -275,7 +276,7 @@ static void test_a_hold_in_the_empty_note_records() {
 
 // Opt+L on a hands-free memo locks and it goes on. Locked, G0 acts on the lit card only: a
 // press from dark ends nothing and its tap lights the card; a press on the lit card ends it.
-// docs/20 D7: the card says "已锁屏" kLockFlashMs after Opt+L; dark from then on.
+// docs/20 D7: the card says "Locked" kLockFlashMs after Opt+L; dark from then on.
 static void test_locked_hands_free_ends_on_the_lit_card() {
   Rig r;
   r.hands_free();
@@ -295,7 +296,7 @@ static void test_locked_hands_free_ends_on_the_lit_card() {
 // Locked, idle: the double tap counts only on the lit card. A tap from dark lights it and is
 // no first tap; then tap, tap starts the memo (and the card goes dark, as for any memo from
 // it). A tap on the lit card opens nothing when the window runs out. docs/20 D7: the card
-// says "已锁屏" kLockFlashMs after Opt+L; dark from t0.
+// says "Locked" kLockFlashMs after Opt+L; dark from t0.
 static void test_locked_double_tap_needs_the_lit_card() {
   Rig r;
   r.shell.on_key(opt('l'), 50);

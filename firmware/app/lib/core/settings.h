@@ -10,7 +10,7 @@
 namespace cpa {
 
 struct Settings {
-  Lang lang = Lang::Zh;
+  Lang lang = Lang::En;  // v0.5.2: English first (before: Chinese)
 
   constexpr bool operator==(const Settings& o) const { return lang == o.lang; }
   constexpr bool operator!=(const Settings& o) const { return !(*this == o); }
@@ -20,6 +20,16 @@ constexpr Settings with_lang(const Settings& s, Lang l) {
   Settings out = s;
   out.lang = l;
   return out;
+}
+
+// v0.5.2 (docs/21 §6.8): the "lang" to store at power-on, before nvs_boot_ticket() writes this
+// boot's counter. None when NVS holds one (the user's choice, never touched). Without one, an
+// NVS an earlier cpa-fw booted ("boot" already there) showed Chinese, the default then, and
+// keeps it; a fresh NVS gets English, stored too so its next boot is not taken for an older
+// device's.
+inline Opt<Lang> lang_to_store(bool has_lang, bool had_boot) {
+  if (has_lang) return {};
+  return some(had_boot ? Lang::Zh : Settings{}.lang);
 }
 
 // When a change is written (docs/21 §6.8 step 5): only when it differs from what NVS holds,

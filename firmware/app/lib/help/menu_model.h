@@ -5,19 +5,19 @@
 //   - a run of digit bindings merged into one row ("Opt+1-9");
 //   - a hold (Action::RecMemo): a replay has no G0 release, so it would never stop;
 //   - a hands-free memo's end (Action::RecStop, gh #51): Tab, Enter must not end it;
-//   - a fact on 控制, or a module row the module marked so.
+//   - a fact on Control, or a module row the module marked so.
 // Pages:
-//   本页  the module's help() rows, or else the bindings of the layer under the menu;
-//         then the System-layer keys not listed yet (none over a confirm box, §5.3).
-//         Never Tab: in the menu it closes the menu;
-//   去哪  the Global layer: places first (主页, 项目, 等你, 第 N 个项目页, 设置), then
-//         the rest in kKeymap order; Lock goes to 控制 instead;
-//   控制  the Lock key, then 声音 (read-only: the device has no sound since v0.3.1),
-//         电池, SD, Mac; then the status bar's legend (docs/20 U21: ↑N, !N, 录N, ※kN).
+//   Here     the module's help() rows, or else the bindings of the layer under the menu;
+//            then the System-layer keys not listed yet (none over a confirm box, §5.3).
+//            Never Tab: in the menu it closes the menu;
+//   Go       the Global layer: places first (Home, Projects, Inbox, Project N, Settings),
+//            then the rest in kKeymap order; Lock goes to Control instead;
+//   Control  the Lock key, then Sound (read-only: the device has no sound since v0.3.1),
+//            Bat, SD, Mac; then the status bar's legend (docs/20 U21: ↑N, !N, RN, ※kN).
 // v0.5 (docs/19 §6.5): the key column is a keycap, so a range row's label no longer ends in
-// "（按 1-9）" and the lock row is just 锁屏 (the lock card says how to unlock).
-// Over an overlay (compose, confirm, meeting page) there is no 去哪: asking for it
-// gives 本页.
+// "(press 1-9)" and the lock row is just "Lock" (the lock card says how to unlock).
+// Over an overlay (compose, confirm, meeting page) there is no Go page: asking for it
+// gives Here.
 #pragma once
 
 #include <cstddef>
@@ -29,14 +29,14 @@
 
 namespace cpa {
 
-enum class MenuPage : uint8_t { Here, Goto, Control };  // 本页 / 去哪 / 控制
+enum class MenuPage : uint8_t { Here, Goto, Control };  // Here / Go / Control
 
 constexpr uint8_t kMenuRowsMax = 16;
 
 using MenuText = FixedStr<63>;
 
 // v0.5 (docs/19 §6.5, mockup 03): the count a row carries at its right end, as the home
-// tiles do: 跑N on the row that opens the board, !N on the one that opens the inbox.
+// tiles do: runN on the row that opens the board, !N on the one that opens the inbox.
 enum class MenuBadge : uint8_t { None, Running, NeedsYou };
 
 struct MenuRow {
@@ -47,16 +47,16 @@ struct MenuRow {
   uint32_t badge_n = 0;
   KeyLabel keys;         // UTF-8, the key column
   MenuText label;        // UTF-8, what it does
-  bool fact = false;     // a fact on 控制 (电池, the legend): it explains no key
+  bool fact = false;     // a fact on Control (Bat, the legend): it explains no key
 };
 
 // What the menu is opened over. title and help must outlive the content built from it.
 struct MenuSource {
-  Layer layer = Layer::List;      // the layer under the menu: its bindings make 本页
+  Layer layer = Layer::List;      // the layer under the menu: its bindings make Here
   const HelpRow* help = nullptr;  // the module's own rows, used instead of the layer's
   uint8_t help_n = 0;
-  bool overlay = false;           // compose, confirm or a recording page: no 去哪
-  const char* title = "";         // the page under the menu ("会议录音"); "" = 本页
+  bool overlay = false;           // compose, confirm or a recording page: no Go page
+  const char* title = "";         // the page under the menu ("Meeting"); "" = Here
 };
 
 struct MenuContent {
@@ -77,7 +77,7 @@ struct KeymapView {
 MenuContent menu_content(MenuPage page, const MenuSource& src, const AppState& s, const SysInfo& sys,
                          const KeymapView& km = KeymapView{});
 
-const char* menu_page_name(MenuPage p);  // 本页 / 去哪 / 控制
+const char* menu_page_name(MenuPage p);  // Here / Go / Control
 int menu_battery_pct(uint16_t mv);       // the status bar's curve; -1 when unknown
 
 }  // namespace cpa

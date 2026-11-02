@@ -175,7 +175,7 @@ static void test_the_lock_card_dozes_then_goes_dark() {
   RecRig x;
   x.r.tx.is_plugged = false;
   press(x.r, keys({key::kOpt, kL}));
-  run(x, kLockFlashMs);  // docs/20 D7: the card said "已锁屏"; dark again
+  run(x, kLockFlashMs);  // docs/20 D7: the card said "Locked"; dark again
   TEST_ASSERT_TRUE(x.r.plat.levels.back() == Backlight::Off);
   press(x.r, keys({key::kG0}));  // a tap lights the card
   TEST_ASSERT_TRUE(x.r.plat.levels.back() == Backlight::On);

@@ -1,5 +1,5 @@
-// Board module (04 US-06, US-08, 05 §5.4): home list with the "其他" row, project
-// page with Sessions / 队列 tabs, Enter and Opt+D actions, offline greying.
+// Board module (04 US-06, US-08, 05 §5.4): home list with the "Other" row, project
+// page with Sessions / Queue tabs, Enter and Opt+D actions, offline greying.
 #include <unity.h>
 
 #include <string>
@@ -8,6 +8,7 @@
 #include "board_logic.h"
 #include "board_module.h"
 #include "confirm.h"
+#include "core/support/lang_pin.h"
 #include "support/fake_canvas.h"
 #include "theme.h"
 #include "theme_palette.h"
@@ -17,7 +18,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 struct Rig {
@@ -36,7 +37,7 @@ struct Rig {
   }
 };
 
-// docs/19 §6.4: one rounded card per project and one for 其他; counts are pills.
+// docs/19 §6.4: one rounded card per project and one for Other; counts are pills.
 static void test_home_lists_projects_counts_and_other() {
   Rig r;
   r.draw();
@@ -128,7 +129,7 @@ static void test_home_enter_opens_project_and_cursor_clamps() {
   TEST_ASSERT_EQUAL_UINT32(1, r.ctx.opened.size());
   TEST_ASSERT_EQUAL_STRING("board:2", r.ctx.opened[0].c_str());
   for (int i = 0; i < 5; ++i) r.board.onKey(chr('.'));
-  r.board.onKey(enter());  // on "其他": no page
+  r.board.onKey(enter());  // on "Other": no page
   TEST_ASSERT_EQUAL_UINT32(1, r.ctx.opened.size());
   for (int i = 0; i < 5; ++i) r.board.onKey(chr(';'));
   r.board.onKey(enter());
@@ -143,7 +144,7 @@ static void test_project_page_tabs_and_lists() {
   r.board.onEnter(1);
   TEST_ASSERT_EQUAL_UINT8(1, r.board.contextSlot());
   r.draw();
-  // docs/20 U22: one name for a session; the confirm box's "先看 Sessions" (U25) names this tab
+  // docs/20 U22: one name for a session; the confirm box's "see Sessions" (U25) names this tab
   TEST_ASSERT_TRUE(r.canvas.has("Sessions(2)"));
   TEST_ASSERT_TRUE(std::string(confirm_note(Decision{Route::Execute, QueueReason::None, true})).find("Sessions") !=
                    std::string::npos);
@@ -153,7 +154,7 @@ static void test_project_page_tabs_and_lists() {
   TEST_ASSERT_TRUE(r.canvas.has("空闲 1分钟 后台"));
   TEST_ASSERT_TRUE(r.board.onKey(chr('/')));
   r.draw();
-  TEST_ASSERT_TRUE(r.canvas.has("add LittleFS"));  // offline: cut before its 离线 pill
+  TEST_ASSERT_TRUE(r.canvas.has("add LittleFS"));  // offline: cut before its "offline" pill
   TEST_ASSERT_FALSE(r.canvas.has("架构设计"));
   TEST_ASSERT_TRUE(r.board.onKey(chr(',')));
   r.draw();
@@ -218,7 +219,7 @@ static Color ground_of(const FakeCanvas& c, const TextOp& t) {
 }
 
 // Offline the queue's items are grey; the selected one reads at >= 4.5:1 (Ink2 on Select:
-// Ink3 there is 3.5:1) and says why it does nothing with a 离线 pill.
+// Ink3 there is 3.5:1) and says why it does nothing with an "offline" pill.
 static void test_offline_items_are_drawn_grey() {
   Rig r;
   r.board.onEnter(1);
@@ -275,8 +276,8 @@ static void test_empty_states() {
   TEST_ASSERT_EQUAL_UINT32(0, ctx.composed.size());
 }
 
-// v0.4.0 (docs/13 §5.6, §6.2): each page's 本页 rows for the Tab menu replay real keys
-// (the menu presses them), and every hint ends in "Tab菜单" within the 240 px bar.
+// v0.4.0 (docs/13 §5.6, §6.2): each page's "Here" rows for the Tab menu replay real keys
+// (the menu presses them), and every hint ends in "[Tab]menu" within the 240 px bar.
 static bool has_row(const std::vector<HelpRow>& rows, const KeyEvent& ev) {
   for (const HelpRow& r : rows) {
     if (r.ev == ev && r.keys[0] != 0 && help_label(r)[0] != 0) return true;
@@ -291,9 +292,9 @@ static bool has_label(const std::vector<HelpRow>& rows, const char* word) {
   return false;
 }
 
-// The hint ends in Tab菜单 and fits the bar as keycaps at its roomiest spacing (docs/19 §4.2:
-// a tighter one reads crowded). docs/20 U10: the overview's names ` 返回 as well, so it takes
-// the second spacing (pad 2).
+// The hint ends in [Tab]menu and fits the bar as keycaps at its roomiest spacing (docs/19
+// §4.2: a tighter one reads crowded). docs/20 U10: the overview's names [`]back as well, so
+// it takes the second spacing (pad 2).
 static void assert_hint(const Module& m, int16_t pad = 3) {
   const std::string h = m.hint();
   FakeCanvas c;
@@ -315,7 +316,7 @@ static void test_help_rows_and_hints() {
   for (const KeyEvent& k : {enter(), opt('d'), chr('/'), chr('`')}) TEST_ASSERT_TRUE(has_row(rows, k));
   TEST_ASSERT_TRUE(has_label(rows, "回复"));
   assert_hint(r.board);
-  r.board.onKey(chr('/'));  // 队列
+  r.board.onKey(chr('/'));  // Queue
   rows = help_rows(r.board);
   TEST_ASSERT_TRUE(has_row(rows, enter()) && has_row(rows, opt('d')));
   TEST_ASSERT_TRUE(has_label(rows, "开 session"));

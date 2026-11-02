@@ -9,7 +9,7 @@
 //   arm:    the audio task's start (issue #31, mic_start.h): the session opens with the
 //           first block the codec does not hold muted, at its first live sample, or after
 //           kMuteWaitMs anyway (write() or tick(); counted). Before that nothing is written
-//           or emitted, so the loop stays in the Cue (● 准备, not ● REC); a stop discards.
+//           or emitted, so the loop stays in the Cue (● Wait, not ● REC); a stop discards.
 //           The session's clock (up_ms, ★, lead_ms, segment bytes) starts at the first
 //           written sample.
 //   list / get / del: file.* work the loop has validated (file_req.h). The file of the

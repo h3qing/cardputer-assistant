@@ -1,8 +1,9 @@
 // cpa-fw entry point (05 §5.1): one Arduino loop task with a 16 KB stack. setup()
 // brings the hardware up in the order that matters (USB RX buffer before anything can
-// start the CDC, NVS boot counter before any id), then loop() runs the runtime, which
-// never blocks: no delay() anywhere in the loop. docs/29 P1: after a pass, dark on battery
-// with nothing going on, the loop task sleeps 10 ms (Runtime::idle_yield_ms).
+// start the CDC, the stored language before the NVS boot counter, the counter before any
+// id), then loop() runs the runtime, which never blocks: no delay() anywhere in the loop.
+// docs/29 P1: after a pass, dark on battery with nothing going on, the loop task sleeps
+// 10 ms (Runtime::idle_yield_ms).
 // Storage (docs/09-m2-design.md §3.1): partition facts, one SD mount attempt, cpafs,
 // then plan_storage() picks the primary store once for this boot; with the card primary
 // the Runtime first moves cpafs's pending items to it, and cpafs is unmounted after.
@@ -22,6 +23,7 @@
 #include "module_list.h"
 #include "null_store.h"
 #include "nvs_boot.h"
+#include "nvs_settings.h"
 #include "part_facts.h"
 #include "runtime.h"
 #include "sd_card.h"
@@ -96,6 +98,7 @@ void setup() {
   runtime.attach_rec(g_audio, rec);
   if (sd && lfs) runtime.attach_spare(g_spare);
   cpa::BootInfo boot;
+  cpa::nvs_lang_migrate();  // v0.5.2: before the ticket, which writes "boot" on every boot
   boot.ticket = cpa::nvs_boot_ticket();
   boot.dev = cpa::hal_dev_id();
   boot.rst = cpa::hal_reset_reason();

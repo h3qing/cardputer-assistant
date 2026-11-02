@@ -44,8 +44,8 @@ int inbox_selected(const InboxUi& ui, const InboxRows& rows, const AppState& s);
 InboxUi inbox_pick(const InboxUi& ui, const AppState& s);
 
 // The detail line for a session (04 US-07 AC4): "claude attach <short>" for background
-// sessions only; interactive ones say "终端 session：在 Mac 上处理". docs/20 U14: the name has
-// a line of its own above it (session_label, whole).
+// sessions only; interactive ones say "Terminal session: answer on the Mac". docs/20 U14: the
+// name has a line of its own above it (session_label, whole).
 FixedStr<64> inbox_detail(const SessionRow& r);
 
 }  // namespace cpa

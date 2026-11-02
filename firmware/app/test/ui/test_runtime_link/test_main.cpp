@@ -3,6 +3,7 @@
 // online requests, the projects cache, render pacing and stats sampling.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "runtime.h"
 #include "support/fixtures.h"
 #include "support/runtime_rig.h"
@@ -10,7 +11,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static void test_handshake_reply_and_host_app() {
@@ -20,7 +21,7 @@ static void test_handshake_reply_and_host_app() {
   TEST_ASSERT_EQUAL_UINT32(1, hello.size());
   const auto& h = std::get<proto::Hello>(hello[0].msg.body);
   TEST_ASSERT_FALSE(h.from_host);
-  TEST_ASSERT_TRUE(h.device.fw.equals("cpa-fw/0.5.1"));
+  TEST_ASSERT_TRUE(h.device.fw.equals("cpa-fw/0.5.2"));
   TEST_ASSERT_TRUE(h.device.dev.equals("020000000001"));
   TEST_ASSERT_TRUE(h.device.boot == mono_boot_id(mono_start(test_ticket())));
   TEST_ASSERT_TRUE(h.device.rst.equals("poweron"));

@@ -1,9 +1,10 @@
-// Online agent requests through the whole runtime (05 §5.6 "在线请求的结果", 04 US-09
-// AC4/AC6, E9/E10): ok -> "已开始 · <short>"; failure -> the text becomes a queue item
-// and the code is shown; link loss or 30 s without a result -> "结果未知", the text
+// Online agent requests through the whole runtime (05 §5.6 "results of online requests",
+// 04 US-09 AC4/AC6, E9/E10): ok -> "Started · <short>"; failure -> the text becomes a queue
+// item and the code is shown; link loss or 30 s without a result -> "Unknown result", the text
 // becomes an uncertain queue item. Never retried; a late result is ignored.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "runtime.h"
 #include "support/fake_canvas.h"
 #include "support/fixtures.h"
@@ -12,7 +13,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 // Opt+S, text, Enter, then Enter again after the 400 ms guard.

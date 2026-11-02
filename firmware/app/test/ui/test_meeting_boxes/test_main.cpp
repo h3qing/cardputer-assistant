@@ -1,7 +1,7 @@
 // The meeting's two boxes after docs/20 D3 (U1, U23), through the shell and the runtime:
 //   start box  Enter (after 400 ms) starts; Opt+L cancels and locks; a letter, a digit or any
 //              other key but Enter and Tab cancels; 15 s without a key cancels; a too-fast
-//              Enter says "再按一次 Enter"; G0 says the box comes first; it is not a
+//              Enter says "press Enter again"; G0 says the box comes first; it is not a
 //              recording (file.* is answered, pong says not live);
 //   end box    Enter (after 400 ms) ends; ` keeps recording; Opt+L keeps recording and
 //              locks; 10 s without a key goes back to the meeting;
@@ -9,11 +9,12 @@
 //   idle       both boxes count 15 s / 10 s from the last key, and wait while the Tab menu is
 //              open over them (the review's probe: an end box gone under the menu, then
 //              the Enter meant to end the meeting fell silently on the meeting page);
-//   hint       "先处理确认框" goes with the box, however the box goes.
+//   hint       "Answer the box first" goes with the box, however the box goes.
 #include <unity.h>
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
 #include "runtime.h"
 #include "shell.h"
@@ -27,7 +28,7 @@ using namespace uitest;
 using rec::CmdKind;
 using rec::RecInput;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -248,7 +249,7 @@ static void test_a_key_keeps_a_box() {
   TEST_ASSERT_TRUE(y.r.rt.state().rec.phase == RecPhase::Recording);
 }
 
-// G0 held on the start box (the habit of holding G0 to talk) says "先处理确认框"; the hint
+// G0 held on the start box (the habit of holding G0 to talk) says "Answer the box first"; the hint
 // is about the box and goes with it: `, Opt+R, or Enter starting the meeting.
 static void test_the_box_hint_goes_with_the_box() {
   for (const KeySet& closer : {kGraveKey, kOptR, kEnterKey}) {

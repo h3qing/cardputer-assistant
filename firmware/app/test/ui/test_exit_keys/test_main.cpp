@@ -10,6 +10,7 @@
 #include <string>
 
 #include "confirm.h"
+#include "core/support/lang_pin.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
 #include "support/fake_port.h"
@@ -19,7 +20,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 struct Rig {
@@ -36,7 +37,7 @@ struct Rig {
     shell.begin(0);
   }
 
-  // The hint bar as words (keycaps and what they do: "Enter 保存 ` 退出 Tab 菜单").
+  // The hint bar as words (keycaps and what they do: "Enter save ` exit Tab menu").
   std::string hint(uint32_t now) const {
     FakeCanvas c;
     shell.render(c, now);

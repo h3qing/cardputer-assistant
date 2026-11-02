@@ -41,7 +41,8 @@ int16_t draw_right(Canvas& c, int16_t x_end, int16_t y, const char* s, const Sty
 // column, which is then no wider than v0.4.0's "40m bg" and leaves the name its room.
 // In English (docs/21 §6.5) abbreviated: "9 s", "40 min", "2 h", "2 d"; tight "40m".
 FixedStr<16> age_text(uint32_t age_s, bool tight = false);
-// docs/20 U19: away from the Mac, how old the picture on the screen is: "离线 · 9 分钟前的情况".
+// docs/20 U19: away from the Mac, how old the picture on the screen is:
+// "Offline · as of 9 min ago".
 FixedStr<48> stale_text(uint32_t age_s);
 // docs/20 U22: a session's kind as the screens name it (not tty / bg).
 const char* session_kind_text(SessionKind k);

@@ -128,7 +128,7 @@ FixedStr<16> rec_clock_text(uint32_t elapsed_ms) {
 namespace {
 
 // mockup 04, and gh #51: what G0 does now (held, let go within the grace, hands free; the
-// last with the digits and Opt+L, its pocket key; Tab opens the menu there too). 0 不归属 is
+// last with the digits and Opt+L, its pocket key; Tab opens the menu there too). 0 "none" is
 // the legend's (gh #53), right above: not said twice.
 const char* memo_hint(const RecInfo& r) {
   if (r.latched) return tr(txt::kMemoLatchedHint);
@@ -164,12 +164,12 @@ const char* Shell::rec_hint() const {
   switch (r.phase) {
     case RecPhase::Confirm: return tr(txt::kStartBoxHint);
     case RecPhase::EndConfirm: return tr(txt::kEndBoxHint);
-    case RecPhase::Finishing: return "";  // Mando's sign says 保存中…
+    case RecPhase::Finishing: return "";  // Mando's sign says "Saving…"
     default: break;
   }
   if (r.mode == RecMode::Memo) return memo_hint(r);
-  // docs/13 §5.6; docs/20 U23: Space stars too, [G0] [空格] 加★ (1-9 is on the Tab menu, and the
-  // title shows where it goes)
+  // docs/13 §5.6; docs/20 U23: Space stars too, [G0]/[Space]star (1-9 is on the Tab menu,
+  // and the title shows where it goes)
   return tr(txt::kMeetingHint);
 }
 

@@ -2,7 +2,7 @@
 # sent, so the device saves the task as an uncertain queue item; the Mac did start it. Before
 # the fix queue.snapshot dropped "uncertain" and Enter on the item offered to start it again
 # with nothing to say it may already run.
-boot store=sd usb=on bat=4100
+boot store=sd usb=on bat=4100 lang=zh
 include ../common/demo_state.cpas
 press opt+1
 press opt+s
@@ -26,9 +26,9 @@ press /
 shot 03-queue  the same task is in the queue (q20)
 press enter
 wait 500
-shot 04-confirm  Enter on q20: the title "在 acmeshop 开 session" stays, "可能已开过，先看 Sessions" (yellow) on a row of its own
+shot 04-confirm  Enter on q20: "New session in acmeshop" stays, "May have started: see Sessions" (yellow) on its own row
 press `
 press down
 press enter
 wait 500
-shot 05-plain-item  Enter on q18 (not uncertain): the usual "在 acmeshop 开 session"
+shot 05-plain-item  Enter on q18 (not uncertain): the usual "New session in acmeshop"

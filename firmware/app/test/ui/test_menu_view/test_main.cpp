@@ -1,5 +1,5 @@
 // Tab menu keys and drawing (docs/13 §6.1): Enter replays exactly the selected row's
-// key; shown-only rows do nothing; letters on 去哪 / 控制, and on 本页 when not over an
+// key; shown-only rows do nothing; letters on Go / Control, and on Here when not over an
 // overlay, replay Opt+letter (§3.3: Tab, then a letter); Tab and `
 // close; the list scrolls to keep the selection on screen, and a scroll bar shows rows off
 // it; the status bar row (● and the timer while recording) is never drawn over; every drawn
@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "core/support/lang_pin.h"
 #include "menu_view.h"
 #include "status_bar.h"
 #include "support/fake_canvas.h"
@@ -19,7 +20,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 static bool theme_contrast_ok(Color ink, Color ground) { return theme::contrast(ink, ground) >= 4.5; }
@@ -145,13 +146,13 @@ static void test_a_bound_letter_on_goto_or_control_replays_opt_letter() {
       }
     }
     if (keymap_lookup(Layer::Global, opt(c)).action == Action::None) continue;
-    ++bound;  // every letter the Global layer binds works from 去哪 or 控制
+    ++bound;  // every letter the Global layer binds works from Go or Control
     TEST_ASSERT_TRUE_MESSAGE(shows(go, opt(c)) || shows(ctl, opt(c)), what.c_str());
   }
   TEST_ASSERT_TRUE(bound >= 5);  // Opt+H/I/N/Q/S/M/R in v0.3
 }
 
-// Tab, then a letter (docs/13 §3.3): on 本页 a letter is Opt+letter when the Global or
+// Tab, then a letter (docs/13 §3.3): on Here a letter is Opt+letter when the Global or
 // System layer binds it, whatever the page's own rows are; over an overlay it is eaten.
 static void test_a_bound_letter_on_here_replays_opt_letter() {
   const MenuContent here = content(MenuPage::Here, module_page());
@@ -174,7 +175,7 @@ static void test_a_bound_letter_on_here_replays_opt_letter() {
 
 static void test_letters_on_here_and_lock_on_control() {
   const MenuContent here = content(MenuPage::Here, over(Layer::RecPage, true), kFakeMap);
-  for (const char c : {'l', 'h', 'i'}) {  // 本页 over an overlay: the menu eats them
+  for (const char c : {'l', 'h', 'i'}) {  // Here over an overlay: the menu eats them
     TEST_ASSERT_TRUE(press(MenuState{}, chr(c), here).out == MenuOut::None);
   }
   const MenuContent ctl = content(MenuPage::Control, over(Layer::RecPage, true), kFakeMap);
@@ -227,7 +228,7 @@ static void test_pages_wrap_and_an_overlay_has_two() {
   TEST_ASSERT_TRUE(after(MenuPage::Here, '/', true) == MenuPage::Control);
   TEST_ASSERT_TRUE(after(MenuPage::Control, '/', true) == MenuPage::Here);
   TEST_ASSERT_TRUE(after(MenuPage::Here, ',', true) == MenuPage::Control);
-  TEST_ASSERT_TRUE(after(MenuPage::Goto, '/', true) == MenuPage::Control);  // Goto reads as 本页 there
+  TEST_ASSERT_TRUE(after(MenuPage::Goto, '/', true) == MenuPage::Control);  // Goto reads as Here there
 }
 
 // The top of row r's capsule; its key and label are drawn a pixel lower.
@@ -251,7 +252,7 @@ static void check_visible(const MenuState& st, const MenuContent& m) {
   const MenuRow& r = m.rows[st.sel];
   const bool explains = r.ev.kind == KeyEventKind::None && !r.fact;
   TEST_ASSERT_TRUE(c.filled_at(row_y(st, st.sel), explains ? Color::Select : Color::Accent));
-  // on the selected row: docs/20 U22's "记一条" is also inside the G0 row's label
+  // on the selected row: docs/20 U22's "Note" is also inside the G0 row's label
   const TextOp* label = text_on(c, static_cast<int16_t>(row_y(st, st.sel) + 1), r.label.c_str());
   TEST_ASSERT_NOT_NULL(label);
   TEST_ASSERT_TRUE(label->style.fg == (explains ? Color::Ink : Color::OnAccent));
@@ -287,7 +288,7 @@ static bool thumb(const FakeCanvas& c, Rect& out) {
   return false;
 }
 
-// Rows off screen show as a scroll bar (docs/13 §6.3: "往下翻还有…"): the thumb moves down
+// Rows off screen show as a scroll bar (docs/13 §6.3: "more below…"): the thumb moves down
 // as the list does; a page that fits has none.
 static void test_rows_off_screen_show_a_scroll_bar() {
   const MenuContent go = content(MenuPage::Goto, over(Layer::List, false));
@@ -305,7 +306,7 @@ static void test_rows_off_screen_show_a_scroll_bar() {
     TEST_ASSERT_EQUAL(st.top > 0, t.y > 36);
     last = t.y;
   }
-  // a page that fits: 本页 over a confirm box (docs/20 U21's legend makes 控制 scroll even
+  // a page that fits: Here over a confirm box (docs/20 U21's legend makes Control scroll even
   // over a confirm box on the sheet's six rows)
   const MenuContent fits = content(MenuPage::Here, over(Layer::Confirm, true));
   TEST_ASSERT_TRUE(fits.n <= kMenuVisibleRows);
@@ -374,7 +375,7 @@ static void test_tabs_and_hint() {
   menu_render(g, st, content(MenuPage::Goto, over(Layer::List, false)));
   TEST_ASSERT_EQUAL_STRING("去哪", active_tab(g).c_str());
   TEST_ASSERT_TRUE(g.has("本页") && g.has("控制"));
-  // mockup 03: letters still go straight there, but the hint leaves 字母直达 out (it pushed
+  // mockup 03: letters still go straight there, but the hint leaves "letters jump" out (it pushed
   // the bar to its tightest spacing)
   TEST_ASSERT_EQUAL_STRING(";. 选 Enter 做 ,/ 换页 Tab 关", g.line(kScreenH - kBarH).c_str());
   TEST_ASSERT_EQUAL_INT16(6, g.find(";.")->x);  // the roomiest spacing
@@ -391,7 +392,7 @@ static Color ground_of(const FakeCanvas& c, const TextOp& t) {
   return g;
 }
 
-// The judges' 4.5:1 (Ink3 on a Cap is 3.5:1): a fact on 控制 is a word, not a key, drawn
+// The judges' 4.5:1 (Ink3 on a Cap is 3.5:1): a fact on Control is a word, not a key, drawn
 // plain in Ink3 on the sheet; a shown-only row's key is Ink3 on a Raised cap.
 static void test_shown_only_keys_read() {
   AppState s;
@@ -416,7 +417,7 @@ static void test_shown_only_keys_read() {
   TEST_ASSERT_TRUE(key->style.fg == Color::Ink2 && ground_of(m, *key) == Color::Cap);
 }
 
-// 控制's facts and the status bar's legend (docs/20 U21) are words, not keys: their values
+// Control's facts and the status bar's legend (docs/20 U21) are words, not keys: their values
 // share one column, after the widest of them, whatever the keys' common width is.
 static void test_facts_share_one_column() {
   AppState s;
@@ -430,7 +431,7 @@ static void test_facts_share_one_column() {
   st.page = MenuPage::Control;
   menu_render(c, st, m);
   const int16_t x = c.find("关（录音不出声）")->x;
-  TEST_ASSERT_EQUAL_INT16(x, c.find("--")->x);  // 电池, no reading
+  TEST_ASSERT_EQUAL_INT16(x, c.find("--")->x);  // battery, no reading
   TEST_ASSERT_EQUAL_INT16(x, c.find("剩 --")->x);
   TEST_ASSERT_EQUAL_INT16(x, c.find("离线")->x);
   TEST_ASSERT_EQUAL_INT16(x, c.find("1 条笔记等着传到 Mac")->x);
@@ -443,7 +444,7 @@ static void test_facts_share_one_column() {
 
 // Labels start after the common cap (2 + 12 + 5 for one letter, mockup 03); a wider cap
 // pushes only its own row. With the keys no longer repeated in the labels, the sheet starts
-// at x 66 on home's 本页 and 去哪, so the page stays in view.
+// at x 66 on home's Here and Go, so the page stays in view.
 static void test_labels_follow_the_common_cap() {
   static const HelpRow kTiles[] = {{opt('p'), "P", "项目"}, {nav(Nav::Menu), "Tab", "菜单"},
                                    {KeyEvent{}, "1-9", "第 N 个项目页"}, {opt('n'), "N", "记一条"}};
@@ -463,7 +464,7 @@ static void test_labels_follow_the_common_cap() {
   TEST_ASSERT_EQUAL_INT16(66, menu_sheet_x(c, content(MenuPage::Goto, over(Layer::List, false))));
 }
 
-// mockup 03: 跑N and !N at the right end of their rows (Ink3 and Warn), OnAccent on the
+// mockup 03: runN and !N at the right end of their rows (Ink3 and Warn), OnAccent on the
 // caramel row (mustard on caramel is 1.2:1).
 static void test_badges_sit_at_the_row_end() {
   static const HelpRow kTiles[] = {{opt('p'), "P", "项目"}, {opt('i'), "I", "等你"}};

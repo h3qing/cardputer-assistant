@@ -1,4 +1,4 @@
-// Tab menu replay (docs/13 §3.4, §6.1-§6.2, §10.1): Enter on a 本页 row closes the menu and
+// Tab menu replay (docs/13 §3.4, §6.1-§6.2, §10.1): Enter on a Here row closes the menu and
 // presses the row's key through the normal path, so it does exactly what pressing that
 // key does. Checked row by row on two identical rigs, one through the menu and one with
 // the key itself, for the board, the inbox, the system page, the home launcher, the
@@ -12,6 +12,7 @@
 #include <string>
 
 #include "board_module.h"
+#include "core/support/lang_pin.h"
 #include "home_module.h"
 #include "inbox_module.h"
 #include "menu_model.h"
@@ -26,7 +27,7 @@
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -93,7 +94,7 @@ MenuContent here_rows(const Rig& r) {
   return menu_content(MenuPage::Here, r.shell.menu_source(), r.port.app, r.port.info);
 }
 
-// The hint bar as words: keycaps and what they do, "Enter 放弃 ` 返回" (docs/19 §4.2).
+// The hint bar as words: keycaps and what they do, "Enter discard ` back" (docs/19 §4.2).
 std::string hint_row(const Rig& r) {
   FakeCanvas c;
   r.shell.render(c, kT);
@@ -146,15 +147,15 @@ void on_meeting(Rig& r) {
   r.port.app.rec.phase = RecPhase::Recording;
   r.port.app.rec.mode = RecMode::Meeting;
 }
-void on_discard(Rig& r) {  // ` on a draft (docs/20 D5): "放弃已输入的内容？"
+void on_discard(Rig& r) {  // ` on a draft (docs/20 D5): "Discard what you typed?"
   on_compose(r);
   r.keys({chr('`')});
 }
-void on_end_confirm(Rig& r) {  // Opt+R on the meeting page: "结束录音？"
+void on_end_confirm(Rig& r) {  // Opt+R on the meeting page: "Stop recording?"
   on_meeting(r);
   r.port.app.rec.phase = RecPhase::EndConfirm;
 }
-void on_start_box(Rig& r) {  // Opt+R: "开始会议录音？"
+void on_start_box(Rig& r) {  // Opt+R: "Start a meeting recording?"
   on_meeting(r);
   r.port.app.rec.phase = RecPhase::Confirm;
 }
@@ -176,7 +177,7 @@ void on_item_unavailable(Rig& r) {  // offline: the item stays on the Mac
   item_confirm(r);
 }
 
-// 本页 as "keys label;" per row.
+// The Here page as "keys label;" per row.
 std::string here_text(const Rig& r) {
   const MenuContent m = here_rows(r);
   std::string out;
@@ -294,7 +295,7 @@ static void test_menu_screen() {
   r.shell.render(c, kT);
   TEST_ASSERT_EQUAL_STRING("去哪", active_tab(c).c_str());
   TEST_ASSERT_TRUE(c.has("Opt+P"));
-  r.keys({chr('i')});  // a letter on 去哪 is Opt+letter
+  r.keys({chr('i')});  // a letter on Go is Opt+letter
   TEST_ASSERT_FALSE(r.shell.menu_open());
   TEST_ASSERT_EQUAL_STRING("inbox", r.shell.top_id());
   Rig m(false);
@@ -306,7 +307,7 @@ static void test_menu_screen() {
   TEST_ASSERT_EQUAL_STRING_MESSAGE("本页", active_tab(c).c_str(), c.dump().c_str());
   TEST_ASSERT_TRUE(c.has("● 1:02"));
   TEST_ASSERT_FALSE(c.has("去哪"));
-  Rig box(false);  // over a confirm box: 本页 and 控制, and no lock row on either
+  Rig box(false);  // over a confirm box: Here and Control, and no lock row on either
   box.keys({opt('1'), opt('s'), chr('x'), enter(), nav(Nav::Menu)});
   c.clear();
   box.shell.render(c, kT);
@@ -354,7 +355,7 @@ static void test_menu_enter_keeps_the_consent_guard() {
   TEST_ASSERT_TRUE(x.r.rt.state().rec.phase == RecPhase::Confirm);
   x.r.step(10, tab);
   x.steps(1);
-  x.r.step(10, enter_key);  // row 1: Enter 开始, within 400 ms
+  x.r.step(10, enter_key);  // row 1: Enter Start, within 400 ms
   x.steps(1);
   TEST_ASSERT_FALSE(x.r.rt.shell().menu_open());
   TEST_ASSERT_TRUE(x.r.rt.state().rec.phase == RecPhase::Confirm);
@@ -366,7 +367,7 @@ static void test_menu_enter_keeps_the_consent_guard() {
   TEST_ASSERT_TRUE(x.r.rt.state().rec.phase == RecPhase::Recording);
 }
 
-// Over Compose's "放弃已输入的内容？" prompt the menu is a confirm box's (docs/13 §5.3):
+// Over Compose's "Discard what you typed?" prompt the menu is a confirm box's (docs/13 §5.3):
 // each row says what the prompt does with its key, and Opt+L does nothing there.
 static void test_discard_prompt_rows_say_what_happens() {
   check_every_row(false, on_discard);
@@ -401,8 +402,9 @@ static void test_discard_prompt_rows_say_what_happens() {
   for (uint8_t i = 0; i < ctl.n; ++i) TEST_ASSERT_FALSE(ctl.rows[i].ev == opt('l'));
 }
 
-// Over the meeting's "结束录音？" box the rows say what the box does with each key, as the
-// box itself does ("Enter 结束 ` 继续录"): no row says 取消, which would read as dropping it.
+// Over the meeting's "Stop recording?" box the rows say what the box does with each key, as
+// the box itself does ("[Enter]stop [`]keep going"): no row says Cancel, which would read as
+// dropping it.
 // docs/20 D3: a fourth row, Opt+L, keeps recording and locks.
 static void test_end_confirm_rows_say_what_happens() {
   check_every_row(false, on_end_confirm);
@@ -418,9 +420,10 @@ static void test_end_confirm_rows_say_what_happens() {
 }
 
 // U22, B6 (the review): over a confirm box the rows say what the box says (confirm_keys),
-// never the generic 确认 / 取消: Enter 开始, 存为排队 or 关闭; ` and Fn+` 返回修改 with a
-// draft behind the box (D6), else 取消. The meeting's start box as its card: Enter 开始,
-// ` 取消, and Opt+L 取消并锁屏 (D3). Each row still does what its key does.
+// never the generic Confirm / Cancel: Enter Start, Save as queued or Close; ` and Fn+`
+// Back to edit with a draft behind the box (D6), else Cancel. The meeting's start box as
+// its card: Enter Start, ` Cancel, and Opt+L Cancel and lock (D3). Each row still does
+// what its key does.
 static void test_confirm_box_rows_say_what_the_box_says() {
   const struct {
     void (*prep)(Rig&);
@@ -467,11 +470,11 @@ static void test_range_rows_say_which_keys() {
   TEST_ASSERT_EQUAL_INT(3, ranges);  // home's 1-9, Compose's Opt+0-9, the meeting's 0-9
 }
 
-// Tab, then a letter: two presses to anywhere (docs/13 §3.3, §5.1), from 本页 too; over
+// Tab, then a letter: two presses to anywhere (docs/13 §3.3, §5.1), from Here too; over
 // an overlay the letter is eaten, so the menu never jumps away from a draft (§6.1).
 static void test_tab_then_a_letter() {
   Rig r(true);
-  r.keys({nav(Nav::Menu), chr('p')});  // home: the key its 本页 row names
+  r.keys({nav(Nav::Menu), chr('p')});  // home: the key its Here row names
   TEST_ASSERT_FALSE(r.shell.menu_open());
   TEST_ASSERT_EQUAL_STRING("board", r.shell.top_id());
   r.keys({opt('i'), nav(Nav::Menu), chr('P')});
@@ -522,7 +525,7 @@ static void test_held_backspace_that_closed_the_menu_stops_there() {
   TEST_ASSERT_EQUAL_STRING("board", page.shell.top_id());
 }
 
-// Tab works over Compose and the meeting page, so their hints end with "Tab菜单" too,
+// Tab works over Compose and the meeting page, so their hints end with "[Tab]menu" too,
 // within the 240 px bar (docs/13 §5.6).
 static void test_compose_and_meeting_hints_name_the_menu() {
   Rig r(false);
@@ -533,7 +536,7 @@ static void test_compose_and_meeting_hints_name_the_menu() {
   Rig typed(false);
   on_compose(typed);
   for (const Rig* x : {&r, &empty, &typed}) {
-    const std::string h = hint_row(*x);  // keycaps: "... Tab 菜单"
+    const std::string h = hint_row(*x);  // keycaps: "... Tab menu"
     TEST_ASSERT_TRUE_MESSAGE(h.size() >= 10 && h.compare(h.size() - 10, 10, "Tab 菜单") == 0, h.c_str());
     TEST_ASSERT_TRUE_MESSAGE(hint_end(*x) <= kScreenW, h.c_str());
   }

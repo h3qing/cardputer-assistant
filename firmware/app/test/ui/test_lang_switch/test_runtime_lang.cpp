@@ -32,10 +32,13 @@ void test_boot_shows_the_stored_language() {
   TEST_ASSERT_EQUAL_UINT(0, r.plat.saves.size());  // reading never writes
 }
 
-void test_boot_without_a_stored_language_is_chinese() {
-  set_lang(Lang::En);  // what an earlier boot of this process left
-  RuntimeRig r;
-  TEST_ASSERT_TRUE(lang() == Lang::Zh);
+// v0.5.2: nothing stored (src/main.cpp stores one before the runtime starts, so only a
+// failed write gets here) shows English, Settings{}.
+void test_boot_without_a_stored_language_is_english() {
+  RuntimeRig r(false);
+  r.plat.nvs = Settings{};  // this suite's fakes hold Chinese (lang_pin.h)
+  r.begin();
+  TEST_ASSERT_TRUE(lang() == Lang::En);
 }
 
 void test_a_switch_is_written_once() {

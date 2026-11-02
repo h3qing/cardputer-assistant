@@ -44,7 +44,7 @@ constexpr Txt kDismissed{"已忽略：", "Dismissed: "};
 constexpr Txt kWeekdays[] = {{"周日", "Sun"}, {"周一", "Mon"}, {"周二", "Tue"}, {"周三", "Wed"},
                              {"周四", "Thu"}, {"周五", "Fri"}, {"周六", "Sat"}};
 
-// "● 准备": a hold is about to record a memo, the microphone is not up yet.
+// "● Wait": a hold is about to record a memo, the microphone is not up yet.
 constexpr Txt kMemoReady{"\xE2\x97\x8F 准备", "\xE2\x97\x8F Wait"};
 // The battery as a word and a percentage (the meeting page, the lock card).
 constexpr Txt kBatNone{"电 --", "Bat --"};

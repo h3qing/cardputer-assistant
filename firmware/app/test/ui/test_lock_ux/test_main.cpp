@@ -8,7 +8,7 @@
 //   D7   the card lights 2 s when locking, 2 s when a recording ends while locked (its
 //        result), 3 s when the count of sessions needing you rises (counts only); not for
 //        pocket keys (Enter, Space);
-//   D8   while G0 is down and a memo would start, AppState says so ("● 准备") at once;
+//   D8   while G0 is down and a memo would start, AppState says so ("● Wait") at once;
 //        not where the hold would be refused (any refusal of rec_refusal).
 // And after the review: a held G0 lights the card kHoldLitMs past its time at most (a
 // pocket); the card that answered a swallowed hold keeps saying so until it goes dark or a
@@ -17,6 +17,7 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "lock.h"
 #include "rec_engine.h"  // named here so the library finder builds rec and shell
 #include "runtime.h"
@@ -27,7 +28,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::CmdKind;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -188,7 +189,7 @@ static void test_auto_locked_memo_needs_the_tap() {
   TEST_ASSERT_TRUE(x.r.rt.state().rec.phase == RecPhase::Recording);
 }
 
-// D7 / U11: locking lights the card 2 s ("已锁屏"), without an unlock window.
+// D7 / U11: locking lights the card 2 s ("Locked"), without an unlock window.
 static void test_locking_lights_the_card_for_2_s() {
   RuntimeRig r;
   press_at(r, kOptL, 100);
@@ -242,7 +243,7 @@ static void test_a_recording_end_while_locked_lights_the_card() {
 
 // The review: on battery a G0 held in a pocket for a minute lights the card at most
 // kHoldLitMs past its 3 s; the backlight is off for the rest of the hold. Nothing records,
-// and the card says 没有在录 while it is lit.
+// and the card says "Not recording" while it is lit.
 static void test_a_pocket_hold_does_not_keep_the_backlight_on() {
   RecRig x;
   x.r.unplug();
@@ -314,7 +315,7 @@ static void test_needs_you_rising_lights_the_card() {
   TEST_ASSERT_TRUE(level(r) == Backlight::Off);
 }
 
-// D8: "● 准备" the moment G0 goes down, where a hold would record a memo; not for a tap
+// D8: "● Wait" the moment G0 goes down, where a hold would record a memo; not for a tap
 // once it is up, not on a dark lock (it would be swallowed), not without the card (refused).
 static void test_g0_down_says_ready() {
   RecRig x;
@@ -322,7 +323,7 @@ static void test_g0_down_says_ready() {
   TEST_ASSERT_TRUE(x.r.rt.state().ui.memo_ready);
   x.release();
   TEST_ASSERT_FALSE(x.r.rt.state().ui.memo_ready);
-  x.hold_g0(600);  // the memo: the cue says 准备 from here
+  x.hold_g0(600);  // the memo: the cue says "Wait" from here
   TEST_ASSERT_TRUE(x.r.rt.state().rec.phase != RecPhase::Idle);
   TEST_ASSERT_FALSE(x.r.rt.state().ui.memo_ready);
   x.port.feed(2000);
@@ -338,7 +339,7 @@ static void test_g0_down_says_ready() {
   press_at(x.r, kG0, x.r.now + 3100);  // after the card went out: a tap arms it again
   x.hold_g0(100);
   TEST_ASSERT_TRUE(x.r.rt.state().ui.memo_ready);
-  RecRig no_card(false);  // the hold would only be refused ("录音需要 SD 卡"): no promise
+  RecRig no_card(false);  // the hold would only be refused ("Needs an SD card"): no promise
   no_card.hold_g0(100);
   TEST_ASSERT_FALSE(no_card.r.rt.state().ui.memo_ready);
   RecRig low;  // the review: every refusal, as rec_refusal has them (here 3.45 V and below)
@@ -347,7 +348,7 @@ static void test_g0_down_says_ready() {
   low.hold_g0(100);
   TEST_ASSERT_FALSE(low.r.rt.state().ui.memo_ready);
   low.hold_g0(600);
-  TEST_ASSERT_EQUAL_UINT(0, low.port.count(CmdKind::Start));  // refused, as "● 准备" did not promise
+  TEST_ASSERT_EQUAL_UINT(0, low.port.count(CmdKind::Start));  // refused, as "● Wait" did not promise
 }
 
 int main() {

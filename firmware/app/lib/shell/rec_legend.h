@@ -1,7 +1,7 @@
 // gh #53 (docs/19 §6.6-§6.7, docs/20 U27): what 1-9 and 0 do while you talk, on the memo
 // and the meeting page: the registered projects' keys in the number row's order (1 ... 9,
-// then 0 不归属), each after its digit's keycap; the current choice lit as the live-words
-// capsule was ("存到 #key"). On the memo page a chosen digit with no project reads "9 ?" in
+// then 0 "none"), each after its digit's keycap; the current choice lit as the live-words
+// capsule was ("Save to #key"). On the memo page a chosen digit with no project reads "9 ?" in
 // a cell kept for it after 0 whenever a digit is free, drawn only while chosen, so a press
 // never moves the legend (its rows, cut and spots do not depend on the choice); the meeting
 // keeps no such cell (its title says "#9"). It is always on the page and drawn by the full
@@ -10,7 +10,7 @@
 // The fit is pure: every label is measured once with the canvas's text width; one cut for
 // all of them, from the widest down a letter (6 px) at a time and never under a minimum, is
 // tried at the roomy gap and then the tight one. A label is cut between characters, and a
-// cut one ends in two dots on its baseline (3 px; a "…" would take a CJK cell); 不归属 is
+// cut one ends in two dots on its baseline (3 px; a "…" would take a CJK cell); "none" is
 // never cut.
 #pragma once
 
@@ -37,8 +37,8 @@ constexpr Txt kLegendNone{"不归属", "none"};
 using LegendLabel = FixedStr<32>;
 
 struct LegendItem {
-  uint8_t slot = 0;   // 0: 不归属
-  LegendLabel label;  // the project's key, "?" (a slot with no project), 不归属 or "" (a bare [0])
+  uint8_t slot = 0;   // 0: "none" (no project)
+  LegendLabel label;  // the project's key, "?" (a slot with no project), "none" or "" (a bare [0])
   int16_t w = 0;      // the label's width
   bool chosen = false;
   bool ghost = false;  // the cell kept for "?": drawn only while chosen
@@ -103,7 +103,7 @@ uint8_t memo_legend_rows(const Canvas& c, const AppState& s);
 PageLegend memo_legend(const Canvas& c, const AppState& s);
 // The meeting page: the row under the timer (y 59, from x 48) while every label keeps five
 // letters there; else that row and the timeline's labels' row (y 109, from x 7: 0:00 and
-// 现在 give way). 0 is a bare [0] keycap before a label would go under four letters: the
+// "now" give way). 0 is a bare [0] keycap before a label would go under four letters: the
 // title says where the meeting goes.
 constexpr int16_t kMeetingLegendCut = 30;
 constexpr int16_t kMeetingNoneCut = 24;

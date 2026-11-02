@@ -5,6 +5,7 @@
 // pages have Mando, a big ● and a Nunito timer; the words of both confirms are unchanged.
 #include <unity.h>
 
+#include "core/support/lang_pin.h"
 #include "rec_overlay.h"
 #include "shell.h"
 #include "support/fake_canvas.h"
@@ -16,7 +17,7 @@ using namespace cpa;
 using namespace uitest;
 using rec::RecInput;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 struct Rig {
@@ -58,7 +59,7 @@ static void assert_clock(const FakeCanvas& c, int16_t dot_x, int16_t clock_x, co
 }
 
 // gh #53: the memo page's legend (one row at y 103 for demo_state's two projects); where the
-// memo goes is the lit item, the live-words capsule "存到 #cpa" was.
+// memo goes is the lit item, the live-words capsule "Save to #cpa" was.
 static const TextOp* legend_label(const FakeCanvas& c, const char* label) {
   for (const TextOp& t : c.texts) {
     if (t.text == label && t.y == 103) return &t;
@@ -244,9 +245,9 @@ static void test_memo_hud_screen() {
   TEST_ASSERT_EQUAL_STRING("1|cpa|2|blog|0|不归属", page.row(103).c_str());  // gh #53: what 1-9 and 0 are
   TEST_ASSERT_TRUE(page.arts[0].id == theme::mando_art(theme::MandoSize::M64, theme::MandoAct::Tilt, 0));  // quiet
   TEST_ASSERT_TRUE(legend_label(page, "blog")->style.fg == Color::Ink2);
-  // mockup 04: [G0] 松开结束 [1-9] 选项目 (0 不归属 is the legend's, gh #53 review)
+  // mockup 04: [G0]let go: stop [1-9]project ("0 none" is the legend's, gh #53 review)
   TEST_ASSERT_EQUAL_STRING("G0 松开结束 1-9 选项目", page.line(kHintRect.y).c_str());
-  // the cue says "看到 ● REC 再说话" (v0.3.1): REC stands right of the timer, in Rec
+  // the cue says "Speak once you see ● REC" (v0.3.1): REC stands right of the timer, in Rec
   const TextOp* rec = page.find("REC");
   TEST_ASSERT_NOT_NULL(rec);
   TEST_ASSERT_TRUE(rec->style.fg == Color::Rec && rec->y == 38);
@@ -301,7 +302,7 @@ static void test_memo_grace_and_hands_free_screens() {
   TEST_ASSERT_TRUE(l.has("在听") && l.has("REC") && !l.has("语音便条"));
   TEST_ASSERT_TRUE(legend_label(l, "cpa")->style.fg == Color::Accent);
   TEST_ASSERT_TRUE(rec_mando(r.port.app.rec) == theme::MandoAct::Listen);
-  // review of gh #53: 0 不归属 is the legend's, not the bar's; 选项目 whole again
+  // review of gh #53: "0 none" is the legend's, not the bar's; "[1-9]project" whole again
   TEST_ASSERT_EQUAL_STRING("G0 结束 1-9 选项目 Opt+L 锁屏", l.line(kHintRect.y).c_str());
   r.port.app.rec.latched = false;
   FakeCanvas h;
@@ -316,7 +317,7 @@ static void test_meeting_screens() {
   std::string s = r.screen(100);
   TEST_ASSERT_TRUE(s.find("开始会议录音？") != std::string::npos);
   TEST_ASSERT_TRUE(s.find("请先告知在场的人") != std::string::npos);
-  TEST_ASSERT_TRUE(s.find("Enter\n开始") != std::string::npos);  // [Enter] 开始
+  TEST_ASSERT_TRUE(s.find("Enter\n开始") != std::string::npos);  // [Enter]start
   r.phase(RecPhase::Recording, RecMode::Meeting);
   r.port.app.rec.started_ms = 0;
   r.port.app.rec.stars = 2;

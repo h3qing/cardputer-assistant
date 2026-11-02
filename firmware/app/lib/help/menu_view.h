@@ -1,14 +1,14 @@
 // Tab menu keys and drawing (docs/13 §6.1), pure. The shell keeps a MenuState while
 // the menu is open, builds the MenuContent of state.page with menu_content() and:
 //   ; .            move the selection (clamped; the list scrolls to keep it visible)
-//   , /            previous / next page (wrapping; no 去哪 over an overlay)
+//   , /            previous / next page (wrapping; no Go page over an overlay)
 //   Enter          Replay(row.ev), or None on a row that is shown only
-//   a letter       on 去哪 and 控制: Replay(Opt+letter) when a row there replays it;
-//                  on 本页 not over an overlay: Replay(Opt+letter) when the Global or
+//   a letter       on Go and Control: Replay(Opt+letter) when a row there replays it;
+//                  on Here not over an overlay: Replay(Opt+letter) when the Global or
 //                  System layer binds it (docs/13 §3.3: Tab, then a letter)
 //   G0 tap / hold  Replay(the same key): the menu closes and G0 does what it does
 //                  under it (★ in a meeting; §6.1)
-//   Tab ` 退格 Fn+`  Close
+//   Tab ` Del Fn+`  Close
 //   anything else  None: the menu eats it
 // Replay and Close both mean "close the menu"; Replay then dispatches ev through the
 // normal key path (§5.4 step 9).
@@ -27,8 +27,8 @@ constexpr uint8_t kMenuVisibleRows = 6;
 constexpr int16_t kMenuRowH = 14;
 constexpr int16_t kMenuKeyColW = 54;  // labels start at most this far into a row
 
-// The menu's hint bar. mockup 03: letters still jump (menu_key), but 字母直达 is left out of
-// the hint, which it pushed to the bar's tightest spacing. English brackets its keys.
+// The menu's hint bar. mockup 03: letters still jump (menu_key), but "letters jump" is left
+// out of the hint, which it pushed to the bar's tightest spacing. English brackets its keys.
 constexpr Txt kMenuHint{";.选 Enter做 ,/换页 Tab关", "[;.]pick [Enter]do [,/]page [Tab]close"};
 
 struct MenuState {
@@ -49,8 +49,8 @@ MenuStep menu_key(const MenuState& st, const KeyEvent& ev, const MenuContent& m)
 
 // v0.5 (docs/19 §6.5): the menu as a sheet from the right over the page, which the caller
 // has drawn and which is dimmed here; the status bar (y < kBarH, ● and the timer while
-// recording) is never touched. On the sheet: the pages as a segmented control (本页 / 去哪 /
-// 控制, the current one on a caramel knob), up to kMenuVisibleRows rows of [key] label, a
+// recording) is never touched. On the sheet: the pages as a segmented control (Here / Go /
+// Control, the current one on a caramel knob), up to kMenuVisibleRows rows of [key] label, a
 // scroll bar when rows are off screen; the menu's hint as keycaps in the hint bar.
 // v0.5 S3 (docs/19 §6.5): when the menu opens the sheet slides in from the right, and when
 // , or / changes the page the knob slides to it, in theme::kSlideFrames frames: frame 0 is

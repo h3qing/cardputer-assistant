@@ -1,4 +1,4 @@
-// How 设置 / Settings is drawn (docs/21 §4.2, §4.4, §4.5; the parts are docs/19's):
+// How Settings is drawn (docs/21 §4.2, §4.4, §4.5; the parts are docs/19's):
 //   the tab pills at the top of the content area, the current one Accent;
 //   the settings tab: the rows that change something (14 px, the selected one in a Select
 //   capsule), a Line divider, then the facts (12 px, never selected);
@@ -26,9 +26,9 @@ constexpr int16_t kFactsTop = 46;       // y 58
 constexpr int16_t kStoreDividerTop = kRowsTop + 3 * kRowH + 1;  // the storage tab's 3 rows: y 69
 constexpr int16_t kStoreFactsTop = kStoreDividerTop + 3;        // y 72, then a row apart
 constexpr int16_t kFactValueX = 44;
-constexpr int16_t kFactGap = 6;         // between the Mac's name and 在线
+constexpr int16_t kFactGap = 6;         // between the Mac's name and "online"
 constexpr int16_t kWifiRowsTop = 14;
-constexpr int16_t kIdentityRows = 3;    // 固件 / dev / 启动: who the device is
+constexpr int16_t kIdentityRows = 3;    // FW / dev / Boot: who the device is
 constexpr int16_t kDividerGap = 3;      // a pixel, the divider, a pixel
 constexpr int16_t kValueX = 46;         // after "outbox", the widest label in either language
 
@@ -90,8 +90,8 @@ void SystemModule::render_settings(Canvas& c, const Rect& area) const {
   render_facts(c, area);
 }
 
-// 连接: "USB 线 · " + the Mac's name, cut to fit, and 在线 / 离线 pinned on the right;
-// 同步: how long ago and what waits.
+// Link: "USB · " + the Mac's name, cut to fit, and "online" / "offline" pinned on the right;
+// Sync: how long ago and what waits.
 void SystemModule::render_facts(Canvas& c, const Rect& area) const {
   const AppState& s = ctx_->state();
   const LinkFacts link = link_facts(s, ctx_->sys());
@@ -155,10 +155,10 @@ void SystemModule::render_device(Canvas& c, const Rect& area) const {
   if (p.n > kIdentityRows) divider(c, area, static_cast<int16_t>(top + kIdentityRows * h + 1));
 }
 
-// docs/28 S1a: 再交一次, 给这台 Mac and 清掉留底 (rows the cursor stops on), a divider, then
-// the kept copies, what waits and the card's free space, and (while some are kept) that they
-// are plain on the card, a row apart (review 8: 12 px Chinese lines touch). With a confirm
-// box open, the box over the rows and no facts.
+// docs/28 S1a: "Send again", "To this Mac" and "Clear kept" (rows the cursor stops on), a
+// divider, then the kept copies, what waits and the card's free space, and (while some are
+// kept) that they are plain on the card, a row apart (review 8: 12 px Chinese lines touch).
+// With a confirm box open, the box over the rows and no facts.
 void SystemModule::render_storage(Canvas& c, const Rect& area) const {
   const AppState& s = ctx_->state();
   const KeptView& k = s.rec.kept;
@@ -182,8 +182,8 @@ void SystemModule::render_storage(Canvas& c, const Rect& area) const {
   if (k.segs > 0) draw_fit(c, lx, y, w, tr(txt::kPlainNote), Style{Color::Ink3, Color::Bg});
 }
 
-// "清掉 12 段留底？" or "把 2 次再交给别的 Mac？" and what it means; [取消] [清掉 / 再交], the
-// cursor on 取消 first.
+// "Clear 12 kept files?" or "Send 2 to another Mac?" and what it means; [Cancel] [Clear / Send],
+// the cursor on Cancel first.
 void SystemModule::render_clear_box(Canvas& c, const Rect& area) const {
   const Rect box{static_cast<int16_t>(area.x + 4), at(area, 16), static_cast<int16_t>(area.w - 8), 66};
   theme::card(c, box);

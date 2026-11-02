@@ -7,13 +7,14 @@
 
 #include <string>
 
+#include "core/support/lang_pin.h"
 #include "menu_view.h"
 #include "support/fake_canvas.h"
 
 using namespace cpa;
 using namespace uitest;
 
-void setUp() {}
+void setUp() { testsupport::pin_zh(); }
 void tearDown() {}
 
 namespace {
@@ -96,7 +97,7 @@ static void test_the_knob_slides_to_the_new_page() {
   menu_render(rest, st, m);
   const int16_t to_x = knob_fill(rest)->x;
   const int16_t seg_w = static_cast<int16_t>((kScreenW - menu_sheet_x(rest, m) - 9 - 2) / 3);
-  const int16_t from_x = static_cast<int16_t>(to_x - seg_w);  // 本页, one to the left
+  const int16_t from_x = static_cast<int16_t>(to_x - seg_w);  // Here, one to the left
   FakeCanvas first;
   menu_render(first, st, m, knob(MenuPage::Here, 0));
   TEST_ASSERT_EQUAL_INT16(theme::knob_at(from_x, to_x, 0), knob_fill(first)->x);
@@ -111,7 +112,7 @@ static void test_the_knob_slides_to_the_new_page() {
   TEST_ASSERT_EQUAL_INT16(to_x, knob_fill(end)->x);
 }
 
-// A wrap (控制 -> 本页) crosses 去哪: a name the knob half covers is left out of that frame.
+// A wrap (Control -> Here) crosses Go: a name the knob half covers is left out of that frame.
 static void test_a_half_covered_name_waits() {
   const MenuContent m = content(MenuPage::Here);
   FakeCanvas c;

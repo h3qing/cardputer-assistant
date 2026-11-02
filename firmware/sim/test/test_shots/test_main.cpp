@@ -4,6 +4,7 @@
 #include <unity.h>
 
 #include <string>
+#include <vector>
 
 #include "fb.h"
 #include "fb_canvas.h"
@@ -28,13 +29,17 @@ const char* kState =
     "\"run\":1,\"need\":0,\"queued\":0,\"ok\":true}],\"other\":{\"run\":0,\"n\":0}}\n"
     "wait 1200\n";
 
+// These scripts were written for the Chinese UI: every boot is in Chinese, as with
+// `cpa-sim shots --lang zh` (English is the default since v0.5.2).
 PlayResult run(const std::string& text) {
   const Script s = parse_script("main", [&](const std::string&, std::string& out) {
     out = text;
     return true;
   });
   TEST_ASSERT_EQUAL_STRING("", s.error.c_str());
-  return play(s.steps);
+  std::vector<Step> steps = s.steps;
+  for (Step& st : steps) st.boot.lang = cpa::Lang::Zh;
+  return play(steps);
 }
 
 int count(const Frame& f, int x0, int y0, int w, int h, uint8_t px) {
@@ -95,7 +100,7 @@ static void test_board_online() {
 // Without a hello the USB host is "no response"; with one, the pings keep the link up.
 static void test_pings_keep_the_link() {
   const PlayResult quiet = run("boot\nwait 1200\nshot a\n");
-  TEST_ASSERT_TRUE(count(quiet.shots[0].frame, 0, 0, 60, 12, cpa::Color::Warn) > 20);  // ◇ 无响应 in Warn
+  TEST_ASSERT_TRUE(count(quiet.shots[0].frame, 0, 0, 60, 12, cpa::Color::Warn) > 20);  // "◇ no reply" in Warn
   TEST_ASSERT_EQUAL(0, head(quiet.shots[0].frame));
   const PlayResult r = run(std::string("boot\n") + kState + "wait 30000\nshot b\n");
   TEST_ASSERT_TRUE(head(r.shots[0].frame) > 40);

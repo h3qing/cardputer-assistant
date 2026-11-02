@@ -4,7 +4,7 @@
 //   sector 0  an MBR (first partition's start) or the FAT32 boot sector itself
 //   boot      bytes/sector, sectors/cluster, the FSINFO sector, the cluster count
 //   FSINFO    the free cluster count (0xFFFFFFFF: unknown)
-// Anything unexpected means "unknown"; the device then shows 未知 and records anyway.
+// Anything unexpected means "unknown"; the device then says so and records anyway.
 #pragma once
 
 #include <cstdint>

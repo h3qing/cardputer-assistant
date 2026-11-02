@@ -16,22 +16,22 @@ namespace theme {
 
 enum class MandoSize : uint8_t { M46, M64 };  // 26 x 46, 36 x 64
 enum class MandoAct : uint8_t {
-  Idle,      // 在呢: sits (wait 0)
-  Listen,    // 在听: nods while you talk (review)
-  Tilt,      // 在听: tilts his head in a quiet moment (wait)
-  Sniff,     // 嗅一嗅…: syncing or saving, paw on chin (think)
-  NeedsYou,  // 等你: sits (wait 0) with "!"
-  Hop,       // 存好了: one hop (46 px only)
-  NoVoice,   // 没听到: head tilted with "?"
-  Doze,      // 打盹中: eyes closed (46 px only)
-  Offline,   // 离线: sits faded (wait 0, dimmed): what he knows of the Mac is old (docs/20 U19)
+  Idle,      // "Here": sits (wait 0)
+  Listen,    // "Listen": nods while you talk (review)
+  Tilt,      // "Listen": tilts his head in a quiet moment (wait)
+  Sniff,     // "Sniff…": syncing or saving, paw on chin (think)
+  NeedsYou,  // "You!": sits (wait 0) with "!"
+  Hop,       // "Saved": one hop (46 px only)
+  NoVoice,   // "Huh?": head tilted with "?"
+  Doze,      // "Napping": eyes closed (46 px only)
+  Offline,   // "Offline": sits faded (wait 0, dimmed): what he knows of the Mac is old (docs/20 U19)
 };
 
 uint8_t mando_poses(MandoAct a);      // 4 for the loops and the hop, 1 for the stills
 uint8_t mando_rest_pose(MandoAct a);  // the pose drawn while nothing animates (mockups 04-07)
 ArtId mando_art(MandoSize s, MandoAct a, uint8_t pose);  // the pose wraps; 64 px sits for Hop and Doze
 
-const char* mando_sign(MandoAct a);  // 在呢 在听 在听 嗅一嗅… 等你 存好了 没听到 打盹中 离线
+const char* mando_sign(MandoAct a);  // Here Listen Listen Sniff… You! Saved Huh? Napping Offline
 Tone mando_sign_tone(MandoAct a);    // Info Info Info Neutral Warn Ok Neutral Neutral Neutral
 char mando_mark(MandoAct a);         // '!' (NeedsYou), '?' (NoVoice), else 0
 

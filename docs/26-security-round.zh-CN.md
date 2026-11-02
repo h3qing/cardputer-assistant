@@ -84,7 +84,7 @@
 - **docs/25 的云端去向**：预设里标了 `leaves_mac` 的去向（比如 Grok）会把你说的话送出这台 Mac [源 docs/25 §2.3]。
 - **剪贴板**：docs/25 的 `clip` 适配器会把文字放进剪贴板。Universal Clipboard 会把它同步到你的其他 Apple 设备，剪贴板管理器会存历史 [推]。
 - **iCloud"桌面与文稿"是开着的** [测]：拖到桌面或文稿里的导出会离开这台 Mac。笔记目录不在 iCloud 里。
-- **WhisperWoof 自己的加密库**（SQLCipher、WWENC1）：没看，WhisperWoof 的代码不在本次范围内。
+- **WhisperWoof 自己的加密库**（SQLCipher、WWENC1）：没看，WhisperWoof 的代码（h3qing/WhisperWoof）不在本次范围内。
 
 ## 3. 威胁模型（更新 SECURITY.md）
 

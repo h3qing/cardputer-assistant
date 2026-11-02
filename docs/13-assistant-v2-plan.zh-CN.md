@@ -841,6 +841,6 @@ V4-DOC 并行，最后定稿
 - **录音契约**：`protocol/recording/v1/README.md`（单写者表；交接规则 1）；`docs/11-m3-design.md` §6.4、§7.2。
 - **daemon**：`recordings/sessions.py:4、20、68`；`results.py:70`；`route.py:72`；`cli/rec.py`；`notes/writer.py`；`device/link.py:88`（`host_hello`）。
 - **闸门**：`docs/gates/m3-device-gates.md` 第 34、35、206、223 行（PGA +18 dB 时的底噪；`CARDPUTER_SILENCE_RMS`）；`whisperwoof.md:16、61、318`（WhisperWoof 的静音门限）。
-- **WhisperWoof**：README:104（"Hotkey = destination"）；`core/router/dictation-route.ts:14`；`helpers/clipboard.js:580-756`。
+- **WhisperWoof**（h3qing/WhisperWoof）：README:104（"Hotkey = destination"）；`core/router/dictation-route.ts:14`；`helpers/clipboard.js:580-756`。
 - **issue**：#16、#17（要提示音，带静音开关）、#19（"Cheap now"：在下一次协议改动时预留主机身份）、#23、#24（按键即去向，绑定在 Mac 上配置）。
 - **同类产品**（来自调研，部分只看到搜索摘要）：Flipper Zero（锁定、Archive、删除确认）；Pebble（Quick Launch、Quiet Time）；which-key.nvim；Raycast；Plaud；Granola；Apple 语音备忘录（"最近删除"保留 30 天）。

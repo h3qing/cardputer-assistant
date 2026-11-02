@@ -405,7 +405,7 @@ struct UiFlags { bool menu = false; bool locked = false; Moment moment = Moment:
 
 ```sh
 uv run --with pillow --with fonttools --with brotli python tools/theme/gen_all.py \
-    --whisperwoof <WhisperWoof checkout>
+    --whisperwoof <your clone of h3qing/WhisperWoof>
 git diff --stat firmware/app/lib/theme/gen tools/theme/mando_colours.json
 (cd firmware/app && pio test -e native -f 'core/test_theme_*')
 ```

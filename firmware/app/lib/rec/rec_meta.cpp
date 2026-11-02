@@ -148,12 +148,17 @@ MetaText rec_meta_encode(const RecMeta& m) {
   return MetaText::build([&](char* buf, size_t cap) { return encode_into(m, buf, cap); });
 }
 
-Opt<RecMeta> rec_meta_decode(const char* s, size_t n, const MonoId& file_id) {
-  if (n == 0 || n > kMetaMax) return {};
+bool rec_meta_decode_into(const char* s, size_t n, const MonoId& file_id, RecMeta& out) {
+  if (n == 0 || n > kMetaMax) return false;
   JsonDocument doc;
-  if (deserializeJson(doc, s, n) || !doc.is<JsonObjectConst>()) return {};
+  if (deserializeJson(doc, s, n) || !doc.is<JsonObjectConst>()) return false;
+  out = RecMeta{};
+  return decode_object(doc.as<JsonObjectConst>(), file_id, out);
+}
+
+Opt<RecMeta> rec_meta_decode(const char* s, size_t n, const MonoId& file_id) {
   RecMeta m;
-  if (!decode_object(doc.as<JsonObjectConst>(), file_id, m)) return {};
+  if (!rec_meta_decode_into(s, n, file_id, m)) return {};
   return some(m);
 }
 

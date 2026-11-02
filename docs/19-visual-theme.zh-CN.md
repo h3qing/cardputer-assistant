@@ -405,7 +405,7 @@ struct UiFlags { bool menu = false; bool locked = false; Moment moment = Moment:
 
 ```sh
 uv run --with pillow --with fonttools --with brotli python tools/theme/gen_all.py \
-    --whisperwoof <WhisperWoof checkout>
+    --whisperwoof <h3qing/WhisperWoof 的本地克隆>
 git diff --stat firmware/app/lib/theme/gen tools/theme/mando_colours.json
 (cd firmware/app && pio test -e native -f 'core/test_theme_*')
 ```
@@ -542,7 +542,7 @@ git diff --stat firmware/app/lib/theme/gen tools/theme/mando_colours.json
     - 原定的一节 2 阶 120 Hz 在 68 Hz 只有 −10.3 dB（35 Hz −21.4 dB），够不到 20 dB；一节 2 阶要在 68 Hz 有 20 dB 得放到约 215 Hz，300 Hz 就掉 1 dB。所以用两节 [算]。
     - 只动电平：WAV 一个字节不改（`test_rec_level` 逐字节比）。
     - 合成的一段（`test_rec_level`）：−52 dBFS 的嗡嗡声（35 + 68 Hz 各一半，或全在 68 Hz）里说 2 s、停 2 s，三次。不高通时停顿的块是 5 px、保持住声音；高通以后停顿的第 2 整块声音就结束，停顿里每块都是点，说话时一直有声音 [测]。
-    - 代价：每个样本两节 biquad（10 次乘加）加一次平方累加。主机上（Apple 芯片，-O2）每块 2,048 个样本约 7 µs [测]。ESP32-S3 上（-Os，`xtensa-esp32s3-elf-g++` 反汇编）内循环约 69 条指令，估 70–110 cycle / 样本：每秒 1.1–1.8 M cycle，240 MHz 一个核的 0.5–0.75%，每块（128 ms）0.6–0.9 ms [算，待真机]。录音任务的栈：`level_of` 48 B，在写卡那条链返回以后才调，不叠在它上面；`RecEngine::write` 112 → 128 B（`.su`）。
+    - 代价：每个样本两节 biquad（10 次乘加）加一次平方累加。主机上（Apple 芯片的 Mac，-O2）每块 2,048 个样本约 7 µs [测]。ESP32-S3 上（-Os，`xtensa-esp32s3-elf-g++` 反汇编）内循环约 69 条指令，估 70–110 cycle / 样本：每秒 1.1–1.8 M cycle，240 MHz 一个核的 0.5–0.75%，每块（128 ms）0.6–0.9 ms [算，待真机]。录音任务的栈：`level_of` 48 B，在写卡那条链返回以后才调，不叠在它上面；`RecEngine::write` 112 → 128 B（`.su`）。
   - 四段便条经过高通（同一份 WAV 在主机上过 `level_of`，`test/core/support/memo_levels.h` 的 `level`）：说话的块 136–1,056（中位 390，约 −38.5 dBFS），比原来低 0–3.3 dB（中位 0.9 dB，人声 150 Hz 附近的基音）；底噪 5–33 [测]。分类不变：180 个说话块都是 ≥ 9 px 的柱子、都算有声音，底噪都是点、离说话远的都不算，有声音一共切换 14 次；只有便条 0 结尾那块渐弱（RMS 55，高通后 52，正好 −56 dBFS）让声音早一块（128 ms）结束 [测]。
   - 现在说话占 4–9 级：第 5 百分位、中位、第 95 百分位、最大分别是 4、7、8、9；相邻两块平均差约 1.3 级。底噪仍是点；比最响的那块再响 5 dB 才到满高 [测]。
   - 每段录音的第一块算安静（q = 0）。那是麦克风启动时 codec 的振铃（四段都是 RMS 575–600，高通后 265–277，约 10 ms 衰减），不是你的声音；不算的话，开头会冒出一根 13 px 的柱子，Mando 也会点一下头。
@@ -673,7 +673,7 @@ S0 换颜色，S1 加卡片和选中胶囊。评审（2026-10-22）说这几页�
 
 录音时（On）：每秒 5 个 tick × 2.8 ms + 1 次整屏 13 ms ≈ 27 ms/s；v0.4.0 约 8 次整屏 ≈ 104 ms/s [算]。模拟器 `test_anim_cost` 实测（同一份运行时代码）：便条 29.5 ms/s，会议前 5 s 20.5 ms/s，会议过了 12 s（合并后每 256 ms 多一格、格子都挪）29.2 ms/s，都在 32 ms/s 以内 [测 模拟器]。
 
-gh #53 的 1–9 图例（2026-10-22，`test_anim_cost`，主机 Apple 芯片，三次的中位数）：SPI 不变或更少：便条 25.9 ms/s，9 个 12 字母键的便条 23.3 ms/s（波形区变矮），9 个键的会议过了 12 s 26.0 ms/s [测 模拟器]。一次整屏的 CPU：2 个项目的便条约 495 → 538 µs（+40 µs），会议约 543 → 605 µs，9 个键的便条约 502 → 613 µs（+110 µs，最多的情况），会议约 514 → 596 µs；一个 tick 多 7–8 µs（问图例占几行：量一遍键的宽度再算，不截字），会议的 tick 反而少了（时间轴没变就不算重画区）[测 模拟器]。按设备上会议整页 21.8 ms（其中推屏约 13 ms）折算，CPU 部分约是主机的 16 倍：图例让一次整屏多约 2 ms（按 40 倍算也只多 4.4 ms），tick 多约 0.1–0.3 ms，离 50 ms 都远 [算]。`test_runtime_budget` 加了 `memo_us`（9 个 12 字母键的便条整页加推屏）和 `memo_tick_us`，都要 < 50 ms [待 真机]。
+gh #53 的 1–9 图例（2026-10-22，`test_anim_cost`，主机 Apple 芯片的 Mac，三次的中位数）：SPI 不变或更少：便条 25.9 ms/s，9 个 12 字母键的便条 23.3 ms/s（波形区变矮），9 个键的会议过了 12 s 26.0 ms/s [测 模拟器]。一次整屏的 CPU：2 个项目的便条约 495 → 538 µs（+40 µs），会议约 543 → 605 µs，9 个键的便条约 502 → 613 µs（+110 µs，最多的情况），会议约 514 → 596 µs；一个 tick 多 7–8 µs（问图例占几行：量一遍键的宽度再算，不截字），会议的 tick 反而少了（时间轴没变就不算重画区）[测 模拟器]。按设备上会议整页 21.8 ms（其中推屏约 13 ms）折算，CPU 部分约是主机的 16 倍：图例让一次整屏多约 2 ms（按 40 倍算也只多 4.4 ms），tick 多约 0.1–0.3 ms，离 50 ms 都远 [算]。`test_runtime_budget` 加了 `memo_us`（9 个 12 字母键的便条整页加推屏）和 `memo_tick_us`，都要 < 50 ms [待 真机]。
 
 ## 8. 分阶段与文件
 

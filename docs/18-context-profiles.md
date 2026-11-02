@@ -258,7 +258,7 @@ In English: "◇ Unassigned … Separate 'home' and 'work'? Once separated, what
 
 ```
 ◇ 未分配 ↑0 !0               13:42 83%
-新的 Mac：「Alexis 的 MacBook Pro」
+新的 Mac：「Work Mac」
 （名字是它自己报的）它属于：
 ▸以后再说（这次什么都不交）
  家
@@ -267,7 +267,7 @@ In English: "◇ Unassigned … Separate 'home' and 'work'? Once separated, what
 ;.选 Enter定（要确认）       Tab菜单
 ```
 
-In English: "New Mac: 'Alexis's MacBook Pro' (the name it reports itself). It belongs to: ▸ Later (hand over nothing this time) / Home / Work / Neither (never hand over, charge only)."
+In English: "New Mac: 'Work Mac' (the name it reports itself). It belongs to: ▸ Later (hand over nothing this time) / Home / Work / Neither (never hand over, charge only)."
 
 - The cursor defaults to the safest row; the same 400 ms guard.
 - Not shown while locked, with an overlay or recording; the link stays "unassigned". The lock card then gains a line "新 Mac 待分配" (new Mac to assign).
@@ -276,14 +276,14 @@ In English: "New Mac: 'Alexis's MacBook Pro' (the name it reports itself). It be
 ### 5.3 Confirming a binding
 
 ```
-把「Alexis 的 MacBook Pro」设为 公司？
+把「Work Mac」设为 公司？
 以后插上它：自动切到 公司，
 只把 公司 的待传和录音交给它。
 家 的待传（↑3 录2）留在设备上。
 Enter 确定                     ` 取消
 ```
 
-In English: "Set 'Alexis's MacBook Pro' as Work? When plugged in from now on: switch to Work automatically, and only hand Work's waiting items and recordings to it. Home's waiting items (↑3, 2 recordings) stay on the device. Enter confirm, ` cancel."
+In English: "Set 'Work Mac' as Work? When plugged in from now on: switch to Work automatically, and only hand Work's waiting items and recordings to it. Home's waiting items (↑3, 2 recordings) stay on the device. Enter confirm, ` cancel."
 
 - Key presses within 400 ms of opening the confirmation are ignored, as with the existing confirmations [src docs/04 §8.1].
 - **After confirming, the current profile switches to the chosen one at once** (§12.4 step 4 relies on this), with the notice "已切到 公司" (Switched to Work). If a request happens to be in flight, it waits for it to end per §3.3.

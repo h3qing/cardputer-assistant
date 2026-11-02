@@ -16,6 +16,7 @@
 #include "file_req.h"
 #include "file_store.h"
 #include "ghost_filter.h"
+#include "idle_yield.h"
 #include "kb_watch.h"
 #include "line_framer.h"
 #include "link_session.h"
@@ -157,6 +158,8 @@ class Runtime : public ShellPort {
   void reset_render_times() { times_ = RenderTimes{}; }  // device test: each language timed apart
 #endif
   const LinkCore& link() const { return link_; }
+  // docs/29 P1: how long src/main.cpp may sleep after this pass (0: not at all; idle_yield.h).
+  uint32_t idle_yield_ms() const;
   const OutboxCore& outbox() const { return outbox_; }
 
   // ShellPort

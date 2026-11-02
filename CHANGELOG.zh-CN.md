@@ -5,6 +5,8 @@
 格式参考 [Keep a Changelog](https://keepachangelog.com/)，版本号遵循 SemVer。每个版本的详细说明在 `docs/releases/<版本>.md`，打 tag 时 release 工作流会把它作为 GitHub Release 的正文。
 
 ## [Unreleased]
+### Added
+- 暗屏少转（docs/29 P1；需求（2026-10-28）：长时间没人碰，设备一直开着，把电池用完）：用电池、屏幕已经黑了并锁上、锁屏卡也灭了，而且没在录音、没插 Mac、音频任务和账本都空闲、没有键按着（最后一次按键起 1 秒内也不算）时，主循环每一轮后让出 CPU 10 ms，不再 240 MHz 空转。按键最多晚 10 ms；亮屏、调暗、录音、插着 Mac 时完全照旧。纯函数 `lib/core/idle_yield.*`，主机测试含 `millis()` 回绕；设备测试 `device/test_idle_yield`（亮屏 / 暗屏 / 插 Mac 三种状态下的每秒循环数和最大间隔）还没在真机上跑。
 
 ## [v0.5.1] - 2026-10-29
 ### Added

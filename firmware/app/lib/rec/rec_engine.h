@@ -97,10 +97,11 @@ class RecEngine : private CommitSink {
   void open_session(uint32_t skipped, uint32_t now, EvtSink& out);
   bool read_meta(const MonoId& id, RecMeta& out);
   ScanEntry scan_entry(const MonoId& id, bool has_w, bool has_m);
-  Opt<RecMeta> predecessor(const MonoId& id, const uint8_t* table, uint16_t n);
+  bool predecessor(const MonoId& id, const uint8_t* table, uint16_t n, RecMeta& out);
   bool apply(const ScanEntry& e, const RecoveryPlan& p);
   bool backfill(const MonoId& id, uint32_t data_bytes);
   void scan_one(const uint8_t* table, uint16_t n, uint16_t i, uint32_t& recoveries);
+  bool place(const ScanEntry& e, const uint8_t* table, uint16_t n);  // true: recovered
   void scan_classify(const uint8_t* scratch, uint16_t n, uint32_t& recoveries);
 
   // docs/28 S1a: one epoch's ledger (rec_ledger.cpp)

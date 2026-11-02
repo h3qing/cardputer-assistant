@@ -84,7 +84,7 @@
 - **Cloud destinations in docs/25**: a destination marked `leaves_mac` in the presets (e.g. Grok) sends what you said off this Mac [src docs/25 §2.3].
 - **Clipboard**: the docs/25 `clip` adapter puts text on the clipboard. Universal Clipboard syncs it to your other Apple devices, and clipboard managers keep history [inf].
 - **iCloud "Desktop & Documents" is on** [meas]: exports dragged to the Desktop or Documents leave this Mac. The notes directory is not in iCloud.
-- **WhisperWoof's own encrypted stores** (SQLCipher, WWENC1): not checked; WhisperWoof's code is out of scope this time.
+- **WhisperWoof's own encrypted stores** (SQLCipher, WWENC1): not checked; WhisperWoof's code (h3qing/WhisperWoof) is out of scope this time.
 
 ## 3. Threat model (updates SECURITY.md)
 

@@ -5,6 +5,8 @@
 Format follows [Keep a Changelog](https://keepachangelog.com/); versions follow SemVer. Each version's details are in `docs/releases/<version>.md`, which the release workflow uses as the body of the GitHub Release when a tag is pushed.
 
 ## [Unreleased]
+### Added
+- Dark-screen idle yield (docs/29 P1; requirement (2026-10-28): a device nobody touches for a long time stays on and runs the battery down): on battery, with the screen dark and locked and the lock card off, no recording, no Mac on the cable, the audio task and the ledger idle, and no key down (nor within 1 s of the last key), the main loop gives up the CPU for 10 ms after each pass instead of spinning at 240 MHz. A key is at most 10 ms later; lit, dimmed, recording and plugged into a Mac behave exactly as before. Pure function `lib/core/idle_yield.*`, with host tests that include the `millis()` wrap; the device test `device/test_idle_yield` (passes per second and the largest gap, lit, dark and with a Mac plugged in) has not run on the real device yet.
 
 ## [v0.5.1] - 2026-10-29
 ### Added

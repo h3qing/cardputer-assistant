@@ -178,6 +178,22 @@ case_dry() {
   check "no launchctl, no open" [ ! -s "$T/stub.log" ]
 }
 
+case_asset_pipe() {
+  echo "a long asset list with SIGPIPE ignored: no broken-pipe noise while looking assets up"
+  local h="$T/h-pipe" rel="$T/release-long" json
+  rm -rf "$rel"
+  cp -R "$REL" "$rel"
+  # ~2 MB of assets after the real ones: a lookup that stops at its match leaves the writer mid-pipe.
+  awk 'BEGIN { for (i = 0; i < 20000; i++) printf ",\n {\"name\": \"padding-%05d\", \"digest\": \"sha256:-\"}", i }' \
+    >"$T/padding"
+  json="$(cat "$rel/release.json")"
+  printf '%s%s]}\n' "${json%]\}}" "$(cat "$T/padding")" >"$rel/release.json"
+  (trap '' PIPE; run_install "$h" "$rel" --dry-run) || { bad "dry run exits 0"; show_log; return; }
+  check "dry run exits 0" true
+  check "no broken pipe" [ "$(count_of "$T/out.log" "Broken pipe")" == 0 ]
+  check "no write error" [ "$(count_of "$T/out.log" "write error")" == 0 ]
+}
+
 case_spaces() {
   echo "a HOME with spaces"
   local h="$T/home with  spaces"
@@ -421,7 +437,7 @@ main() {
   REL="$T/release"
   echo "building the local release $TAG from this checkout"
   make_release "$REL"
-  local cases="${*:-fresh checksum quarantine long_quarantine config path_line dry spaces no_tty device_now root truncated
+  local cases="${*:-fresh checksum quarantine long_quarantine config path_line dry asset_pipe spaces no_tty device_now root truncated
     bad_prefix token from release_out uv_bootstrap uninstall service_race service_dead lang}" c
   for c in $cases; do
     : >"$T/stub.log"

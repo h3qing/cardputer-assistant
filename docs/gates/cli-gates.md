@@ -10,7 +10,7 @@
 | Item | Value |
 |---|---|
 | CLI | `~/.local/bin/claude` → `~/.local/share/claude/versions/2.1.272`, `claude --version` = `2.1.272 (Claude Code)` |
-| System | macOS 26 |
+| System | Apple silicon Mac, macOS 26 |
 | Run from | An agent shell inside the Claude desktop app (not an ordinary terminal) |
 | Auth | `claude auth status` → `loggedIn:false, authMethod:"none"`; daemon.log: `auth: no token found, will re-check keychain every 30s` |
 

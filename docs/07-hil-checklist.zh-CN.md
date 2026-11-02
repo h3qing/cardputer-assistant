@@ -17,7 +17,7 @@
 | 固件 | `cardputer-adv-test`（`-DCPA_TEST_HOOKS=1`），`cpa-fw/0.1.0`，2026-10-19 20:33 构建并刷入（WP4 fix 之后，源码没有更新的改动） |
 | Mac 端 | `cpad 0.1.0`（本仓库 `daemon/`，Python 3.12.13），在 `run_e2e.py` 进程里运行，临时 `$CPA_HOME`、临时 notes_dir、临时项目目录 |
 | Claude | `daemon/tests/fixtures/bin/fake-claude`（2.1.272 的输出形状），由 config 的 `claude_bin` + `spawn_env` 指定；**没有**启动任何真实的 Claude session |
-| 系统 | macOS 26（Apple Silicon） |
+| 系统 | Apple 芯片的 Mac，macOS 26 |
 
 ## 1. 怎么跑
 

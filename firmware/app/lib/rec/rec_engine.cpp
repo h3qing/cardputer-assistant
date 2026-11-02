@@ -160,9 +160,7 @@ bool RecEngine::read_meta(const MonoId& id, RecMeta& out) {
   const long n = fs.read_at(0, reinterpret_cast<uint8_t*>(meta_buf_), kMetaMax, err);
   fs.close();
   if (n <= 0) return false;
-  const Opt<RecMeta> m = rec_meta_decode(meta_buf_, static_cast<size_t>(n), id);
-  if (m.has) out = m.value;
-  return m.has;
+  return rec_meta_decode_into(meta_buf_, static_cast<size_t>(n), id, out);
 }
 
 void RecEngine::list(const RecCmd& c, EvtSink& out) {

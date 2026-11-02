@@ -2,7 +2,13 @@
 // "/sd" + path, for the audio task. One descriptor at most. errno: EIO / ENODEV / ENXIO ->
 // Disk (and sd_health dead: neither task touches the card again), ENOSPC or a zero-byte
 // write -> Full, ENOENT -> NotFound, EEXIST -> Exists, others -> Other. Device only.
+// The audio task runs above IDLE0 on core 0 and SD over SPI polls, so a long run of file
+// work (a ledger command over hundreds of kept segments, a boot scan) would starve IDLE0
+// past the 5 s task watchdog: every kBreatheMs of opens, stats, unlinks and directory
+// entries it sleeps one tick (docs/07, S1a device run).
 #pragma once
+
+#include <freertos/FreeRTOS.h>
 
 #include "rec_file_port.h"
 
@@ -26,7 +32,9 @@ class VfsRecFilePort : public rec::RecFilePort {
 
  private:
   rec::FsErr open_with(const char* path, int flags);
+  void breathe();
   int fd_ = -1;
+  TickType_t breathed_ = 0;
 };
 
 }  // namespace cpa

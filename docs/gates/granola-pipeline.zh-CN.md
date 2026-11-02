@@ -225,7 +225,7 @@ Enter 详情   ⌥D 隐藏   ` 返回
 
 ### 5.2 为什么用 SenseVoice，不用 Whisper 📚
 
-WhisperWoof 用一段 10.8 分钟的双人对话（以中文为主，夹着英文产品名、公司名和金融术语）做了基准测试 bench-a，在 Apple 芯片 上跑（`local-meeting-transcription.md` §3–3.1）：
+WhisperWoof 用一段 10.8 分钟的双人对话（以中文为主，夹着英文产品名、公司名和金融术语）做了基准测试 bench-a，在 Apple 芯片的 Mac 上跑（`local-meeting-transcription.md` §3–3.1）：
 
 | 引擎 | MER | RTF |
 |---|---|---|

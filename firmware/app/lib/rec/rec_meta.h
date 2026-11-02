@@ -47,6 +47,9 @@ using MetaText = FixedStr<kMetaMax>;
 
 MetaText rec_meta_encode(const RecMeta& m);
 Opt<RecMeta> rec_meta_decode(const char* s, size_t n, const MonoId& file_id);
+// The same into `out` (the audio task's boot scan: no second RecMeta on its stack); out is
+// unspecified when false.
+bool rec_meta_decode_into(const char* s, size_t n, const MonoId& file_id, RecMeta& out);
 // The file.items entry of a committed segment whose .W is file_size bytes long. A size
 // other than 44 + bytes (§4.6 last row) is reported as is, without sha256 and with rcv.
 proto::FileItem rec_item_of(const RecMeta& m, uint32_t file_size);

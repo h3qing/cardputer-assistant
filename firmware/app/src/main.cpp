@@ -1,7 +1,8 @@
 // cpa-fw entry point (05 §5.1): one Arduino loop task with a 16 KB stack. setup()
 // brings the hardware up in the order that matters (USB RX buffer before anything can
 // start the CDC, NVS boot counter before any id), then loop() runs the runtime, which
-// never blocks: no delay() anywhere in the loop.
+// never blocks: no delay() anywhere in the loop. docs/29 P1: after a pass, dark on battery
+// with nothing going on, the loop task sleeps 10 ms (Runtime::idle_yield_ms).
 // Storage (docs/09-m2-design.md §3.1): partition facts, one SD mount attempt, cpafs,
 // then plan_storage() picks the primary store once for this boot; with the card primary
 // the Runtime first moves cpafs's pending items to it, and cpafs is unmounted after.
@@ -114,4 +115,9 @@ void loop() {
 #if CPA_TEST_HOOKS
   g_platform.loop_timed(t0, micros(), now);
 #endif
+  // docs/29 P1: dark on battery with nothing going on, the idle task's WAITI instead of a
+  // busy loop (<= 10 ms more key latency). Outside the timed pass: debug.state.diag's loop
+  // numbers stay the work's, and the start-to-start gap shows the rest.
+  const uint32_t rest = g_runtime->idle_yield_ms();
+  if (rest > 0) vTaskDelay(pdMS_TO_TICKS(rest));
 }

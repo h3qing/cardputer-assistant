@@ -6,7 +6,7 @@
 
 ## Decided by the user (2026-10-20)
 
-- **WhisperWoof**: agents develop and test in a local clone, then open 4 PRs on h3qing/WhisperWoof, **reviewed and merged by the user**.
+- **WhisperWoof**: agents develop and test in a local clone of h3qing/WhisperWoof, then open 4 PRs there, **reviewed and merged by the user**.
 - **Gestures**: hold G0 to record a voice memo, release to stop; `Opt+R` → Enter starts a meeting recording; in a meeting, press G0 to add a ★ mark.
 - **Consent prompt**: every meeting recording first shows "Tell the people present first" (请先告知在场的人), and starts only after Enter; the start and end tones cannot be turned off; the screen shows ● REC while recording. **Changed by the user on 2026-10-21**: recording is silent, for personal use; from v0.3.1 recording makes no sound at all; the meeting confirmation stays; the screen is the only cue.
 - **Retention**: audio (WAV) is kept for 30 days; transcripts, summaries and notes are kept forever.

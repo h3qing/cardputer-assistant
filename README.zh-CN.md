@@ -37,14 +37,14 @@
 curl -fsSL https://raw.githubusercontent.com/h3qing/cardputer-assistant/main/scripts/install.sh | bash
 ```
 
-**不联网（U 盘）**：在一台已经有仓库的 Mac 上（tag 的那个提交上）造好发布、拷进 U 盘，再到新 Mac 上从 U 盘装：
+**U 盘，不联网**：在主力 Mac 的仓库里（tag 的那个提交上）造好发布、拷进 U 盘，再到新 Mac 上从 U 盘装：
 
 ```bash
-scripts/release-local.sh --tag v0.5.1 --out /Volumes/USB/v0.5.1 --release-json   # 有仓库的 Mac
-bash /Volumes/USB/v0.5.1/install.sh --from /Volumes/USB/v0.5.1                    # 新 Mac
+scripts/release-local.sh --tag v0.5.0 --out /Volumes/USB/v0.5.0 --release-json   # 主力 Mac
+bash /Volumes/USB/v0.5.0/install.sh --from /Volumes/USB/v0.5.0                    # 新 Mac
 ```
 
-`--from` 的文件照样逐个核对 `release.json` 的摘要和 `SHA256SUMS`。uv 和 Python 3.12 仍要联网下载一次（约 70 MB）；新 Mac 上已经有 uv 和 Python 3.12 就完全不用网。私有 fork 也能用同一个脚本：先 `gh auth login`，或者 `export GITHUB_TOKEN`（只读令牌，curl 从标准输入读，不进参数、不写文件）。
+`--from` 的文件照样逐个核对 `release.json` 的摘要和 `SHA256SUMS`。uv 和 Python 3.12 仍要联网下载一次（约 70 MB）；新 Mac 上已经有 uv 和 Python 3.12 就完全不用网。
 
 它做的事（每一步先说要做什么，默认英文，`--lang zh` 时是中文）：
 

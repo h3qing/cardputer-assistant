@@ -413,7 +413,7 @@ Enter保存 G0按住说话 Opt+D拿掉 Tab菜单
 
 ### 4.8 实测：whisper.cpp large-v3-turbo [测]
 
-环境：Apple 芯片、64 GB、macOS 26；Homebrew `whisper-cpp 1.8.3`，Metal；模型在文件缓存里。音频：合成语音，16 kHz、16 bit、单声道（和设备一样）。每次起一个新进程，各 3 次取中位数。
+环境：Apple 芯片的 Mac，macOS 26；Homebrew `whisper-cpp 1.8.3`，Metal；模型在文件缓存里。音频：合成语音，16 kHz、16 bit、单声道（和设备一样）。每次起一个新进程，各 3 次取中位数。
 
 | 片段 | `-l zh` 默认（beam 5）| `-l zh` 贪心 | `-l auto` 贪心 |
 |---|---|---|---|
@@ -889,4 +889,4 @@ docs/14 合并以后，vcap 不再自己写 `queue.added`，而是交出 `Captur
 - 协议：`limits.json`；`schema/v0/outbox.item.schema.json`、`common.schema.json`（`userText`、`files{n, rev, live}`、`intent`）、`pong.schema.json`（`pending`、`revs`）、`queue.snapshot.schema.json`（≤12 项、`text` ≤80 B）、`rec.act.schema.json`；`tools/test_worst_lines.py`、`tools/wire.py`（`canonical_line`）；`recording/v1/README.md`（单写者表、`status.json` 的 `blocked{reason}`、交接规则、向前兼容）。
 - 文档：docs/02；docs/04 §8.4；docs/13 §7.1、§9.2、§10.3、§13；docs/14（`b5ad361`）§2.1–§2.3、§3、§5.3、§5.4、§6.1、§6.3、§7.8、§8.1、F5；docs/15 §1、§2；docs/17 §6.1、§6.3、§17 第 6 条、M10；docs/18 §2 第 6 条、§3.4；docs/19 §6.6、§6.9、§10；docs/20 U4、U6、U15、U16、U17、U25、U26、D4–D8、D10；ADR 0004（背景"WhisperWoof today, any program tomorrow"、规则 5）。
 - 外部：WhisperWoof PR #149–#152（2026-10-22 仍是 OPEN），#151 正文（收件箱默认关、静音门限 0.00084、退避 30 s / 2 min / 8 min、`result.json` 用 link 放置）。
-- 本机 [测]：`whisper-cpp 1.8.3`（Homebrew）；`ggml-large-v3-turbo.bin` 1,624,555,275 B；`ggml-tiny.bin` 77,691,713 B；Apple 芯片、64 GB、macOS 26；`$VB/out/bench.json`、`bench-greedy.json`、`*-vad.txt`、`noise05.txt`、`silence05.txt`（第 1 版的测速和幻觉）；`$VC/sbx/profile.sb`（§4.5 的沙箱配置）和 `$VC/sbx/wd/`（各配置的耗时和输出：只禁网 1.19 s；禁写不放行 Metal 缓存 6.66 s、"loaded in 4.988 sec"；全禁系统服务退出码 134、"Unable to reach MTLCompilerService"；只放行编译服务 7.0 s；最终配置 10 秒 1.15–1.17 s、30 秒 1.64–2.20 s，和不包沙箱逐字相同）；沙箱探测（`$VC/conn.py` 连端口 `Operation not permitted`、`curl` 解析失败、`touch $HOME/…` 失败、`open -a TextEdit` 失败）；`$VC/lang/`（`say -v Samantha` 英文、`say -v Tingting` 混说，`-l zh/auto/en` 的输出和耗时）；`$VC/lines2.py`（§6.4）；`$VC/efont.py`（efontCN_12：①–④、…、· 有，🎤 没有）；`~/CardputerNotes/recordings/*/manifest.json`（只读了 manifest：15 个会话，13 段便条 1.0–50.7 秒，2 场会，没有 `result.json`）。
+- 本机 [测]：`whisper-cpp 1.8.3`（Homebrew）；`ggml-large-v3-turbo.bin` 1,624,555,275 B；`ggml-tiny.bin` 77,691,713 B；Apple 芯片的 Mac、macOS 26；`$VB/out/bench.json`、`bench-greedy.json`、`*-vad.txt`、`noise05.txt`、`silence05.txt`（第 1 版的测速和幻觉）；`$VC/sbx/profile.sb`（§4.5 的沙箱配置）和 `$VC/sbx/wd/`（各配置的耗时和输出：只禁网 1.19 s；禁写不放行 Metal 缓存 6.66 s、"loaded in 4.988 sec"；全禁系统服务退出码 134、"Unable to reach MTLCompilerService"；只放行编译服务 7.0 s；最终配置 10 秒 1.15–1.17 s、30 秒 1.64–2.20 s，和不包沙箱逐字相同）；沙箱探测（`$VC/conn.py` 连端口 `Operation not permitted`、`curl` 解析失败、`touch $HOME/…` 失败、`open -a TextEdit` 失败）；`$VC/lang/`（`say -v Samantha` 英文、`say -v Tingting` 混说，`-l zh/auto/en` 的输出和耗时）；`$VC/lines2.py`（§6.4）；`$VC/efont.py`（efontCN_12：①–④、…、· 有，🎤 没有）；`~/CardputerNotes/recordings/*/manifest.json`（只读了 manifest：15 个会话，13 段便条 1.0–50.7 秒，2 场会，没有 `result.json`）。

@@ -16,7 +16,7 @@ UV_PY_DIR="$(uv python dir)"
 FAILS=0
 PASSES=0
 
-agents_fingerprint() { ls -la "$REAL_HOME/Library/LaunchAgents" 2>/dev/null; stat -f '%m' "$REAL_HOME/Library/LaunchAgents" 2>/dev/null; }
+agents_fingerprint() { ls -la "$REAL_HOME/Library/LaunchAgents" 2>/dev/null; stat -f '%m' "$REAL_HOME/Library/LaunchAgents" 2>/dev/null || true; }
 REAL_AGENTS_BEFORE="$(agents_fingerprint)"
 
 cleanup() {

@@ -174,7 +174,8 @@ https://github.com/lovyan03/LovyanGFX
 4. Visual theme (docs/19-visual-theme.md) - embedded in the firmware image
 ===============================================================================
 
-WhisperWoof - the same author's project, MIT License,
+WhisperWoof - https://github.com/h3qing/WhisperWoof
+The same author's project, MIT License,
 Copyright (c) 2026 Heqing Huang (the MIT License text in section 1 applies)
   The colour tokens in tools/theme/tokens.py (and so in
   firmware/app/lib/theme/gen/palette_gen.h) are WhisperWoof's dark theme

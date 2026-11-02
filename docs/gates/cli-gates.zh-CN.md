@@ -10,7 +10,7 @@
 | 项 | 值 |
 |---|---|
 | CLI | `~/.local/bin/claude` → `~/.local/share/claude/versions/2.1.272`，`claude --version` = `2.1.272 (Claude Code)` |
-| 系统 | macOS 26 |
+| 系统 | Apple 芯片的 Mac，macOS 26 |
 | 执行位置 | Claude 桌面端里的一个 agent shell（不是普通终端） |
 | 认证 | `claude auth status` → `loggedIn:false, authMethod:"none"`；daemon.log：`auth: no token found, will re-check keychain every 30s` |
 

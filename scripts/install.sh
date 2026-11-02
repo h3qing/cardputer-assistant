@@ -1,8 +1,7 @@
 #!/bin/bash
 # Install (or update) Cardputer Assistant on this Mac from a GitHub release, checked byte for byte.
 #
-#   curl -fsSL https://raw.githubusercontent.com/h3qing/cardputer-assistant/main/scripts/install.sh | bash
-#   (a private fork works too: log in with gh, or export a read-only GITHUB_TOKEN; see "Access" below)
+#   Online:        curl -fsSL https://raw.githubusercontent.com/h3qing/cardputer-assistant/main/scripts/install.sh | bash
 #   USB stick:     bash /Volumes/USB/v0.5.0/install.sh --from /Volumes/USB/v0.5.0   (release-local.sh --release-json)
 #   Options:       ... | bash -s -- --dry-run          (run the same line again to update)
 #
@@ -57,8 +56,8 @@ run() { if [[ "$DRY" == 1 ]]; then note "(dry-run) $*"; else "$@"; fi; }
 
 usage() {
   printf '%s\n' "$(msg "Cardputer Assistant 安装脚本（再跑一次就是升级）" "Cardputer Assistant installer (run it again to update)")"
-  cat <<EOF
-  curl -fsSL https://raw.githubusercontent.com/${REPO_SLUG}/main/scripts/install.sh | bash
+  cat <<'EOF'
+  curl -fsSL https://raw.githubusercontent.com/h3qing/cardputer-assistant/main/scripts/install.sh | bash
   bash /Volumes/USB/v0.5.0/install.sh --from /Volumes/USB/v0.5.0
 EOF
   printf '%s\n' "$(msg "选项：" "Options:")"
@@ -232,7 +231,8 @@ resolve() {
 
 asset_names() { printf '%s\n' "$ASSETS" | cut -f1; }
 asset_field() { # NAME FIELD(1 api url, 2 download url, 3 sha256): prints it, fails when the asset is missing
-  local line; line="$(printf '%s\n' "$ASSETS" | awk -F'\t' -v n="$1" '$1 == n { print; exit }')"
+  # A here-string, not printf | awk: awk stops at the match, and printf would be left writing into a closed pipe.
+  local line; line="$(awk -F'\t' -v n="$1" '$1 == n { print; exit }' <<<"$ASSETS")"
   [[ -n "$line" ]] || return 1
   printf '%s\n' "$line" | cut -f"$(( $2 + 1 ))"
 }

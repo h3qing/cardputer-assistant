@@ -178,13 +178,20 @@ void RecEngine::scan_classify(const uint8_t* raw, uint16_t n, uint32_t& recoveri
   }
 }
 
+// The audio task's 6 KB stack (docs/07 §11.3): this frame holds one ScanEntry while its .M
+// is decoded; the plan, and a recovery's predecessor, live in place() only after that.
 void RecEngine::scan_one(const uint8_t* raw, uint16_t n, uint16_t i, uint32_t& recoveries) {
   const NameSlot& slot = reinterpret_cast<const NameSlot*>(raw)[i];
   ScanEntry e = scan_entry(slot.id, slot.flags & kHasW, slot.flags & kHasM);
   e.excl_host = d_.index->host_at(slot.excl);
-  const Opt<RecMeta> prev = needs_recovery(e) ? predecessor(e.id, raw, n) : Opt<RecMeta>{};
+  if (place(e, raw, n)) ++recoveries;
+}
+
+__attribute__((noinline)) bool RecEngine::place(const ScanEntry& e, const uint8_t* raw, uint16_t n) {
+  Opt<RecMeta> prev;
+  if (needs_recovery(e)) prev.has = predecessor(e.id, raw, n, prev.value);
   const RecoveryPlan plan = plan_rec_recovery(e, prev, d_.fw);
-  if (apply(e, plan) && plan.recovered) ++recoveries;
+  return apply(e, plan) && plan.recovered;
 }
 
 ScanEntry RecEngine::scan_entry(const MonoId& id, bool has_w, bool has_m) {
@@ -207,15 +214,14 @@ ScanEntry RecEngine::scan_entry(const MonoId& id, bool has_w, bool has_m) {
 
 // The committed segment whose .M names `id` as its next one, if any (kept and deleted names
 // are never read: docs/28 S1a).
-Opt<RecMeta> RecEngine::predecessor(const MonoId& id, const uint8_t* raw, uint16_t n) {
+bool RecEngine::predecessor(const MonoId& id, const uint8_t* raw, uint16_t n, RecMeta& out) {
   const NameSlot* table = reinterpret_cast<const NameSlot*>(raw);
-  RecMeta m;
   for (uint16_t j = 0; j < n; ++j) {
     if (!(table[j].flags & kHasM) || (table[j].flags & (kKept | kGone)) || table[j].id == id) continue;
-    if (!read_meta(table[j].id, m)) continue;
-    if (m.next.has && m.next.value == id) return some(m);
+    if (!read_meta(table[j].id, out)) continue;
+    if (out.next.has && out.next.value == id) return true;
   }
-  return {};
+  return false;
 }
 
 bool RecEngine::backfill(const MonoId& id, uint32_t data_bytes) {

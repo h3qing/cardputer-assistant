@@ -17,7 +17,7 @@
 | Firmware | `cardputer-adv-test` (`-DCPA_TEST_HOOKS=1`), `cpa-fw/0.1.0`, built and flashed 2026-10-19 20:33 (after the WP4 fix; the source has no newer changes) |
 | Mac side | `cpad 0.1.0` (this repo's `daemon/`, Python 3.12.13), running inside the `run_e2e.py` process, with a temporary `$CPA_HOME`, a temporary notes_dir and a temporary project directory |
 | Claude | `daemon/tests/fixtures/bin/fake-claude` (the output shape of 2.1.272), set through the config's `claude_bin` + `spawn_env`; **no** real Claude session was started |
-| System | macOS 26 (Apple Silicon) |
+| System | Apple silicon Mac, macOS 26 |
 
 ## 1. How to run
 

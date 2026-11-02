@@ -218,6 +218,24 @@ void Runtime::sync_backlight() {
   shell_.mark_dirty();
 }
 
+// docs/29 P1: the facts of idle_yield.h as this pass left them.
+uint32_t Runtime::idle_yield_ms() const {
+  IdleFacts f;
+  f.dark = level_ == Backlight::Off;
+  f.rec_idle = rec_core_.phase == RecPhase::Idle && !rec_core_.held;
+  f.host = tx_.plugged() || plug_.plugged;
+  f.audio_busy = (rec_ && !rec_core_.ready) || rec::rec_inflight(rec_core_) > 0 || kept_.busy || kept_.hold_due ||
+                 kept_.hold_sent || kept_.drop_due;
+  f.keys_down = !chords_.prev.empty();
+  f.key_seen = key_seen_;
+  f.key_ms = key_ms_;
+  f.writes_due = settings_due_ || kept_.mark_due;
+#if CPA_TEST_HOOKS
+  f.writes_due = f.writes_due || inject_.n > 0;
+#endif
+  return cpa::idle_yield_ms(f, now_);
+}
+
 void Runtime::sample_stats(uint32_t now) {
   if (now - last_stats_ < kStatsEveryMs) return;
   last_stats_ = now;

@@ -37,14 +37,14 @@ On an Apple silicon Mac with macOS 14 or later, paste one line into Terminal. **
 curl -fsSL https://raw.githubusercontent.com/h3qing/cardputer-assistant/main/scripts/install.sh | bash
 ```
 
-**Without a network (USB stick)**: in a checkout on a Mac that has the repo (on the tagged commit), build the release and copy it to a USB stick, then install from the stick on the new Mac:
+**USB stick, no network**: in the repo on your main Mac (on the tagged commit), build the release and copy it to a USB stick, then install from the stick on the new Mac:
 
 ```bash
-scripts/release-local.sh --tag v0.5.1 --out /Volumes/USB/v0.5.1 --release-json   # Mac with the repo
-bash /Volumes/USB/v0.5.1/install.sh --from /Volumes/USB/v0.5.1                    # new Mac
+scripts/release-local.sh --tag v0.5.0 --out /Volumes/USB/v0.5.0 --release-json   # main Mac
+bash /Volumes/USB/v0.5.0/install.sh --from /Volumes/USB/v0.5.0                    # new Mac
 ```
 
-Files from `--from` are still checked one by one against the digests in `release.json` and against `SHA256SUMS`. uv and Python 3.12 still need one download (about 70 MB); if the new Mac already has uv and Python 3.12, no network is needed at all. A private fork works with the same script: run `gh auth login` first, or `export GITHUB_TOKEN` (a read-only token; curl reads it on standard input, never from arguments or a file).
+Files from `--from` are still checked one by one against the digests in `release.json` and against `SHA256SUMS`. uv and Python 3.12 still need one download (about 70 MB); if the new Mac already has uv and Python 3.12, no network is needed at all.
 
 What it does (each step first says what it is about to do, in English, or in Chinese with `--lang zh`):
 

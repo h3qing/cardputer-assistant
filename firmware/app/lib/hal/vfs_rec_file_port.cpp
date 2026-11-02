@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <freertos/task.h>
+
 #include <cerrno>
 #include <cstring>
 
@@ -33,11 +35,21 @@ FsErr from_errno(int e) {
 
 FsErr last_error() { return from_errno(errno); }
 
+constexpr uint32_t kBreatheMs = 100;
+
 }  // namespace
+
+void VfsRecFilePort::breathe() {
+  const TickType_t now = xTaskGetTickCount();
+  if (now - breathed_ < pdMS_TO_TICKS(kBreatheMs)) return;
+  vTaskDelay(1);
+  breathed_ = xTaskGetTickCount();
+}
 
 FsErr VfsRecFilePort::open_with(const char* path, int flags) {
   if (hal_sd_dead()) return FsErr::Disk;
   if (fd_ >= 0) close();
+  breathe();
   fd_ = ::open(vfs(path).c_str(), flags, 0644);
   return fd_ >= 0 ? FsErr::None : last_error();
 }
@@ -101,6 +113,7 @@ long VfsRecFilePort::read_at(uint32_t off, uint8_t* buf, size_t n, FsErr& err) {
 long VfsRecFilePort::size(const char* path, FsErr& err) {
   err = hal_sd_dead() ? FsErr::Disk : FsErr::None;
   if (err != FsErr::None) return -1;
+  breathe();
   struct stat st;
   if (::stat(vfs(path).c_str(), &st) != 0) {
     err = last_error();
@@ -117,6 +130,8 @@ FsErr VfsRecFilePort::list(const char* dir, rec::RecDirVisitor& visit) {
   while (const dirent* e = ::readdir(d)) {
     if (std::strcmp(e->d_name, ".") == 0 || std::strcmp(e->d_name, "..") == 0) continue;
     visit.entry(e->d_name, e->d_type == DT_DIR);
+    breathe();
+    errno = 0;
   }
   const FsErr err = errno == 0 ? FsErr::None : last_error();
   if (err != FsErr::Disk) ::closedir(d);
@@ -125,6 +140,7 @@ FsErr VfsRecFilePort::list(const char* dir, rec::RecDirVisitor& visit) {
 
 FsErr VfsRecFilePort::unlink(const char* path) {
   if (hal_sd_dead()) return FsErr::Disk;
+  breathe();
   return ::unlink(vfs(path).c_str()) == 0 ? FsErr::None : last_error();
 }
 

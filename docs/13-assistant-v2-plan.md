@@ -851,6 +851,6 @@ If you do not reply, the defaults apply.
 - **Recording contract**: `protocol/recording/v1/README.md` (single-writer table; hand-off rule 1); `docs/11-m3-design.md` §6.4, §7.2.
 - **daemon**: `recordings/sessions.py:4, 20, 68`; `results.py:70`; `route.py:72`; `cli/rec.py`; `notes/writer.py`; `device/link.py:88` (`host_hello`).
 - **Gates**: `docs/gates/m3-device-gates.md` lines 34, 35, 206, 223 (noise floor at PGA +18 dB; `CARDPUTER_SILENCE_RMS`); `whisperwoof.md:16, 61, 318` (WhisperWoof's silence threshold).
-- **WhisperWoof**: README:104 ("Hotkey = destination"); `core/router/dictation-route.ts:14`; `helpers/clipboard.js:580-756`.
+- **WhisperWoof** (h3qing/WhisperWoof): README:104 ("Hotkey = destination"); `core/router/dictation-route.ts:14`; `helpers/clipboard.js:580-756`.
 - **Issues**: #16, #17 (wants a prompt tone, with a mute switch), #19 ("Cheap now": reserve host identity at the next protocol change), #23, #24 (key = destination, bindings configured on the Mac).
 - **Similar products** (from research, some only seen as search snippets): Flipper Zero (lock, Archive, delete confirmation); Pebble (Quick Launch, Quiet Time); which-key.nvim; Raycast; Plaud; Granola; Apple Voice Memos ("Recently Deleted" kept 30 days).

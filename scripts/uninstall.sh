@@ -89,11 +89,15 @@ remove_agents() {
   [[ -x "$CPA" ]] && run "$CPA" service uninstall
   local label
   for label in "$AGENT" "$STT_AGENT"; do
-    local plist="$HOME/Library/LaunchAgents/$label.plist"
-    if launchctl print "gui/$uid/$label" >/dev/null 2>&1 || [[ -f "$plist" ]]; then
+    # The label is per user, not per HOME: a job launchd loaded from another HOME's plist is not ours to stop.
+    local plist="$HOME/Library/LaunchAgents/$label.plist" loaded
+    loaded="$(launchctl print "gui/$uid/$label" 2>/dev/null | awk '!found && sub(/^\tpath = /, "") { found = 1; print }' || true)"
+    if [[ -n "$loaded" && "$loaded" != "$plist" ]]; then
+      note "另一个 HOME 的 ${label} 已加载（${loaded}），没动它" "$label from another HOME is loaded ($loaded): not touched"
+    elif [[ -n "$loaded" || -f "$plist" ]]; then
       run launchctl bootout "gui/$uid/$label" 2>/dev/null || true
-      run rm -f "$plist"
     fi
+    if [[ -f "$plist" ]]; then run rm -f "$plist"; fi
   done
   note "cpad、cpa-stt 不会再自动启动" "cpad and cpa-stt no longer start at login"
 }

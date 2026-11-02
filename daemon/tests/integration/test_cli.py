@@ -250,6 +250,23 @@ def test_service_install_says_so_when_cpad_did_not_start(home, tmp_path, capsys,
     assert "后台服务没起来，再跑一次 cpa service install" in capsys.readouterr().err
 
 
+def test_service_commands_leave_another_home_s_cpad_alone(home, tmp_path, capsys, monkeypatch):
+    """The label is per user, not per HOME: from a throwaway HOME neither uninstall nor install touches it."""
+    other = f"/Users/u/Library/LaunchAgents/{launchd.LABEL}.plist"
+    fake = FakeLaunchd(loaded=True, pid=1234, plist=other)
+    deps = CliDeps(runner=fake, agents_dir=tmp_path / "A", uid=501, which=lambda name, path=None: "/opt/bin/claude",
+                   clock=fake.clock)  # fmt: skip
+    assert cpa(["service", "uninstall"], deps) == 0
+    assert fake.verbs("bootout") == 0 and fake.pid == 1234
+    assert f"note: a cpad from another HOME is loaded ({other}): not touched" in _out(capsys)
+    assert cpa(["service", "install"], deps) == 1
+    assert fake.verbs("bootout") == 0 and fake.verbs("bootstrap") == 0 and fake.pid == 1234
+    assert "uninstall that one first" in capsys.readouterr().err
+    monkeypatch.setenv("CPA_LANG", "zh")
+    assert cpa(["service", "uninstall"], deps) == 0
+    assert f"注意：另一个 HOME 的 cpad 已加载（{other}），没动它" in _out(capsys)
+
+
 def test_service_install_warns_in_one_language_when_claude_is_missing(home, tmp_path, capsys, monkeypatch):
     fake = FakeLaunchd()
     deps = CliDeps(runner=fake, agents_dir=tmp_path / "A", uid=501, which=lambda name, path=None: None,

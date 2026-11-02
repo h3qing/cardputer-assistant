@@ -11,6 +11,7 @@ import pytest
 
 from cpa_stt import cli, config
 from tests.support import stt_tree
+from tests.support.fake_launchd import FakeLaunchd
 from tests.support.stt_home import DEAD_PID, Home
 from tests.support.stt_tree import make_session, read_json
 
@@ -164,6 +165,31 @@ def test_service_install_and_uninstall(home, capsys):
     assert ["launchctl", "bootstrap", "gui/501", str(plist_path)] in home.calls
     assert home.main("service", "uninstall") == 0
     assert not (home.agents / "com.cardputer-assistant.cpa-stt.plist").exists()
+
+
+def test_service_install_and_uninstall_boot_out_this_home_s_own_agent(home):
+    ours = str(home.agents / "com.cardputer-assistant.cpa-stt.plist")
+    fake = FakeLaunchd(loaded=True, pid=77, plist=ours)
+    assert home.main("service", "install", launchctl=fake) == 0
+    assert fake.verbs("bootout") == 1 and fake.verbs("bootstrap") == 1 and fake.loaded
+    assert home.main("service", "uninstall", launchctl=fake) == 0
+    assert fake.verbs("bootout") == 2 and not fake.loaded
+
+
+def test_service_commands_leave_another_home_s_agent_alone(home, capsys):
+    """The label is per user, not per HOME: from a throwaway HOME neither uninstall nor install touches it."""
+    other = "/Users/u/Library/LaunchAgents/com.cardputer-assistant.cpa-stt.plist"
+    fake = FakeLaunchd(loaded=True, pid=77, plist=other)
+    home.agents.mkdir()
+    (home.agents / "com.cardputer-assistant.cpa-stt.plist").write_bytes(b"x")
+    assert home.main("service", "uninstall", launchctl=fake) == 0
+    assert fake.verbs("bootout") == 0 and fake.pid == 77
+    assert not (home.agents / "com.cardputer-assistant.cpa-stt.plist").exists()
+    assert f"note: a cpa-stt LaunchAgent from another HOME is loaded ({other}): not touched" in capsys.readouterr().out
+    assert home.main("service", "install", launchctl=fake) == 2
+    assert fake.verbs("bootout") == 0 and fake.verbs("bootstrap") == 0 and fake.pid == 77
+    assert not (home.agents / "com.cardputer-assistant.cpa-stt.plist").exists()
+    assert "uninstall that one first" in capsys.readouterr().err
 
 
 def test_service_install_gives_cpa_stt_this_terminal_s_language(home, monkeypatch):

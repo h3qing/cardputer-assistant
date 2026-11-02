@@ -3,7 +3,8 @@
 `cpa-stt service install` writes ~/Library/LaunchAgents/com.cardputer-assistant.cpa-stt.plist (RunAtLoad,
 KeepAlive, background) running `python -m cpa_stt watch`, with this terminal's language variables (launchd.lang_env:
 what cpa-stt writes for "nothing heard" follows them), and bootstraps it; `uninstall` (and `cpa-stt off`) boots it
-out and removes the plist. Written like cpad's service/launchd.py.
+out and removes the plist. Written like cpad's service/launchd.py, and like it never boots out or replaces a job
+loaded from another HOME's plist (the label is per user, not per HOME).
 """
 
 from __future__ import annotations
@@ -16,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from cpad.config.files import ensure_private_dir
-from cpad.service.launchd import Runner, lang_env
+from cpad.service.launchd import Runner, ServiceError, Uninstalled, job, lang_env, other_plist
 
 LABEL = "com.cardputer-assistant.cpa-stt"
 
@@ -41,9 +42,11 @@ def _domain(uid: int | None) -> str:
 
 
 def install(agents_dir: Path, log_dir: Path, cpa_home: str, *, runner: Runner, uid: int | None) -> Path:
+    path = plist_path(agents_dir)
+    if (other := other_plist(job(runner, f"{_domain(uid)}/{LABEL}"), path)) is not None:
+        raise ServiceError(f"a cpa-stt LaunchAgent from another HOME is loaded ({other}); uninstall that one first")
     ensure_private_dir(log_dir)
     agents_dir.mkdir(parents=True, exist_ok=True)
-    path = plist_path(agents_dir)
     path.write_bytes(plistlib.dumps(plist_dict(log_dir, cpa_home)))
     os.chmod(path, 0o644)
     with contextlib.suppress(OSError):
@@ -52,11 +55,13 @@ def install(agents_dir: Path, log_dir: Path, cpa_home: str, *, runner: Runner, u
     return path
 
 
-def uninstall(agents_dir: Path, *, runner: Runner, uid: int | None) -> bool:
+def uninstall(agents_dir: Path, *, runner: Runner, uid: int | None) -> Uninstalled:
     path = plist_path(agents_dir)
     if not path.exists():
-        return False
-    runner(["launchctl", "bootout", f"{_domain(uid)}/{LABEL}"])
+        return Uninstalled(False, None)
+    other = other_plist(job(runner, f"{_domain(uid)}/{LABEL}"), path)
+    if other is None:
+        runner(["launchctl", "bootout", f"{_domain(uid)}/{LABEL}"])
     with contextlib.suppress(FileNotFoundError):
         path.unlink()
-    return True
+    return Uninstalled(True, other)

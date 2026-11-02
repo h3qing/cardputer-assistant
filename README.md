@@ -76,7 +76,7 @@ Goal: in a **brand-new user account** on a Mac, go from cloning the repo to seei
    ```
 2. **Get the code and prepare the Mac side**:
    ```bash
-   git clone <repo-url> cardputer-assistant && cd cardputer-assistant
+   git clone https://github.com/h3qing/cardputer-assistant.git && cd cardputer-assistant
    uv sync --project daemon                                # Python 3.12 + pyserial, into daemon/.venv
    ```
 3. **Flash the firmware (without pressing G0)**: plug in USB-C and set the side switch to **ON**.
@@ -91,7 +91,7 @@ Goal: in a **brand-new user account** on a Mac, go from cloning the repo to seei
    uv run --project daemon cpa service install
    ```
    It records a few environment variables such as the login shell's PATH, and finds the absolute path of `claude`. If it cannot find it, it tells you; starting sessions stays off, and quick notes work as usual.
-   - **A second Mac**: today's cpad does not ask you. It binds the first board plugged in, and notes and recordings on the device that have not been transferred are stored on that Mac and deleted from the device; once stored there, they cannot come back. Before plugging into another Mac, plug into your main Mac first and wait until ↑ and REC in the status bar reach 0; do not run cpad on a Mac you only want to charge from. The improved design is in [docs/27](docs/27-new-mac-setup.md).
+   - **A second Mac**: today's cpad does not ask you. It binds the first board plugged in. Typed notes on the device that have not been transferred are stored on that Mac and deleted from the device; recordings are stored there too, but the device keeps a copy for 7 days, and Settings → Storage → "Send again" passes them on to another Mac ([docs/28](docs/28-multi-mac-sync.md) S1a). Before plugging into another Mac, plug into your main Mac first and wait until ↑ and REC in the status bar reach 0; do not run cpad on a Mac you only want to charge from. The improved design is in [docs/27](docs/27-new-mac-setup.md).
 5. **Register projects** (each project takes one number key 1–9; sessions started from the device use the `plan` permission mode by default):
    ```bash
    uv run --project daemon cpa project add myproj ~/code/myproj --slot 1 --name "My Project"

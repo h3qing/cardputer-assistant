@@ -25,11 +25,13 @@ COMMAND = {"service.install": ("cpa service install", "cpa service install"),
            "hooks.install": ("cpa hooks install", "cpa hooks install"),
            "host.name": ("cpa host name -- 名字", "cpa host name -- NAME"),
            "stt.setup": ("cpa-stt setup 模型文件", "cpa-stt setup MODEL_FILE")}  # fmt: skip
-TAKES = ("后台服务会自动连上它：设备上还没传的笔记和录音会存到这台 Mac、从设备上删掉，存过来就回不去。"
+TAKES = ("后台服务会自动连上它：设备上还没传的打字笔记会存到这台 Mac、从设备上删掉；录音也存到这台 Mac，"
+         "但设备上留底 7 天，设置 → 存储 →「再交一次」能交给另一台 Mac。"
          "要留在主力 Mac 上的，先插回主力 Mac，等状态栏的 ↑ 和 录 都变成 0。",
-         "The background service connects to it by itself: notes and recordings not yet synced are saved to this Mac "
-         "and deleted from the device, and cannot go back. To keep them on your main Mac, plug it in there first and "
-         "wait until ↑ and R in the status bar are both 0.")  # fmt: skip
+         "The background service connects to it by itself: typed notes not yet synced are saved to this Mac and "
+         "deleted from the device; recordings are saved to this Mac too, but the device keeps a copy for 7 days, and "
+         'Settings → Storage → "Send again" passes them on to another Mac. To keep them on your main Mac, plug it in '
+         "there first and wait until ↑ and R in the status bar are both 0.")  # fmt: skip
 TAKING = ("后台服务在跑，正在连它：设备上还没传的笔记和录音会存到这台 Mac。",
           "The background service is running and connecting to it: notes and recordings not yet synced are saved to "
           "this Mac.")  # fmt: skip

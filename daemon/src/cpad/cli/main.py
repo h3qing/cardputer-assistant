@@ -165,7 +165,10 @@ def _pause(paths: Paths, args: argparse.Namespace, deps: CliDeps) -> int:
 def _service(paths: Paths, args: argparse.Namespace, deps: CliDeps) -> int:
     agents_dir = deps.agents_dir or launchd.default_agents_dir()
     if args.action == "uninstall":
-        launchd.uninstall(agents_dir, runner=deps.runner, uid=deps.uid)
+        done = launchd.uninstall(agents_dir, runner=deps.runner, uid=deps.uid)
+        if done.other:
+            print(T(f"注意：另一个 HOME 的 cpad 已加载（{done.other}），没动它",
+                    f"note: a cpad from another HOME is loaded ({done.other}): not touched"))  # fmt: skip
         print("LaunchAgent removed")
         return 0
     secure_home(paths)

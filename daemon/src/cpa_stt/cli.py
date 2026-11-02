@@ -281,8 +281,10 @@ def _retry(ctx: Ctx, args: argparse.Namespace) -> int:
 
 def _service(ctx: Ctx, args: argparse.Namespace) -> int:
     if args.action == "uninstall":
-        removed = service.uninstall(ctx.agents(), runner=ctx.deps.launchctl, uid=ctx.deps.uid)
-        print("LaunchAgent removed" if removed else "no LaunchAgent was installed")
+        done = service.uninstall(ctx.agents(), runner=ctx.deps.launchctl, uid=ctx.deps.uid)
+        if done.other:
+            print(f"note: a cpa-stt LaunchAgent from another HOME is loaded ({done.other}): not touched")
+        print("LaunchAgent removed" if done.existed else "no LaunchAgent was installed")
         return 0
     path = service.install(ctx.agents(), ctx.paths.dir / "log", str(ctx.home), runner=ctx.deps.launchctl,
                            uid=ctx.deps.uid)  # fmt: skip
@@ -329,6 +331,7 @@ def main(argv: Sequence[str] | None = None, deps: CliDeps | None = None) -> int:
     ctx = Ctx(home, config.SttPaths.at(home), _notes_dir(home), deps or CliDeps())
     try:
         return args.fn(ctx, args)
-    except (config.SttConfigError, template.TemplateError, models.ModelError, ValueError, OSError) as exc:
+    except (config.SttConfigError, template.TemplateError, models.ModelError, launchd.ServiceError, ValueError,
+            OSError) as exc:  # fmt: skip
         print(f"error: {exc}", file=sys.stderr)
         return 2

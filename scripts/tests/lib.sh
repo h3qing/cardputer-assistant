@@ -56,22 +56,25 @@ EOF
 }
 
 # launchctl that keeps one state file per label under $T/launchd (#82): print answers 113 for a label that is not
-# loaded, else "state = running" and its pid; bootstrap refuses (5) while the label is still loaded and gives each
-# start a new pid; bootout takes $T/bootout.delay seconds (default 0) to unload. $T/bootstrap.dead: bootstraps
-# load the label but run nothing. Never touches the real launchd.
+# loaded, else "path = " the plist it was loaded from ($T/launchd/LABEL.path), "state = running" and its pid;
+# bootstrap refuses (5) while the label is still loaded and gives each start a new pid; bootout takes
+# $T/bootout.delay seconds (default 0) to unload. $T/bootstrap.dead: bootstraps load the label but run nothing.
+# Never touches the real launchd.
 make_launchctl_stub() {
   { printf '#!/bin/sh\nT=%q\n' "$T"; cat <<'EOF2'
 echo "launchctl $*" >>"$T/stub.log"
 st="$T/launchd"
 mkdir -p "$st"
-settle() { if [ -f "$st/$1.gone" ] && [ "$(date +%s)" -ge "$(cat "$st/$1.gone")" ]; then rm -f "$st/$1" "$st/$1.gone"; fi; }
+settle() { if [ -f "$st/$1.gone" ] && [ "$(date +%s)" -ge "$(cat "$st/$1.gone")" ]; then rm -f "$st/$1" "$st/$1.gone" "$st/$1.path"; fi; }
 case "$1" in
   print)
     l="${2##*/}"; settle "$l"
     [ -f "$st/$l" ] || exit 113
     pid="$(cat "$st/$l")"
-    if [ -n "$pid" ]; then printf '%s = {\n\tstate = running\n\tpid = %s\n}\n' "$2" "$pid"
-    else printf '%s = {\n\tstate = not running\n}\n' "$2"; fi ;;
+    printf '%s = {\n' "$2"
+    [ -f "$st/$l.path" ] && printf '\tpath = %s\n' "$(cat "$st/$l.path")"
+    if [ -n "$pid" ]; then printf '\tstate = running\n\tpid = %s\n}\n' "$pid"
+    else printf '\tstate = not running\n}\n'; fi ;;
   bootout)
     l="${2##*/}"; settle "$l"
     [ -f "$st/$l" ] || exit 3
@@ -80,6 +83,7 @@ case "$1" in
   bootstrap)
     l="$(basename "$3" .plist)"; settle "$l"
     [ -f "$st/$l" ] && exit 5
+    printf '%s\n' "$3" >"$st/$l.path"
     if [ -f "$T/bootstrap.dead" ]; then : >"$st/$l"; exit 0; fi
     n="$(cat "$st/next" 2>/dev/null || echo 5000)"
     echo "$n" >"$st/$l"; echo $((n + 1)) >"$st/next" ;;

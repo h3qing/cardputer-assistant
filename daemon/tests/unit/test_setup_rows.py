@@ -188,6 +188,18 @@ def test_a_board_on_a_running_service_does_not_warn_after_the_fact():
     assert "先插回主力 Mac" in row(stopped, "device")["detail"]
 
 
+def test_a_board_not_yet_taken_says_recordings_stay_kept():
+    """Since docs/28 S1a (v0.5.1) a Mac that takes recordings leaves a copy on the device for 7 days, which "Send
+    again" can pass on; only typed notes leave the device for good."""
+    detail = row(replace(GOOD, service=NO_SERVICE, device=DeviceFacts(None, ("3F7A",))), "device")["detail"]
+    assert "留底 7 天" in detail and "再交一次" in detail and "回不去" not in detail
+
+
+def test_english_board_not_yet_taken_says_recordings_stay_kept(en):
+    detail = row(replace(GOOD, service=NO_SERVICE, device=DeviceFacts(None, ("3F7A",))), "device")["detail"]
+    assert "7 days" in detail and '"Send again"' in detail and "cannot go back" not in detail
+
+
 def test_stt_without_homebrew_says_where_to_get_it():
     got = row(replace(GOOD, stt=SttFacts(False, (), None, brew=False)), "stt")
     assert "https://brew.sh" in got["detail"]

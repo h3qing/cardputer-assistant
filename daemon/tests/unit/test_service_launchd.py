@@ -1,5 +1,6 @@
 """cpa service install on a Mac that already runs cpad (#82): the old job must be gone before the new one is
-bootstrapped, and only a running job with a new pid counts as started. launchctl and the clock are fakes."""
+bootstrapped, and only a running job with a new pid counts as started. The label is per user, not per HOME: a job
+loaded from another HOME's plist is never stopped or replaced. launchctl and the clock are fakes."""
 
 from __future__ import annotations
 
@@ -9,6 +10,7 @@ from cpad.service import launchd
 from tests.support.fake_launchd import PRINT, FakeLaunchd
 
 TARGET = f"gui/501/{launchd.LABEL}"
+OTHER = f"/Users/u/Library/LaunchAgents/{launchd.LABEL}.plist"  # the real HOME's, seen from a throwaway one
 
 
 def _install(tmp_path, fake: FakeLaunchd) -> launchd.Installed:
@@ -20,10 +22,14 @@ def _bootstrapped_at(fake: FakeLaunchd) -> list[int]:
     return [i for i, c in enumerate(fake.calls) if c[:2] == ["launchctl", "bootstrap"]]
 
 
-def test_job_reads_state_and_pid_from_launchctl_print():
-    running = PRINT.format(label=launchd.LABEL, state="running", pid="\tpid = 4242\n")
-    waiting = PRINT.format(label=launchd.LABEL, state="not running", pid="")
-    assert launchd.job(lambda argv, **kw: launchd.Completed(0, running), TARGET) == launchd.Job(True, 4242)
+def _ours(tmp_path) -> str:
+    return str(launchd.plist_path(tmp_path / "LaunchAgents"))
+
+
+def test_job_reads_state_pid_and_plist_from_launchctl_print():
+    running = PRINT.format(label=launchd.LABEL, path=f"\tpath = {OTHER}\n", state="running", pid="\tpid = 4242\n")
+    waiting = PRINT.format(label=launchd.LABEL, path="", state="not running", pid="")
+    assert launchd.job(lambda argv, **kw: launchd.Completed(0, running), TARGET) == launchd.Job(True, 4242, OTHER)
     assert launchd.job(lambda argv, **kw: launchd.Completed(0, waiting), TARGET) == launchd.Job(True, None)
     assert launchd.job(lambda argv, **kw: launchd.Completed(113, ""), TARGET) == launchd.Job(False, None)
 
@@ -74,3 +80,39 @@ def test_the_plist_is_written_even_when_the_start_fails(tmp_path):
     with pytest.raises(launchd.ServiceError):
         _install(tmp_path, fake)
     assert launchd.plist_path(tmp_path / "LaunchAgents").exists()
+
+
+def test_install_over_this_home_s_own_job_upgrades_it(tmp_path):
+    fake = FakeLaunchd(loaded=True, pid=1234, plist=_ours(tmp_path))
+    done = _install(tmp_path, fake)
+    assert done.pid == 4000 and fake.verbs("bootout") == 1 and fake.verbs("bootstrap") == 1
+
+
+def test_install_refuses_while_another_home_s_job_is_loaded_and_touches_nothing(tmp_path):
+    fake = FakeLaunchd(loaded=True, pid=1234, plist=OTHER)
+    with pytest.raises(launchd.ServiceError, match="another HOME") as caught:
+        _install(tmp_path, fake)
+    assert OTHER in str(caught.value) and "uninstall that one first" in str(caught.value)
+    assert fake.verbs("bootout") == 0 and fake.verbs("bootstrap") == 0
+    assert fake.loaded and fake.pid == 1234 and fake.plist == OTHER
+    assert not launchd.plist_path(tmp_path / "LaunchAgents").exists()
+
+
+def test_uninstall_boots_out_this_home_s_own_job(tmp_path):
+    fake = FakeLaunchd(loaded=True, pid=1234, plist=_ours(tmp_path))
+    (tmp_path / "LaunchAgents").mkdir()
+    launchd.plist_path(tmp_path / "LaunchAgents").write_bytes(b"x")
+    done = launchd.uninstall(tmp_path / "LaunchAgents", runner=fake, uid=501)
+    assert fake.verbs("bootout") == 1 and not fake.loaded
+    assert not launchd.plist_path(tmp_path / "LaunchAgents").exists()
+    assert done == launchd.Uninstalled(True, None)
+
+
+def test_uninstall_leaves_another_home_s_job_alone_but_removes_this_home_s_plist(tmp_path):
+    fake = FakeLaunchd(loaded=True, pid=1234, plist=OTHER)
+    (tmp_path / "LaunchAgents").mkdir()
+    launchd.plist_path(tmp_path / "LaunchAgents").write_bytes(b"x")
+    done = launchd.uninstall(tmp_path / "LaunchAgents", runner=fake, uid=501)
+    assert fake.verbs("bootout") == 0 and fake.loaded and fake.pid == 1234
+    assert not launchd.plist_path(tmp_path / "LaunchAgents").exists()
+    assert done == launchd.Uninstalled(True, OTHER)

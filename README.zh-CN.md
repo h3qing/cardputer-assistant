@@ -76,7 +76,7 @@ bash /Volumes/USB/v0.5.0/install.sh --from /Volumes/USB/v0.5.0                  
    ```
 2. **取代码，准备 Mac 端**：
    ```bash
-   git clone <仓库地址> cardputer-assistant && cd cardputer-assistant
+   git clone https://github.com/h3qing/cardputer-assistant.git && cd cardputer-assistant
    uv sync --project daemon                                # Python 3.12 + pyserial，装进 daemon/.venv
    ```
 3. **刷固件（不按 G0）**：插上 USB-C，侧面开关拨到 **ON**。
@@ -91,7 +91,7 @@ bash /Volumes/USB/v0.5.0/install.sh --from /Volumes/USB/v0.5.0                  
    uv run --project daemon cpa service install
    ```
    它会记下登录 shell 的 PATH 等少数几个环境变量，并找到 `claude` 的绝对路径；没找到时会提示，开 session 的功能保持关闭，速记照常可用。
-   - **第二台 Mac**：今天的 cpad 不问你，插上的第一块板就绑定，设备上还没传的笔记和录音会存到那台 Mac、从设备上删掉，存过去就回不去。插到另一台 Mac 之前，先在主力 Mac 上插一下，等状态栏的 ↑ 和 录 变成 0；只想充电的 Mac 不要跑 cpad。改进的设计见 [docs/27](docs/27-new-mac-setup.zh-CN.md)。
+   - **第二台 Mac**：今天的 cpad 不问你，插上的第一块板就绑定。设备上还没传的打字笔记会存到那台 Mac、从设备上删掉；录音也存过去，但设备上留底 7 天，设置 → 存储 →「再交一次」能交给另一台 Mac（[docs/28](docs/28-multi-mac-sync.zh-CN.md) S1a）。插到另一台 Mac 之前，先在主力 Mac 上插一下，等状态栏的 ↑ 和 录 变成 0；只想充电的 Mac 不要跑 cpad。改进的设计见 [docs/27](docs/27-new-mac-setup.zh-CN.md)。
 5. **登记项目**（每个项目占一个数字键 1–9；从设备开出的 session 默认用 `plan` 权限模式）：
    ```bash
    uv run --project daemon cpa project add myproj ~/code/myproj --slot 1 --name 我的项目

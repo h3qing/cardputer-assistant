@@ -1,6 +1,7 @@
 """A stand-in for launchctl and the clock (#82): one LaunchAgent in one gui domain, with a bootout that takes
 `bootout_delay` seconds of fake time and bootstraps that can refuse while the old job is still loaded (error 5,
-as the real one does) or start nothing at all. The real launchctl never runs."""
+as the real one does) or start nothing at all. print says which plist the job was loaded from (`plist`, set by
+bootstrap; None: no path line). The real launchctl never runs."""
 
 from __future__ import annotations
 
@@ -10,10 +11,10 @@ from cpad.service import launchd
 
 PRINT = """gui/501/{label} = {{
 \tactive count = 1
-\tpath = /Users/u/Library/LaunchAgents/{label}.plist
-\ttype = LaunchAgent
+{path}\ttype = LaunchAgent
 \tstate = {state}
 \tprogram = /py
+\tstdout path = /Users/u/logs/launchd.out.log
 {pid}\tlast exit code = (never exited)
 \tendpoints = {{
 \t\t"com.example" = {{
@@ -28,6 +29,7 @@ PRINT = """gui/501/{label} = {{
 class FakeLaunchd:
     loaded: bool = False
     pid: int | None = None
+    plist: str | None = None  # the plist it was loaded from
     bootout_delay: float = 0.0
     dead_starts: int = 0  # how many bootstraps load the job but never run it
     now: float = 0.0
@@ -57,7 +59,8 @@ class FakeLaunchd:
             if not self.loaded:
                 return launchd.Completed(113, "")
             state, pid = ("running", f"\tpid = {self.pid}\n") if self.pid else ("not running", "")
-            return launchd.Completed(0, PRINT.format(label=launchd.LABEL, state=state, pid=pid))
+            path = f"\tpath = {self.plist}\n" if self.plist else ""
+            return launchd.Completed(0, PRINT.format(label=launchd.LABEL, path=path, state=state, pid=pid))
         if verb == "bootout":
             if not self.loaded:
                 return launchd.Completed(3, "")
@@ -67,7 +70,7 @@ class FakeLaunchd:
         if verb == "bootstrap":
             if self.loaded:
                 return launchd.Completed(5, "")
-            self.loaded = True
+            self.loaded, self.plist = True, argv[3]
             if self.dead_starts:
                 self.dead_starts -= 1
             else:

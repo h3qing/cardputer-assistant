@@ -393,6 +393,29 @@ case_uninstall() {
   fi
 }
 
+case_other_home() {
+  echo "uninstall --home elsewhere while this user's real cpad runs: the LaunchAgent label is per user, not per HOME"
+  local h="$T/h-other" real="$T/h-real" label
+  mkdir -p "$h/Library/LaunchAgents" "$T/launchd"
+  : >"$h/$AGENT_PLIST" # this HOME has a plist too, but the loaded job is the other one's
+  for label in com.cardputer-assistant.cpad com.cardputer-assistant.cpa-stt; do
+    echo 4242 >"$T/launchd/$label"
+    printf '%s\n' "$real/Library/LaunchAgents/$label.plist" >"$T/launchd/$label.path"
+  done
+  run_uninstall "$h" --yes || { bad "uninstall exits 0"; show_log 30; return; }
+  ok "uninstall exits 0"
+  check "no launchctl bootout" [ "$(count_of "$T/stub.log" "launchctl bootout")" == 0 ]
+  check "the real cpad is still loaded (stub pid)" [ "$(launchd_pid com.cardputer-assistant.cpad)" == 4242 ]
+  check "says it was not touched" contains "$T/out.log" \
+    "com.cardputer-assistant.cpad from another HOME is loaded ($real/$AGENT_PLIST): not touched"
+  check "this HOME's plist is removed" absent "$h/$AGENT_PLIST"
+  printf '%s\n' "$h/$AGENT_PLIST" >"$T/launchd/com.cardputer-assistant.cpad.path"
+  run_uninstall "$h" --yes || { bad "second uninstall exits 0"; show_log 30; return; }
+  check "a cpad loaded from this HOME's plist is booted out" \
+    contains "$T/stub.log" "launchctl bootout gui/$(id -u)/com.cardputer-assistant.cpad"
+  check "the other HOME's cpa-stt is still not" [ "$(count_of "$T/stub.log" "launchctl bootout")" == 1 ]
+}
+
 case_lang() {
   echo "one language: --lang, then CPA_LANG, LC_ALL, LC_MESSAGES, LANG, else English; the checklist gets it too"
   local h="$T/h-zh"
@@ -438,7 +461,7 @@ main() {
   echo "building the local release $TAG from this checkout"
   make_release "$REL"
   local cases="${*:-fresh checksum quarantine long_quarantine config path_line dry asset_pipe spaces no_tty device_now root truncated
-    bad_prefix token from release_out uv_bootstrap uninstall service_race service_dead lang}" c
+    bad_prefix token from release_out uv_bootstrap uninstall other_home service_race service_dead lang}" c
   for c in $cases; do
     : >"$T/stub.log"
     rm -rf "$T/launchd"
